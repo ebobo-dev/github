@@ -40,17 +40,10 @@ jobs:
 
       - name: Build with wasm-pack
         run: |
-          wasm-pack build --target web --out-name ebobo --out-dir ./www/pkg
+          wasm-pack build --target web --out-name ebobo --out-dir ./www/pkg/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./www/
-
-      - name: Deploy to GitHub Pages 1
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./www/pkg/
-          destination_dir: ./pkg/
