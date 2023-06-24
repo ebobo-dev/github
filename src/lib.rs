@@ -19,10 +19,10 @@ fn main() -> Result<(), JsValue> {
 
     let msg = format!("mailto:{}", EMAIL);
 
-    let _ = link.set_attribute("href", &msg);
+    link.set_attribute("href", &msg).unwrap();
     link.set_inner_html(EMAIL);
-    let _ = footer.append_child(&link);
-    let _ = body.append_child(&footer);
+    footer.append_child(&link).unwrap();
+    body.append_child(&footer).unwrap();
 
     Ok(())
 }
