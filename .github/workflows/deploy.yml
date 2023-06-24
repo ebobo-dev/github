@@ -35,6 +35,7 @@ jobs:
 
       - name: Install wasm-pack
         run: |
+          source $HOME/.cargo/env
           curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
       - name: Build with wasm-pack
