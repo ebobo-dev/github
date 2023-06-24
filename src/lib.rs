@@ -12,7 +12,7 @@ fn main() -> Result<(), JsValue> {
 
     // Create the header
     let header = document.create_element("h1").unwrap();
-    header.set_inner_html("Paula Brillant");
+    header.set_inner_html("Paula Brillant!");
     body.append_child(&header).unwrap();
 
     // Create the footer
