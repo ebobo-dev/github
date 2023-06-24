@@ -2,9 +2,9 @@ use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen(start)]
 fn main() -> Result<(), JsValue> {
-    let window = web_sys::window().expect("no global `window` exists");
-    let document = window.document().expect("should have a document on window");
-    let body = document.body().expect("document should have a body");
+    let window = web_sys::window().unwrap();
+    let document = window.document().unwrap();
+    let body = document.body().unwrap();
 
     document.set_title("ebobo.dev");
 
