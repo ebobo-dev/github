@@ -3,5 +3,16 @@ name = "ebobo"
 version = "0.1.1"
 edition = "2021"
 
-[dependencies]
-yew = { version = "0.20", features = ["csr"] }
+[dependencies.yew]
+version = "0.20"
+features = ["csr"] 
+
+[dependencies.web-sys]
+version = "0.3.4"
+features = [
+  'Document',
+  'Element',
+  'HtmlElement',
+  'Node',
+  'Window',
+]
