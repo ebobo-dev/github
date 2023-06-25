@@ -33,21 +33,21 @@ jobs:
           curl https://sh.rustup.rs -sSf | sh -s -- -y
           source $HOME/.cargo/env
           rustup target add wasm32-unknown-unknown
-      - name: Install wasm-pack
+      - name: Install Trunk
         run: |
-          curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+          cargo install --locked trunk
       - name: Build
         run: |
           cargo build --target wasm32-unknown-unknown --release
-      - name: Build with wasm-pack
+      - name: Build with Trunk
         run: |
-          wasm-pack build --target web --out-dir ./www/pkg
+          trunk build --release
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: './www'
+          path: '.'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
