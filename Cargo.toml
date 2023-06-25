@@ -1,21 +1,7 @@
 [package]
 name = "ebobo"
-version = "0.1.0"
-edition = "2018"
-rust-version = "1.56"
-
-[lib]
-crate-type = ["cdylib"]
+version = "0.1.1"
+edition = "2021"
 
 [dependencies]
-wasm-bindgen = "0.2.87"
-
-[dependencies.web-sys]
-version = "0.3.4"
-features = [
-  'Document',
-  'Element',
-  'HtmlElement',
-  'Node',
-  'Window',
-]
+yew = { version = "0.20", features = ["csr"] }
