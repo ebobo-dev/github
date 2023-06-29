@@ -16,6 +16,7 @@ fn fingerprint() -> Html {
     html! {
         <div>
             <h2>{ format!("Fingerprint: {}", fingerprint.print) }</h2>
+            <button onclick={Callback::from(|_| ())}>{ "Save" }</button>
         </div>
     }
 }
