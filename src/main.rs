@@ -16,7 +16,11 @@ fn fingerprint() -> Html {
     html! {
         <div>
             <h2>{ format!("Fingerprint: {}", fingerprint.print) }</h2>
-            <button onclick={Callback::from(|_| ())}>{ "Save" }</button>
+            <button onclick={Callback::from(|_| {
+                let window = window().unwrap();
+                let document = window.document().unwrap();
+                document.set_title("Saved!");
+            })}>{ "Save" }</button>
         </div>
     }
 }
