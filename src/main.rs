@@ -38,7 +38,7 @@ fn app() -> Html {
 
     html! {
         <div>
-            <h1>{ "Hello, Ebobo!" } </h1>
+            <h1>{ "Hello, Микола!" } </h1>
             <WhoAmI />
             <footer>
                 <a href={ format!("mailto:{}", email) }>{ email }</a>
