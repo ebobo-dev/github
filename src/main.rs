@@ -15,12 +15,7 @@ fn fingerprint() -> Html {
 
     html! {
         <div>
-            <h2>{ format!("Fingerprint: {}", fingerprint.print) }</h2>
-            <button onclick={Callback::from(|_| {
-                let window = window().unwrap();
-                let document = window.document().unwrap();
-                document.set_title("Saved!");
-            })}>{ "Save" }</button>
+
         </div>
     }
 }
@@ -38,7 +33,7 @@ fn app() -> Html {
 
     html! {
         <div>
-            <h1>{ "Hello, Микола!" } </h1>
+            <h1>{ NAME } </h1>
             <WhoAmI />
             <footer>
                 <a href={ format!("mailto:{}", email) }>{ email }</a>
@@ -48,5 +43,5 @@ fn app() -> Html {
 }
 
 fn main() {
-    yew::Renderer::<App>::new().render(); // TODO: check csr dependency.
+    yew::Renderer::<App>::new().render();
 }
