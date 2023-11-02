@@ -38,6 +38,7 @@ fn app() -> Html {
             <footer>
                 <a href={ format!("mailto:{}", email) }>{ email }</a>
             </footer>
+            <!-- 
         </div>
     }
 }
