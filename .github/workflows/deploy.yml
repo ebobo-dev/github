@@ -1,4 +1,4 @@
-name: Build and Deploy WASM to Pages
+name: build and deploy to github pages
 
 on:
   push:
@@ -24,6 +24,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Install dependencies
         run: |
           sudo apt-get update
@@ -33,21 +34,27 @@ jobs:
           curl https://sh.rustup.rs -sSf | sh -s -- -y
           source $HOME/.cargo/env
           rustup target add wasm32-unknown-unknown
+
       - name: Install Trunk
         run: |
           cargo install --locked trunk
+
       - name: Build
         run: |
           cargo build --target wasm32-unknown-unknown --release
+
       - name: Build with Trunk
         run: |
           trunk build --release
+
       - name: Setup Pages
         uses: actions/configure-pages@v3
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
           path: './dist'
+          
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
