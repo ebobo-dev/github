@@ -14,7 +14,7 @@ fn fingerprint() -> Html {
     let fingerprint: Fingerprint = serde_json::from_str(&fingerprint).unwrap();
 
     html! {
-        <div>{ fingerprint.print }</div>
+        <div class="content">{ fingerprint.print }</div>
     }
 }
 
@@ -33,7 +33,7 @@ fn app() -> Html {
         <div>
             <h1>{ NAME } </h1>
             <WhoAmI />
-            <footer>
+            <footer class="footer">
                 <a href={ format!("mailto:{}", email) }>{ email }</a>
             </footer>
         </div>
