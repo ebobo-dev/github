@@ -1,4 +1,4 @@
-name: build and deploy to github pages
+name: Build and Deploy to GitHub Pages
 
 on:
   push:
@@ -23,40 +23,40 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v3
 
-      - name: install dependencies
+      - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y libssl-dev pkg-config
 
-      - name: install rust
+      - name: Install Rust
         run: |
           curl https://sh.rustup.rs -sSf | sh -s -- -y
           source $HOME/.cargo/env
           rustup target add wasm32-unknown-unknown
 
-      - name: install trunk
+      - name: Install Trunk
         run: |
           cargo install --locked trunk
 
-      - name: build
+      - name: Build
         run: |
           cargo build --target wasm32-unknown-unknown --release
 
-      - name: build with trunk
+      - name: Build with Trunk
         run: |
           trunk build --release
 
-      - name: setup pages
+      - name: Setup pages
         uses: actions/configure-pages@v3
 
-      - name: upload artifact
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
           path: './dist'
           
-      - name: deploy to pages
+      - name: Deploy to pages
         id: deployment
         uses: actions/deploy-pages@v2
