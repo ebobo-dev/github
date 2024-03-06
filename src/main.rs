@@ -2,7 +2,7 @@ use web_sys::*;
 use yew::prelude::*;
 use fingerprint::WhoAmI;
 
-pub mod fingerprint;
+mod fingerprint;
 
 #[function_component(App)]
 fn app() -> Html {

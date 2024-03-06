@@ -3,15 +3,15 @@ use serde::Deserialize;
 use wasm_fingerprint::*;
 use yew::prelude::*;
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize)]
 struct Fingerprint {
-
     print: String,
+    ms: f32
 }
 
 impl Display for Fingerprint {
     fn fmt(&self, f: &mut Formatter) -> Result {
-        write!(f, "fingerprint: {}", self.print)
+        write!(f, "fingerprint: {}, time: {}", self.print, self.ms)
     }
 }
 
