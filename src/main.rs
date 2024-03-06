@@ -1,22 +1,8 @@
-use serde::Deserialize;
-use wasm_fingerprint::*;
 use web_sys::*;
 use yew::prelude::*;
+use fingerprint::WhoAmI;
 
-#[derive(Deserialize)]
-struct Fingerprint {
-    print: String,
-}
-
-#[function_component(WhoAmI)]
-fn fingerprint() -> Html {
-    let fingerprint = make_fingerprint().unwrap();
-    let fingerprint: Fingerprint = serde_json::from_str(&fingerprint).unwrap();
-
-    html! {
-        <div class="content">{ fingerprint.print }</div>
-    }
-}
+pub mod fingerprint;
 
 #[function_component(App)]
 fn app() -> Html {
@@ -33,7 +19,7 @@ fn app() -> Html {
         <div>
             <h1>{ NAME } </h1>
             <WhoAmI />
-            <footer class="footer">
+            <footer>
                 <a href={ format!("mailto:{}", email) }>{ email }</a>
             </footer>
         </div>
