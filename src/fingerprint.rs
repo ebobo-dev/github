@@ -5,8 +5,8 @@ use yew::prelude::*;
 
 #[derive(Deserialize)]
 struct Fingerprint {
-    print: String,
-    ms: f32
+    ms: f64,
+    print: String
 }
 
 impl Display for Fingerprint {
