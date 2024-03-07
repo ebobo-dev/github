@@ -1,31 +1,67 @@
-use web_sys::*;
-use yew::prelude::*;
-use fingerprint::WhoAmI;
+use reqwasm::http::Request;
+use serde::{Deserialize, Serialize};
+use std::net::SocketAddr;
+use sycamore::{prelude::*, suspense::Suspense};
+use wasm_fingerprint::make_fingerprint;
 
-mod fingerprint;
+#[derive(Debug, Serialize, Deserialize)]
+struct Record {
+    value: String,
+    address: SocketAddr,
+}
 
-#[function_component(App)]
-fn app() -> Html {
-    let window = window().unwrap();
-    let document = window.document().unwrap();
+#[derive(Deserialize)]
+struct Fingerprint {
+    print: String,
+}
 
-    const NAME: &str = "ebobo.dev";
+const API: &str = "https://ebobo.shuttleapp.rs";
 
-    document.set_title(NAME);
+async fn post(fingerprint: &str) -> Result<Vec<Record>, reqwasm::Error> {
+    let resp = Request::post(API)
+        .body(fingerprint)
+        .send()
+        .await?;
+    let body = resp.json::<Vec<Record>>().await?;
+    Ok(body)
+}
 
-    let email = format!("generated@{}", NAME);
+#[component]
+async fn Auth<G: Html>() -> View<G> {
+    let fingerprint = make_fingerprint().unwrap();
+    let fingerprint: Fingerprint = serde_json::from_str(&fingerprint).unwrap();
 
-    html! {
-        <div>
-            <h1>{ NAME } </h1>
-            <WhoAmI />
-            <footer>
-                <a href={ format!("mailto:{}", email) }>{ email }</a>
-            </footer>
-        </div>
+    let recs = post(&fingerprint.print).await.unwrap_or_default();
+
+    view! {
+        p {
+            (recs.iter().map(|r| r.address.to_string()).collect::<Vec<String>>().join(", "))
+        }
+    }
+}
+
+#[component]
+fn App<G: Html>() -> View<G> {
+    view! {
+        div {
+            p { "ebobo.dev" }
+
+            Suspense(fallback=view! { "Loading..." }) {
+                Auth {}
+            }
+
+            footer {
+                a(href="mailto:developed@ebobo.dev") {
+                    "developed@ebobo.dev"
+                }
+            }
+        }
     }
 }
 
 fn main() {
-    yew::Renderer::<App>::new().render();
+    console_error_panic_hook::set_once();
+    console_log::init_with_level(log::Level::Debug).unwrap();
+
+    sycamore::render(App);
 }

@@ -1,0 +1,8 @@
+{
+    "cSpell.words": [
+        "reqwasm"
+    ],
+    "rust-analyzer.linkedProjects": [
+        ".\\Cargo.toml"
+    ]
+}
