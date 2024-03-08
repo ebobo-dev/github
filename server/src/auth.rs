@@ -7,12 +7,13 @@ pub fn auth(
     fingerprint: &str,
     state: &State<AuthState>,
     remote_addr: SocketAddr,
-) -> Result<Json<Vec<Fingerprint>>, BadRequest<String>> {
+) -> Result<String, BadRequest<String>> {
     let fingerprint = Fingerprint {
         value: fingerprint.to_string(),
         address: remote_addr
     };
 
+    /* 
     let _ = state
         .persist
         .save::<Fingerprint>(
@@ -20,14 +21,13 @@ pub fn auth(
             fingerprint.clone(),
         )
         .map_err(|e| BadRequest(Some(e.to_string())));
+    */
 
-    let fingerprints = state
-        .persist
-        .list()
-        .unwrap()
-        .iter()
-        .map(|f| state.persist.load::<Fingerprint>(f).unwrap())
-        .collect();
-
-    Ok(Json(fingerprints))
+    if fingerprint.value == "🐱" {
+        unimplemented!();
+    }
+    
+    let greet = "Hello, 🐱!";
+    
+    Ok(greet.to_owned())
 }
