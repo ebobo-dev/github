@@ -28,13 +28,19 @@ pub fn authenticate(
                     Err(BadRequest("Device is not active".to_owned()))?;
                 }
 
+                let mut greet = String::new();
+
                 if d.locations.iter().all(|l| l.address != remote_addr) {
+
                     d.locations.push(Location {
                         address: remote_addr,
                         first_seen_at: Utc::now(),
                         last_seen_at: Utc::now(),
                         hits: 1,
                     });
+
+                    greet = "You are in a new location!".to_owned();
+
                 } else {
                     let location = d
                         .locations
@@ -54,7 +60,7 @@ pub fn authenticate(
 
                 let name = if d.is_cat { "🐱" } else { fingerprint };
 
-                Ok(format!("Welcome back, {}!", name).to_owned())
+                Ok(format!("Welcome back, {}! {}", name, greet).to_owned())
             }
             Err(e) => Err(BadRequest(e.to_string())),
         }
