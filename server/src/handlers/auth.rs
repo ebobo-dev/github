@@ -24,6 +24,14 @@ pub fn authenticate(
     {
         match state.persist.load::<Device>(&fingerprint) {
             Ok(mut d) => {
+                if !d.is_active {
+                    Err(BadRequest("Device is not active".to_owned()))?;
+                }
+
+                if d.is_cat {
+                    unimplemented!("Cats are not allowed")
+                }
+
                 if d.locations.iter().all(|l| l.address != remote_addr) {
                     d.locations.push(Location {
                         address: remote_addr,
