@@ -1,14 +1,12 @@
 mod cors;
 mod auth;
-mod index;
-mod models;
+mod domain;
 
 #[macro_use]
 extern crate rocket;
 
-use rocket::State;
 use shuttle_persist::PersistInstance;
-use models::*;
+use auth::AuthState;
 
 #[shuttle_runtime::main]
 async fn rocket(
@@ -18,7 +16,7 @@ async fn rocket(
     
     let rocket = rocket::build()
         .attach(cors::CORS)
-        .mount("/", routes![auth::auth, index::index])
+        .mount("/", routes![auth::auth])
         .manage(state);
 
     Ok(rocket.into())

@@ -1,33 +1,29 @@
-use crate::*;
+use crate::domain::device::Device;
 use rocket::response::status::BadRequest;
-use std::net::SocketAddr;
+use rocket::State;
+use shuttle_persist::PersistInstance;
+
+pub struct AuthState {
+    pub persist: PersistInstance,
+}
 
 #[post("/", data = "<fingerprint>")]
-pub fn auth(
-    fingerprint: &str,
-    state: &State<AuthState>,
-    remote_addr: SocketAddr,
-) -> Result<String, BadRequest<String>> {
-    let fingerprint = Fingerprint {
-        value: fingerprint.to_string(),
-        address: remote_addr
-    };
-
-    /* 
-    let _ = state
+pub fn auth(fingerprint: &str, state: &State<AuthState>) -> Result<String, BadRequest<String>> {
+    if state
         .persist
-        .save::<Fingerprint>(
-            format!("fingerprint_{}", &fingerprint.value.as_str()).as_str(),
-            fingerprint.clone(),
-        )
-        .map_err(|e| BadRequest(Some(e.to_string())));
-    */
+        .list()
+        .unwrap()
+        .contains(&fingerprint.to_owned())
+    {
+        Ok("Welcome back!".to_owned())
+    } else {
+        let device = Device {
+            fingerprint: fingerprint.to_owned(),
+        };
 
-    if fingerprint.value == "🐱" {
-        unimplemented!();
+        match state.persist.save(&fingerprint, &device) {
+            Ok(_) => Ok("Welcome!".to_owned()),
+            Err(e) => Err(BadRequest(e.to_string())),
+        }
     }
-    
-    let greet = "Hello, 🐱!";
-    
-    Ok(greet.to_owned())
 }
