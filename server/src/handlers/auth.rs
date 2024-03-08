@@ -2,7 +2,7 @@ use crate::domain::device::Device;
 use crate::domain::location::Location;
 use chrono::Utc;
 use rocket::response::status::BadRequest;
-use rocket::{local, State};
+use rocket::State;
 use shuttle_persist::PersistInstance;
 use std::net::SocketAddr;
 
@@ -45,14 +45,16 @@ pub fn authenticate(
                     location.last_seen_at = Utc::now();
                     location.hits += 1;
 
-                    if location.hits > 10 {
+                    if d.locations.iter().map(|l| l.hits).sum::<u32>() > 10 {
                         d.is_cat = true;
                     }
 
                     state.persist.save(&fingerprint, &d).unwrap();
                 }
 
-                Ok(format!("Welcome back, {}!", d.fingerprint).to_owned())
+                let name = if d.is_cat { "🐱" } else { fingerprint };
+
+                Ok(format!("Welcome back, {}!", name).to_owned())
             }
             Err(e) => Err(BadRequest(e.to_string())),
         }

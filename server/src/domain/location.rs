@@ -7,5 +7,5 @@ pub struct Location {
     pub address: SocketAddr,
     pub first_seen_at: DateTime<Utc>,
     pub last_seen_at: DateTime<Utc>,
-    pub hits: u64,
+    pub hits: u32,
 }
