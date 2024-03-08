@@ -15,8 +15,7 @@ struct Fingerprint {
     print: String,
 }
 
-const API: &str = "http://127.0.0.1:8000"; //"https://ebobo.shuttleapp.rs";
-
+const API: &str = "https://ebobo.shuttleapp.rs";
 
 async fn post(fingerprint: &str) -> Result<String, reqwasm::Error> {
     let resp = Request::post(API)
