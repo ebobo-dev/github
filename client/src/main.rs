@@ -15,7 +15,7 @@ struct Fingerprint {
     print: String,
 }
 
-const API: &str = "https://ebobo.shuttleapp.rs";
+const API: &str = "https://ebobo.shuttleapp.rs/authenticate";
 
 async fn post(fingerprint: &str) -> Result<String, reqwasm::Error> {
     let resp = Request::post(API)
