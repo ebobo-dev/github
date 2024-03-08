@@ -1,8 +1,8 @@
 use crate::domain::device::Device;
-use crate::domain::location::{self, Location};
+use crate::domain::location::Location;
 use chrono::Utc;
 use rocket::response::status::BadRequest;
-use rocket::State;
+use rocket::{local, State};
 use shuttle_persist::PersistInstance;
 use std::net::SocketAddr;
 
@@ -28,10 +28,6 @@ pub fn authenticate(
                     Err(BadRequest("Device is not active".to_owned()))?;
                 }
 
-                if d.is_cat {
-                    unimplemented!("Cats are not allowed")
-                }
-
                 if d.locations.iter().all(|l| l.address != remote_addr) {
                     d.locations.push(Location {
                         address: remote_addr,
@@ -49,8 +45,13 @@ pub fn authenticate(
                     location.last_seen_at = Utc::now();
                     location.hits += 1;
 
+                    if location.hits > 10 {
+                        d.is_cat = true;
+                    }
+
                     state.persist.save(&fingerprint, &d).unwrap();
                 }
+
                 Ok(format!("Welcome back, {}!", d.fingerprint).to_owned())
             }
             Err(e) => Err(BadRequest(e.to_string())),
