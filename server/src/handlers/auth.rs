@@ -1,0 +1,69 @@
+use crate::domain::device::Device;
+use crate::domain::location::{self, Location};
+use chrono::Utc;
+use rocket::response::status::BadRequest;
+use rocket::State;
+use shuttle_persist::PersistInstance;
+use std::net::SocketAddr;
+
+pub struct AuthState {
+    pub persist: PersistInstance,
+}
+
+#[post("/", data = "<fingerprint>")]
+pub fn authenticate(
+    fingerprint: &str,
+    state: &State<AuthState>,
+    remote_addr: SocketAddr,
+) -> Result<String, BadRequest<String>> {
+    if state
+        .persist
+        .list()
+        .unwrap()
+        .contains(&fingerprint.to_owned())
+    {
+        match state.persist.load::<Device>(&fingerprint) {
+            Ok(mut d) => {
+                if d.locations.iter().all(|l| l.address != remote_addr) {
+                    d.locations.push(Location {
+                        address: remote_addr,
+                        first_seen_at: Utc::now(),
+                        last_seen_at: Utc::now(),
+                        hits: 1,
+                    });
+                } else {
+                    let location = d
+                        .locations
+                        .iter_mut()
+                        .find(|l| l.address == remote_addr)
+                        .unwrap();
+
+                    location.last_seen_at = Utc::now();
+                    location.hits += 1;
+
+                    state.persist.save(&fingerprint, &d).unwrap();
+                }
+                Ok(format!("Welcome back, {}!", d.fingerprint).to_owned())
+            }
+            Err(e) => Err(BadRequest(e.to_string())),
+        }
+    } else {
+        let device = Device {
+            fingerprint: fingerprint.to_owned(),
+            is_cat: false,
+            is_active: true,
+            registered_at: Utc::now(),
+            locations: vec![Location {
+                address: remote_addr,
+                first_seen_at: Utc::now(),
+                last_seen_at: Utc::now(),
+                hits: 1,
+            }],
+        };
+
+        match state.persist.save(&fingerprint, &device) {
+            Ok(_) => Ok(format!("Welcome, {}!", device.fingerprint).to_owned()),
+            Err(e) => Err(BadRequest(e.to_string())),
+        }
+    }
+}
