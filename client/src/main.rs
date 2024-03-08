@@ -17,12 +17,13 @@ struct Fingerprint {
 
 const API: &str = "https://ebobo.shuttleapp.rs";
 
-async fn post(fingerprint: &str) -> Result<Vec<Record>, reqwasm::Error> {
+async fn post(fingerprint: &str) -> Result<String, reqwasm::Error> {
     let resp = Request::post(API)
         .body(fingerprint)
         .send()
         .await?;
-    let body = resp.json::<Vec<Record>>().await?;
+
+    let body = resp.text().await?;
     Ok(body)
 }
 
@@ -31,11 +32,11 @@ async fn Auth<G: Html>() -> View<G> {
     let fingerprint = make_fingerprint().unwrap();
     let fingerprint: Fingerprint = serde_json::from_str(&fingerprint).unwrap();
 
-    let recs = post(&fingerprint.print).await.unwrap_or_default();
+    let greet = post(&fingerprint.print).await.unwrap_or_default();
 
     view! {
         p {
-            (recs.iter().map(|r| r.address.to_string()).collect::<Vec<String>>().join(", "))
+            (greet)
         }
     }
 }
