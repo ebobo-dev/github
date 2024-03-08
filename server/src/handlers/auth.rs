@@ -31,7 +31,7 @@ pub fn authenticate(
                 let mut greet = String::new();
                 let mut name = d.fingerprint.clone();
 
-                if d.locations.iter().all(|l| l.address != remote_addr) {
+                if d.locations.iter().all(|l| remote_addr != l.address) {
 
                     d.locations.push(Location {
                         address: remote_addr,
@@ -57,6 +57,8 @@ pub fn authenticate(
                     }
 
                     state.persist.save(&fingerprint, &d).unwrap();
+
+                    greet = "You are in a known location!".to_owned();
                 }
                 
                 if d.is_cat {
