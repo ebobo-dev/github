@@ -10,7 +10,7 @@ pub struct AuthState {
     pub persist: PersistInstance,
 }
 
-#[post("/", data = "<fingerprint>")]
+#[post("/authenticate", data = "<fingerprint>")]
 pub fn authenticate(
     fingerprint: &str,
     state: &State<AuthState>,
