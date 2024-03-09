@@ -13,6 +13,7 @@ fn App<G: Html>() -> View<G> {
 
     view! {
         div {
+            "🪲"
             p { (NAME) }
 
             Suspense(fallback=view! { "Loading..." }) {
