@@ -19,7 +19,8 @@ pub async fn Auth<G: Html>() -> View<G> {
 }
 
 async fn post(fingerprint: &str, host: &str) -> Result<String, reqwasm::Error> {
-    Ok(Request::post("https://ebobo.shuttleapp.rs/authenticate")
+    let url = std::env::var("EBOBO_AUTH_URL").unwrap_or_else(|_| "https://ebobo.shuttleapp.rs/authenticate".to_string());
+    Ok(Request::post(&url)
         .body(
             serde_json::to_string(&Auth {
                 fingerprint: fingerprint.to_string(),
