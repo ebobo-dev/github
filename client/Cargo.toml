@@ -4,7 +4,7 @@ version = "0.2.0"
 edition = "2021"
 
 [dependencies]
-web-sys = "0.3.69"
+web-sys = "0.3.68"
 log = "0.4.17"
 console_log = "1.0.0"
 console_error_panic_hook = "0.1.7"

@@ -1,10 +1,8 @@
 [package]
 name = "ebobo-shared"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2021"
 
 [dependencies]
-chrono = "0.4.35"
-serde = "1.0.197"
-serde_derive = "1.0.197"
-serde_json = "1.0.114"
+chrono = { version = "0.4", features = ["serde"] }
+serde = { version = "1.0.197", features = ["derive"]}

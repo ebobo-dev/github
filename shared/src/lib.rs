@@ -1,6 +1,5 @@
-pub use serde::{Serialize, Deserialize};
 pub use chrono::{DateTime, Utc};
-pub use serde_json::*;
+pub use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
 pub struct Auth {
