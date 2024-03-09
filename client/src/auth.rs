@@ -19,7 +19,7 @@ pub async fn Auth<G: Html>() -> View<G> {
 }
 
 async fn post(fingerprint: &str, host: &str) -> Result<String, reqwasm::Error> {
-    let resp = Request::post("https://ebobo.shuttleapp.rs/authenticate")
+    Ok(Request::post("http://localhost:8000/authenticate")
         .body(
             serde_json::to_string(&Auth {
                 fingerprint: fingerprint.to_string(),
@@ -28,13 +28,12 @@ async fn post(fingerprint: &str, host: &str) -> Result<String, reqwasm::Error> {
             .unwrap(),
         )
         .send()
-        .await?;
-
-    Ok(resp.text().await?)
+        .await?
+        .text()
+        .await?)
 }
 
 #[derive(Deserialize)]
 struct Fingerprint {
     print: String,
 }
-
