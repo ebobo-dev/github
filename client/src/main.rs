@@ -13,8 +13,7 @@ fn App<G: Html>() -> View<G> {
 
     view! {
         div {
-            "🪲"
-            p { (NAME) }
+            h1 { (NAME) }
 
             Suspense(fallback=view! { "Loading..." }) {
                 Auth {}

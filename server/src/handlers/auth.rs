@@ -1,8 +1,8 @@
-use ebobo_shared::{Auth, Device, Location, Utc};
+use ebobo_shared::{Auth, Device, Location, Utc, Duration};
 use rocket::response::status::BadRequest;
+use rocket::serde::json::Json;
 use rocket::State;
 use shuttle_persist::PersistInstance;
-use rocket::serde::json::Json;
 
 pub struct AuthState {
     pub persist: PersistInstance,
@@ -13,19 +13,14 @@ pub fn authenticate(
     request: Json<Auth>,
     state: &State<AuthState>,
 ) -> Result<String, BadRequest<String>> {
-    if state
-        .persist
-        .list()
-        .unwrap()
-        .contains(&request.fingerprint)
-    {
+    if state.persist.list().unwrap().contains(&request.fingerprint) {
         match state.persist.load::<Device>(&request.fingerprint) {
             Ok(mut d) => {
                 if !d.is_active {
                     Err(BadRequest("Device is not active".to_owned()))?;
                 }
 
-                let greet: String;
+                let mut greet: String;
                 let mut name = d.fingerprint.clone();
 
                 if d.locations.iter().all(|l| request.addr != l.address) {
@@ -58,6 +53,10 @@ pub fn authenticate(
 
                 if d.is_cat {
                     name = "🐱".to_owned();
+                }
+
+                if Utc::now() - d.locations.iter().map(|l| l.last_seen_at).max().unwrap() > Duration::days(1) {
+                    greet += " Long time no see!";
                 }
 
                 Ok(format!("Welcome back, {}! {}", name, greet).to_owned())
