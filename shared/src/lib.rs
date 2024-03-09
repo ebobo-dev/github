@@ -1,4 +1,3 @@
-use std::net::SocketAddr;
 pub use serde::{Serialize, Deserialize};
 pub use chrono::{DateTime, Utc};
 

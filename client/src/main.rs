@@ -1,16 +1,15 @@
 mod auth;
 
-use ebobo_shared::Auth;
-use reqwasm::http::Request;
-use serde::Deserialize;
 use sycamore::{prelude::*, suspense::Suspense};
-use wasm_fingerprint::make_fingerprint;
 use web_sys::window;
 use auth::Auth;
 
-
 #[component]
 fn App<G: Html>() -> View<G> {
+    const NAME: &str = "ebobo.dev";
+    let _ = format!("developed@{}", NAME);
+    window().unwrap().document().unwrap().set_title(NAME);
+
     view! {
         div {
             p { "ebobo.dev" }
