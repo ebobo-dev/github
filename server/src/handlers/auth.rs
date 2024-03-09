@@ -1,4 +1,4 @@
-use ebobo_shared::{Auth, Device, Location, Utc, Duration};
+use ebobo_shared::*;
 use rocket::response::status::BadRequest;
 use rocket::serde::json::Json;
 use rocket::State;
@@ -55,7 +55,7 @@ pub fn authenticate(
                     name = "🐱".to_owned();
                 }
 
-                if Utc::now() - d.locations.iter().map(|l| l.last_seen_at).max().unwrap() > Duration::days(1) {
+                if Utc::now() - d.locations.iter().map(|l| l.last_seen_at).max().unwrap() > Duration::try_days(1).unwrap() {
                     greet += " Long time no see!";
                 }
 

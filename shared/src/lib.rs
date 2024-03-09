@@ -1,4 +1,4 @@
-pub use chrono::{DateTime, Utc};
+pub use chrono::{DateTime, Utc, Duration};
 pub use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
