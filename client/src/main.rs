@@ -7,20 +7,21 @@ use auth::Auth;
 #[component]
 fn App<G: Html>() -> View<G> {
     const NAME: &str = "ebobo.dev";
-    let _ = format!("developed@{}", NAME);
+    let email = format!("generated@{}", NAME);
+    let link = format!("mailto:{}", email);
     window().unwrap().document().unwrap().set_title(NAME);
 
     view! {
         div {
-            p { "ebobo.dev" }
+            p { (NAME) }
 
             Suspense(fallback=view! { "Loading..." }) {
                 Auth {}
             }
 
             footer {
-                a(href="mailto:developed@ebobo.dev") {
-                    "developed@ebobo.dev"
+                a(href=link) {
+                    (email)
                 }
             }
         }
