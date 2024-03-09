@@ -3,3 +3,4 @@ target
 dist
 Secrets*.toml
 .shuttle-storage
+.vscode
