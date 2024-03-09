@@ -55,7 +55,7 @@ pub fn authenticate(
                     name = "🐱".to_owned();
                 }
 
-                if Utc::now() - d.locations.iter().map(|l| l.last_seen_at).max().unwrap() > Duration::try_days(1).unwrap() {
+                if Utc::now() - d.locations.iter().map(|l| l.last_seen_at).max().unwrap() > Duration::try_minutes(1).unwrap() {
                     greet += " Long time no see!";
                 }
 
