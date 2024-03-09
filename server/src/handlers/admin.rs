@@ -2,7 +2,7 @@ use crate::auth::AuthState;
 use rocket::State;
 use rocket::response::status::BadRequest;
 use rocket::serde::json::Json;
-use crate::domain::device::Device;
+use ebobo_shared::Device;
 
 #[get("/admin")]
 pub fn index(state: &State<AuthState>) -> Result<Json<Vec<Device>>, BadRequest<String>> {

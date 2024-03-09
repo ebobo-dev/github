@@ -1,45 +1,13 @@
+mod auth;
+
+use ebobo_shared::Auth;
 use reqwasm::http::Request;
-use serde::{Deserialize, Serialize};
-use std::net::SocketAddr;
+use serde::Deserialize;
 use sycamore::{prelude::*, suspense::Suspense};
 use wasm_fingerprint::make_fingerprint;
+use web_sys::window;
+use auth::Auth;
 
-#[derive(Debug, Serialize, Deserialize)]
-struct Record {
-    value: String,
-    address: SocketAddr,
-}
-
-#[derive(Deserialize)]
-struct Fingerprint {
-    print: String,
-}
-
-const API: &str = "https://ebobo.shuttleapp.rs/authenticate";
-
-async fn post(fingerprint: &str) -> Result<String, reqwasm::Error> {
-    let resp = Request::post(API)
-        .body(fingerprint)
-        .send()
-        .await?;
-
-    let body = resp.text().await?;
-    Ok(body)
-}
-
-#[component]
-async fn Auth<G: Html>() -> View<G> {
-    let fingerprint = make_fingerprint().unwrap();
-    let fingerprint: Fingerprint = serde_json::from_str(&fingerprint).unwrap();
-
-    let greet = post(&fingerprint.print).await.unwrap_or_default();
-
-    view! {
-        p {
-            (greet)
-        }
-    }
-}
 
 #[component]
 fn App<G: Html>() -> View<G> {

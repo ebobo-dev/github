@@ -1,4 +1,3 @@
-mod domain;
 mod fairings;
 mod handlers;
 

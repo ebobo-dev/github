@@ -1,0 +1,8 @@
+[package]
+name = "ebobo-shared"
+version = "0.0.1"
+edition = "2021"
+
+[dependencies]
+chrono = "0.4.35"
+serde = { version = "1.0", features = ["derive"] }
