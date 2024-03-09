@@ -19,7 +19,7 @@ pub async fn Auth<G: Html>() -> View<G> {
 }
 
 async fn post(fingerprint: &str, host: &str) -> Result<String, reqwasm::Error> {
-    let resp = Request::post("http://127.0.0.1:8000/authenticate")
+    let resp = Request::post("https://ebobo.shuttleapp.rs/authenticate")
         .body(
             serde_json::to_string(&Auth {
                 fingerprint: fingerprint.to_string(),
