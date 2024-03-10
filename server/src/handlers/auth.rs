@@ -75,14 +75,14 @@ pub fn authenticate(
                 if Utc::now() - d.locations.iter().map(|l| l.last_seen_at).max().unwrap()
                     > Duration::try_minutes(1).unwrap()
                 {
-                    greet += " Long time no see!";                    
+                    greet += " Long time no see!";
 
                     if Utc::now() - d.locations.iter().map(|l| l.last_seen_at).max().unwrap()
-                        > Duration::try_days(1).unwrap()
+                        > Duration::try_days(1).unwrap() && !d.is_cat
                     {
                         d.is_active = false;
                         greet += " You are not active!";
-                    } 
+                    }
                 }
 
                 state.persist.save(&request.fingerprint, &d).unwrap();
