@@ -73,12 +73,12 @@ pub fn authenticate(
                 }
 
                 if Utc::now() - d.locations.iter().map(|l| l.last_seen_at).max().unwrap()
-                    > Duration::try_hours(1).unwrap()
+                    > Duration::try_minutes(1).unwrap()
                 {
                     msg += " Long time no see.";
 
                     if Utc::now() - d.locations.iter().map(|l| l.last_seen_at).max().unwrap()
-                        > Duration::try_days(1).unwrap()
+                        > Duration::try_minutes(5).unwrap()
                         && !d.is_cat
                     {
                         d.is_active = false;
