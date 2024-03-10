@@ -19,6 +19,7 @@ pub struct Device {
 #[derive(Serialize, Deserialize)]
 pub struct Location {
     pub address: String,
+    pub is_home: bool,
     pub first_seen_at: DateTime<Utc>,
     pub last_seen_at: DateTime<Utc>,
     pub hits: u32,

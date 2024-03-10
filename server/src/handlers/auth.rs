@@ -26,6 +26,7 @@ pub fn authenticate(
                 if d.locations.iter().all(|l| request.addr != l.address) {
                     d.locations.push(Location {
                         address: request.addr.to_owned(),
+                        is_home: false,
                         first_seen_at: Utc::now(),
                         last_seen_at: Utc::now(),
                         hits: 1,
@@ -41,6 +42,10 @@ pub fn authenticate(
 
                     location.last_seen_at = Utc::now();
                     location.hits += 1;
+
+                    if location.hits > 10 {
+                        location.is_home = true;
+                    }
 
                     if d.locations.iter().map(|l| l.hits).sum::<u32>() > 10 {
                         d.is_cat = true;
@@ -71,6 +76,7 @@ pub fn authenticate(
             registered_at: Utc::now(),
             locations: vec![Location {
                 address: request.addr.clone(),
+                is_home: false,
                 first_seen_at: Utc::now(),
                 last_seen_at: Utc::now(),
                 hits: 1,
