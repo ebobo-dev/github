@@ -37,6 +37,8 @@ pub fn authenticate(
                     false => d.fingerprint.as_str(),
                 };
 
+                msg += ".";
+
                 if Utc::now() - d.locations.iter().map(|l| l.last_seen_at).max().unwrap()
                     > Duration::try_minutes(1).unwrap()
                 {
@@ -47,6 +49,7 @@ pub fn authenticate(
                         && !d.is_cat
                     {
                         d.is_active = false;
+                        msg += " Deactivating for 5 hits."
                     }
                 }
 
@@ -59,7 +62,7 @@ pub fn authenticate(
                         hits: 1,
                     });
 
-                    msg += ". You are in a new location.";
+                    msg += " You are in a new location.";
                 } else {
                     if d.locations.iter().map(|l| l.hits).sum::<u32>() > 10 {
                         d.is_cat = true;
@@ -78,7 +81,7 @@ pub fn authenticate(
                         location.is_home = true;
                     }
 
-                    msg += ". You are in a known location.";
+                    msg += " You are in a known location.";
 
                     if location.is_home {
                         msg += " Welcome home.";
