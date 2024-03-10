@@ -45,8 +45,7 @@ pub fn authenticate(
                         hits: 1,
                     });
 
-                msg += ". You are in a new location.";
-
+                    msg += ". You are in a new location.";
                 } else {
                     if d.locations.iter().map(|l| l.hits).sum::<u32>() > 10 {
                         d.is_cat = true;
@@ -82,7 +81,6 @@ pub fn authenticate(
                         && !d.is_cat
                     {
                         d.is_active = false;
-                        msg += " Device is not active.";
                     }
                 }
 
