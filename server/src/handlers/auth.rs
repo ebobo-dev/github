@@ -46,8 +46,6 @@ pub fn authenticate(
                         d.is_cat = true;
                     }
 
-                    state.persist.save(&request.fingerprint, &d).unwrap();
-
                     greet = "You are in a known location!".to_owned();
                 }
 
@@ -58,6 +56,8 @@ pub fn authenticate(
                 if Utc::now() - d.locations.iter().map(|l| l.last_seen_at).max().unwrap() > Duration::try_minutes(1).unwrap() {
                     greet += " Long time no see!";
                 }
+
+                state.persist.save(&request.fingerprint, &d).unwrap();
 
                 Ok(format!("Welcome back, {}! {}", name, greet).to_owned())
             }
