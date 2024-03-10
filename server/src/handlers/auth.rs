@@ -29,8 +29,12 @@ pub fn authenticate(
                     Err(BadRequest("Device is not active".to_owned()))?;
                 }
 
-                let mut greet: String;
-                let mut name = d.fingerprint.clone();
+                let mut msg = "Welcome back, ".to_owned();
+
+                msg += match d.is_cat {
+                    true => "🐱",
+                    false => d.fingerprint.as_str(),
+                };
 
                 if d.locations.iter().all(|l| request.addr != l.address) {
                     d.locations.push(Location {
@@ -41,8 +45,13 @@ pub fn authenticate(
                         hits: 1,
                     });
 
-                    greet = "You are in a new location!".to_owned();
+                msg += ". You are in a new location.";
+
                 } else {
+                    if d.locations.iter().map(|l| l.hits).sum::<u32>() > 10 {
+                        d.is_cat = true;
+                    }
+
                     let location = d
                         .locations
                         .iter_mut()
@@ -56,38 +65,30 @@ pub fn authenticate(
                         location.is_home = true;
                     }
 
-                    greet = "You are in a known location!".to_owned();
+                    msg += ". You are in a known location.";
 
                     if location.is_home {
-                        greet += " Welcome home!";
-                    }
-
-                    if d.locations.iter().map(|l| l.hits).sum::<u32>() > 10 {
-                        d.is_cat = true;
+                        msg += " Welcome home.";
                     }
                 }
 
-                if d.is_cat {
-                    name = "🐱".to_owned();
-                }
-
-                // TODO: fix
                 if Utc::now() - d.locations.iter().map(|l| l.last_seen_at).max().unwrap()
-                    > Duration::try_minutes(1).unwrap()
+                    > Duration::try_hours(1).unwrap()
                 {
-                    greet += " Long time no see!";
+                    msg += " Long time no see.";
 
                     if Utc::now() - d.locations.iter().map(|l| l.last_seen_at).max().unwrap()
-                        > Duration::try_days(1).unwrap() && !d.is_cat
+                        > Duration::try_days(1).unwrap()
+                        && !d.is_cat
                     {
                         d.is_active = false;
-                        greet += " You are not active!";
+                        msg += " Device is not active.";
                     }
                 }
 
                 state.persist.save(&request.fingerprint, &d).unwrap();
 
-                Ok(format!("Welcome back, {}! {}", name, greet).to_owned())
+                Ok(msg)
             }
             Err(e) => Err(BadRequest(e.to_string())),
         }
@@ -108,7 +109,7 @@ pub fn authenticate(
         };
 
         match state.persist.save(&request.fingerprint, &device) {
-            Ok(_) => Ok(format!("Welcome, {}! Nice to meet you!", device.fingerprint).to_owned()),
+            Ok(_) => Ok(format!("Welcome, {}. Nice to meet you.", device.fingerprint).to_owned()),
             Err(e) => Err(BadRequest(e.to_string())),
         }
     }
