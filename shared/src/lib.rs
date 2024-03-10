@@ -10,6 +10,7 @@ pub struct Auth {
 #[derive(Serialize, Deserialize)]
 pub struct Device {
     pub fingerprint: String,
+    pub hits: u32,
     pub is_active: bool,
     pub is_cat: bool,
     pub registered_at: DateTime<Utc>,

@@ -1,7 +1,7 @@
 use ebobo_shared::*;
 use rocket::response::status::BadRequest;
 use rocket::serde::json::Json;
-use rocket::{local, State};
+use rocket::State;
 use shuttle_persist::PersistInstance;
 
 pub struct AuthState {
@@ -17,6 +17,15 @@ pub fn authenticate(
         match state.persist.load::<Device>(&request.fingerprint) {
             Ok(mut d) => {
                 if !d.is_active {
+                    d.hits += 1;
+
+                    if d.hits > 10 {
+                        d.is_active = true;
+                        d.hits = 0;
+                    }
+
+                    state.persist.save(&request.fingerprint, &d).unwrap();
+
                     Err(BadRequest("Device is not active".to_owned()))?;
                 }
 
@@ -43,7 +52,7 @@ pub fn authenticate(
                     location.last_seen_at = Utc::now();
                     location.hits += 1;
 
-                    if location.hits > 10 {
+                    if location.hits > 20 {
                         location.is_home = true;
                     }
 
@@ -62,8 +71,18 @@ pub fn authenticate(
                     name = "🐱".to_owned();
                 }
 
-                if Utc::now() - d.locations.iter().map(|l| l.last_seen_at).max().unwrap() > Duration::try_minutes(1).unwrap() {
-                    greet += " Long time no see!";
+                // TODO: fix
+                if Utc::now() - d.locations.iter().map(|l| l.last_seen_at).max().unwrap()
+                    > Duration::try_minutes(1).unwrap()
+                {
+                    greet += " Long time no see!";                    
+
+                    if Utc::now() - d.locations.iter().map(|l| l.last_seen_at).max().unwrap()
+                        > Duration::try_days(1).unwrap()
+                    {
+                        d.is_active = false;
+                        greet += " You are not active!";
+                    } 
                 }
 
                 state.persist.save(&request.fingerprint, &d).unwrap();
@@ -75,6 +94,7 @@ pub fn authenticate(
     } else {
         let device = Device {
             fingerprint: request.fingerprint.to_owned(),
+            hits: 0,
             is_cat: false,
             is_active: true,
             registered_at: Utc::now(),
@@ -88,7 +108,7 @@ pub fn authenticate(
         };
 
         match state.persist.save(&request.fingerprint, &device) {
-            Ok(_) => Ok(format!("Welcome, {}!", device.fingerprint).to_owned()),
+            Ok(_) => Ok(format!("Welcome, {}! Nice to meet you!", device.fingerprint).to_owned()),
             Err(e) => Err(BadRequest(e.to_string())),
         }
     }
