@@ -1,7 +1,7 @@
 use ebobo_shared::*;
 use rocket::response::status::BadRequest;
 use rocket::serde::json::Json;
-use rocket::State;
+use rocket::{local, State};
 use shuttle_persist::PersistInstance;
 
 pub struct AuthState {
@@ -47,11 +47,15 @@ pub fn authenticate(
                         location.is_home = true;
                     }
 
+                    greet = "You are in a known location!".to_owned();
+
+                    if location.is_home {
+                        greet += " Welcome home!";
+                    }
+
                     if d.locations.iter().map(|l| l.hits).sum::<u32>() > 10 {
                         d.is_cat = true;
                     }
-
-                    greet = "You are in a known location!".to_owned();
                 }
 
                 if d.is_cat {
