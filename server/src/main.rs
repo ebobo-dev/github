@@ -23,8 +23,8 @@ async fn rocket(
     db.execute_batch(
         "CREATE TABLE IF NOT EXISTS devices (
          id integer primary key autoincrement,
-         fingerprint text not null,
-         fighter text null)",
+         fingerprint text not null unique,
+         fighter text",
     )
     .await
     .unwrap();
@@ -32,7 +32,7 @@ async fn rocket(
     db.execute_batch(
         "CREATE TABLE IF NOT EXISTS locations (
          id integer primary key autoincrement,
-         address text not null)",
+         address text not null unique)"
     )
     .await
     .unwrap();
