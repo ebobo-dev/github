@@ -1,12 +1,12 @@
-use crate::auth::AuthState;
 use crate::domain::Device;
+use libsql::params;
 use rocket::response::status::BadRequest;
 use rocket::serde::json::Json;
 use rocket::State;
 
 #[get("/admin")]
-pub fn index(state: &State<AuthState>) -> Result<Json<Vec<Device>>, BadRequest<String>> {
-    let devices = state
+pub fn index(conn: &State<crate::Database>) -> Result<Json<Vec<Device>>, BadRequest<String>> {
+    let devices = conn.turso.query("SELECT * FROM Devices", params![])
         .persist
         .list()
         .unwrap()
@@ -17,7 +17,10 @@ pub fn index(state: &State<AuthState>) -> Result<Json<Vec<Device>>, BadRequest<S
 }
 
 #[post("/admin/reset")]
-pub fn reset(state: &State<AuthState>) -> Result<(), BadRequest<String>> {
-    state.persist.clear().unwrap();
+pub fn reset(conn: &State<crate::Database>) -> Result<(), BadRequest<String>> {
+    conn.turso.query("DELETE FROM Devices", params![])
+        .persist
+        .reset()
+        .unwrap();
     Ok(())
 }

@@ -4,11 +4,14 @@ version = "0.1.1"
 edition = "2021"
 
 [dependencies]
-rocket = { version = "0.5.0-rc.2", features = ["json"] }
-serde = { version = "1.0.148", features = ["derive"] }
-shuttle-persist = "0.41.0"
+serde = { version = "1.0.197", features = ["derive"]} # check
+tokio = "1.26.0"
+rocket = { version = "0.5.0", features = ["json"] }
 shuttle-rocket = "0.41.0"
 shuttle-runtime = "0.41.0"
 shuttle-secrets = "0.41.0"
-tokio = "1.26.0"
+shuttle-turso = "0.41.0"
 ebobo-shared = { path=  "../shared" }
+libsql = "0.2"
+libsql-client = "0.33.4"
+

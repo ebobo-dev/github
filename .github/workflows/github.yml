@@ -44,7 +44,7 @@ jobs:
       - name: Install Trunk
         working-directory: ./client
         run: |
-          cargo install --locked trunk
+          cargo binstall --locked trunk
 
       - name: Build
         working-directory: ./client
