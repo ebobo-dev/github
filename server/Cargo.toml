@@ -9,6 +9,6 @@ serde = { version = "1.0.148", features = ["derive"] }
 shuttle-persist = "0.41.0"
 shuttle-rocket = "0.41.0"
 shuttle-runtime = "0.41.0"
+shuttle-secrets = "0.41.0"
 tokio = "1.26.0"
 ebobo-shared = { path=  "../shared" }
-
