@@ -1,14 +1,18 @@
 use crate::auth::AuthState;
-use rocket::State;
+use crate::domain::Device;
 use rocket::response::status::BadRequest;
 use rocket::serde::json::Json;
-use crate::domain::Device;
+use rocket::State;
 
 #[get("/admin")]
 pub fn index(state: &State<AuthState>) -> Result<Json<Vec<Device>>, BadRequest<String>> {
-    let devices = state.persist.list().unwrap().iter().map(|f| {
-        state.persist.load::<Device>(f).unwrap()
-    }).collect();
+    let devices = state
+        .persist
+        .list()
+        .unwrap()
+        .iter()
+        .map(|f| state.persist.load::<Device>(f).unwrap())
+        .collect();
     Ok(Json(devices))
 }
 
