@@ -32,21 +32,21 @@ async fn rocket(
     .await
     .unwrap();
 
-    db.execute_batch(
-        "CREATE TABLE IF NOT EXISTS locations (
-         id integer primary key autoincrement,
-         address text not null unique)",
-    )
-    .await
-    .unwrap();
+    // db.execute_batch(
+    //     "CREATE TABLE IF NOT EXISTS locations (
+    //      id integer primary key autoincrement,
+    //      address text not null unique)",
+    // )
+    // .await
+    // .unwrap();
 
-    db.execute_batch(
-        "CREATE TABLE IF NOT EXISTS devices_locations (
-        device_id integer not null references devices(id),
-        location_id integer not null references locations(id))",
-    )
-    .await
-    .unwrap();
+    // db.execute_batch(
+    //     "CREATE TABLE IF NOT EXISTS devices_locations (
+    //     device_id integer not null references devices(id),
+    //     location_id integer not null references locations(id))",
+    // )
+    // .await
+    // .unwrap();
 
     let state = AppState {
         db: Arc::new(Mutex::new(db)),
