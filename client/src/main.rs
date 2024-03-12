@@ -1,8 +1,10 @@
 mod auth;
+mod fight;
 
 use sycamore::{prelude::*, suspense::Suspense};
 use web_sys::window;
 use auth::Auth;
+use fight::Fight;
 
 #[component]
 fn App<G: Html>() -> View<G> {
@@ -18,6 +20,8 @@ fn App<G: Html>() -> View<G> {
             Suspense(fallback=view! { "Loading..." }) {
                 Auth {}
             }
+
+            Fight {}
 
             footer {
                 a(href=link) {
