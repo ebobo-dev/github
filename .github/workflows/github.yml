@@ -44,7 +44,7 @@ jobs:
       - name: Install Trunk
         working-directory: ./client
         run: |
-          cargo binstall --locked trunk
+          cargo install --locked trunk
 
       - name: Build
         working-directory: ./client
@@ -56,7 +56,7 @@ jobs:
         run: |
           trunk build --release
 
-      - name: Setup pages      
+      - name: Setup pages
         uses: actions/configure-pages@v3
 
       - name: Upload artifact
@@ -65,5 +65,5 @@ jobs:
           path: './client/dist'
           
       - name: Deploy to pages
-        id: deployment        
+        id: deployment
         uses: actions/deploy-pages@v2

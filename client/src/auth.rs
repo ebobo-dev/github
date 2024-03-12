@@ -8,7 +8,7 @@ use web_sys::RequestMode;
 #[component]
 pub async fn Auth<G: Html>() -> View<G> {
     let fingerprint: Fingerprint = serde_json::from_str(&make_fingerprint().unwrap()).unwrap();
-    
+
     let addr = Request::get("https://api.ipify.org")
         .mode(RequestMode::Cors)
         .send()
