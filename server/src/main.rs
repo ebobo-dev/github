@@ -27,7 +27,7 @@ async fn rocket(
         "CREATE TABLE IF NOT EXISTS devices (
          id integer primary key autoincrement,
          fingerprint text not null unique,
-         fighter text",
+         fighter text);",
     )
     .await
     .unwrap();
@@ -48,9 +48,9 @@ async fn rocket(
     // .await
     // .unwrap();
 
-    let state = AppState {
+    let state = Arc::new(AppState {
         db: Arc::new(Mutex::new(db)),
-    };
+    });
 
     let rocket = rocket::build()
         .attach(cors::CORS)
