@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 ebobo-shared = { path=  "../shared" }
+
 serde = { version = "1.0.197", features = ["derive"]}
 tokio = "1.26.0"
 rocket = { version = "0.5.0", features = ["json"] }
@@ -14,4 +15,3 @@ shuttle-secrets = "0.41.0"
 shuttle-turso = "0.41.0"
 libsql = "0.2"
 anyhow = "1.0.81"
-

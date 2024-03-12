@@ -17,4 +17,4 @@ sycamore = { git = "https://github.com/sycamore-rs/sycamore", rev = "11613939a53
     "suspense",
 ] }
 wasm-fingerprint = { version = "0.0.1", git = "https://github.com/dotnicht/wasm-fingerprint.git" }
-wasm-get-ip = { git = "https://github.com/Valerioageno/wasm-get-ip" }
+
