@@ -17,7 +17,10 @@ pub struct AppState {
 
 #[shuttle_runtime::main]
 async fn rocket(
-    #[shuttle_turso::Turso(addr = "libsql://ebobo-dotnicht.turso.io", token = "{secrets.DB_TURSO_TOKEN}")]
+    #[shuttle_turso::Turso(
+        addr = "libsql://ebobo-dotnicht.turso.io",
+        token = "{secrets.DB_TURSO_TOKEN}"
+    )]
     db: Connection,
 ) -> shuttle_rocket::ShuttleRocket {
     db.execute_batch(
@@ -32,7 +35,15 @@ async fn rocket(
     db.execute_batch(
         "CREATE TABLE IF NOT EXISTS locations (
          id integer primary key autoincrement,
-         address text not null unique)"
+         address text not null unique)",
+    )
+    .await
+    .unwrap();
+
+    db.execute_batch(
+        "CREATE TABLE IF NOT EXISTS devices_locations (
+        device_id integer not null references devices(id),
+        location_id integer not null references locations(id))",
     )
     .await
     .unwrap();

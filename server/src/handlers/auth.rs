@@ -1,7 +1,6 @@
 use crate::AppState;
 use ebobo_shared::*;
-use libsql::{params, Row};
-use rocket::http::ext::IntoCollection;
+use libsql::params;
 use rocket::response::status::BadRequest;
 use rocket::serde::json::Json;
 use rocket::State;
@@ -12,7 +11,7 @@ pub async fn authenticate(
     request: Json<Auth>,
     state: &State<Arc<AppState>>,
 ) -> Result<String, BadRequest<String>> {
-    let res = state
+    let mut res = state
         .db
         .lock()
         .await
@@ -23,7 +22,22 @@ pub async fn authenticate(
         .await
         .unwrap();
 
-
-   
-    Ok("Hi, world!".to_owned())
+        match res.next() {
+            Ok(None) => {
+                state
+                    .db
+                    .lock()
+                    .await
+                    .execute(
+                        "INSERT INTO devices (fingerprint) VALUES (?1)",
+                        params!(request.fingerprint.to_owned()),
+                    )
+                    .await
+                    .unwrap();
+                Ok("".to_string())
+            },
+            Ok(Some(_)) => Ok("".to_string()),
+            Err(e) => Err(BadRequest(e.to_string())),
+        }
+        
 }
