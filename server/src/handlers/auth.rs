@@ -34,9 +34,9 @@ pub async fn authenticate(
                     )
                     .await
                     .unwrap();
-                Ok("".to_string())
+                Ok("inserted".to_string())
             },
-            Ok(Some(_)) => Ok("".to_string()),
+            Ok(Some(_)) => Ok("will update".to_string()),
             Err(e) => Err(BadRequest(e.to_string())),
         }
         
