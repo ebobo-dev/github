@@ -1,4 +1,4 @@
-use ebobo_shared::Auth;
+use ebobo_shared::{Auth, Fighter};
 use reqwasm::http::Request;
 use serde::Deserialize;
 use sycamore::prelude::*;
@@ -18,7 +18,12 @@ pub async fn Auth<G: Html>() -> View<G> {
         .await
         .unwrap();
 
-    let greet = post(&fingerprint.print, &addr).await.unwrap();
+    let fighter = post(&fingerprint.print, &addr).await.unwrap();
+
+    let greet = match fighter.fighter {
+        Some(f) => format!("Welcome back, {}!", f),
+        None => format!("Welcome, {}!", fighter.fingerprint),
+    };
 
     view! {
         p {
@@ -27,7 +32,7 @@ pub async fn Auth<G: Html>() -> View<G> {
     }
 }
 
-async fn post(fingerprint: &str, host: &str) -> Result<String, reqwasm::Error> {
+async fn post(fingerprint: &str, host: &str) -> Result<Fighter, reqwasm::Error> {
     Ok(Request::post("https://ebobo.shuttleapp.rs/authenticate")
         .body(
             serde_json::to_string(&Auth {
@@ -38,7 +43,7 @@ async fn post(fingerprint: &str, host: &str) -> Result<String, reqwasm::Error> {
         )
         .send()
         .await?
-        .text()
+        .json()
         .await?)
 }
 

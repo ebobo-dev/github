@@ -10,7 +10,7 @@ use std::sync::Arc;
 pub async fn authenticate(
     request: Json<Auth>,
     state: &State<Arc<AppState>>,
-) -> Result<String, BadRequest<String>> {
+) -> Result<Json<Fighter>, BadRequest<String>> {
     let mut res = state
         .db
         .lock()
@@ -34,9 +34,15 @@ pub async fn authenticate(
                     )
                     .await
                     .unwrap();
-                Ok("inserted".to_string())
+                Ok(Json(Fighter {
+                    fingerprint: request.fingerprint.to_owned(),
+                    fighter: None,
+                }))
             },
-            Ok(Some(_)) => Ok("will update".to_string()),
+            Ok(Some(d)) => Ok(Json(Fighter {
+                fingerprint: d.get::<String>(0).unwrap().to_string(),
+                fighter: None,
+            })),
             Err(e) => Err(BadRequest(e.to_string())),
         }
         
