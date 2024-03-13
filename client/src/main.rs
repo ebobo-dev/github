@@ -13,6 +13,8 @@ fn App<G: Html>() -> View<G> {
     let link = format!("mailto:{}", email);
     window().unwrap().document().unwrap().set_title(NAME);
 
+    
+
     view! {
         div {
             h1 { (NAME) }

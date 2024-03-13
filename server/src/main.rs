@@ -38,7 +38,7 @@ async fn rocket(
 
     let rocket = rocket::build()
         .attach(cors::CORS)
-        .mount("/", routes![auth::authenticate, admin::reset, admin::index])
+        .mount("/", routes![auth::authenticate, auth::choose, admin::reset, admin::index])
         .manage(state);
 
     Ok(rocket.into())
