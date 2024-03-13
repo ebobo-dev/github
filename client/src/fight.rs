@@ -1,3 +1,5 @@
+use std::future::IntoFuture;
+
 use sycamore::prelude::*;
 use ebobo_shared::Fighter;
 
@@ -7,11 +9,12 @@ pub async fn Fight<G: Html>(url: String) -> View<G> {
     let fighter: Signal<Option<&str>> = create_signal(None);
 
     let save = {
-        let fighter = fighter.clone();
-        move |_| {
-            let f = fighter.get().unwrap();
-            let _ = post(url.as_str(), f);
-        }
+        // move || {
+        //     match fighter.get() {
+        //         Some(f) => post(url.as_str(),f),
+        //         None => (),
+        //     }
+        // }
     };
 
     view! {
