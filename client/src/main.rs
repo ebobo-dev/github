@@ -9,7 +9,7 @@ use sycamore::{prelude::*, suspense::Suspense};
 
 #[component]
 fn App<G: Html>() -> View<G> {
-    let path: &'static str = env!("EBOBO_API_URL");
+    let path = option_env!("EBOBO_API_URL").unwrap_or("https://ebobo.shuttleapp.rs");
 
     view! {
         div {
