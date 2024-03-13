@@ -1,4 +1,5 @@
 use sycamore::prelude::*;
+use ebobo_shared::Fighter;
 
 #[component]
 pub async fn Fight<G: Html>() -> View<G> {
@@ -38,7 +39,7 @@ pub async fn Fight<G: Html>() -> View<G> {
 async fn post(fighter: &str) -> Result<(), reqwasm::Error> {
     match reqwasm::http::Request::post("https://ebobo.shuttleapp.rs/choose")
             .body(
-                serde_json::to_string(&ebobo_shared::Fighter {
+                serde_json::to_string(&Fighter {
                     fingerprint: "fingerprint".to_string(),
                     fighter: Some(fighter.to_string()),
                 })
