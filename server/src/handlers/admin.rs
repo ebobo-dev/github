@@ -14,7 +14,7 @@ pub async fn index(state: &State<Arc<AppState>>) -> Result<Json<Vec<Device>>, Ba
         .await
         .query("SELECT * FROM devices", params![])
         .await
-        .unwrap();
+        .map_err(|e| BadRequest(e.to_string()))?;
 
     let mut devices = vec![];
 
@@ -37,6 +37,6 @@ pub async fn reset(state: &State<Arc<AppState>>) -> Result<(), BadRequest<String
         .await
         .execute("DELETE FROM devices", params![])
         .await
-        .unwrap();
+        .map_err(|e| BadRequest(e.to_string()))?;
     Ok(())
 }

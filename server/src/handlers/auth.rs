@@ -20,7 +20,7 @@ pub async fn authenticate(
             params!(request.fingerprint.to_owned()),
         )
         .await
-        .unwrap();
+        .map_err(|e| BadRequest(e.to_string()))?;
 
     match res.next() {
         Ok(None) => {
@@ -33,7 +33,7 @@ pub async fn authenticate(
                     params!(request.fingerprint.to_owned()),
                 )
                 .await
-                .unwrap();
+                .map_err(|e| BadRequest(e.to_string()))?;
             Ok(Json(Fighter {
                 fingerprint: request.fingerprint.to_owned(),
                 fighter: None,

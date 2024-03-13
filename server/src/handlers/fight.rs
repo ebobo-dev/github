@@ -9,8 +9,8 @@ use std::sync::Arc;
 #[post("/choose", data = "<request>")]
 pub async fn choose(
     request: Json<Fighter>,
-    state: &State<Arc<AppState>>) -> Result<(), BadRequest<String>> {
-    
+    state: &State<Arc<AppState>>,
+) -> Result<(), BadRequest<String>> {
     state
         .db
         .lock()
@@ -21,6 +21,6 @@ pub async fn choose(
         )
         .await
         .map_err(|e| BadRequest(e.to_string()))?;
-
+    
     Ok(())
 }
