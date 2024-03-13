@@ -3,7 +3,7 @@ use ebobo_shared::Fighter;
 
 #[component(inline_props)]
 pub async fn Fight<G: Html>(url: String) -> View<G> {
-    let fighters = create_signal(vec!["🐱", "🐵", "🐶", "🐷"]);
+    let fighters = create_signal(vec![" "]);
     let fighter: Signal<Option<&str>> = create_signal(None);
 
     let save = {
