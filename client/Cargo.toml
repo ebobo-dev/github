@@ -5,7 +5,10 @@ edition = "2021"
 
 [dependencies]
 ebobo-shared = { path = "../shared" }
-
+sycamore = { git = "https://github.com/sycamore-rs/sycamore", rev = "11613939a534312a293c216f856af567b7d67152", features = [
+    "suspense",
+] }
+wasm-fingerprint = { git = "https://github.com/dotnicht/wasm-fingerprint.git" }
 web-sys = "0.3.68"
 log = "0.4.17"
 console_log = "1.0.0"
@@ -13,8 +16,3 @@ console_error_panic_hook = "0.1.7"
 reqwasm = "0.5.0"
 serde = { version = "1.0.163", features = ["derive"] }
 serde_json = "1.0.96"
-sycamore = { git = "https://github.com/sycamore-rs/sycamore", rev = "11613939a534312a293c216f856af567b7d67152", features = [
-    "suspense",
-] }
-wasm-fingerprint = { version = "0.0.1", git = "https://github.com/dotnicht/wasm-fingerprint.git" }
-

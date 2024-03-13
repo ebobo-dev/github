@@ -51,4 +51,3 @@ async fn post(fighter: &str) -> Result<(), reqwasm::Error> {
         Err(err) => return Err(err),
     }
 }
-

@@ -1,6 +1,7 @@
 use ebobo_shared::{Auth, Fighter};
 use reqwasm::http::Request;
 use serde::Deserialize;
+
 use sycamore::prelude::*;
 use wasm_fingerprint::make_fingerprint;
 use web_sys::RequestMode;
