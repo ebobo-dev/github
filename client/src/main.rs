@@ -9,14 +9,16 @@ use sycamore::{prelude::*, suspense::Suspense};
 
 #[component]
 fn App<G: Html>() -> View<G> {
+    let path: &'static str = env!("EBOBO_API_URL");
+
     view! {
         div {
             Suspense(fallback=view! { "Loading..." }) {
-                Auth {}
+                Auth(url=path.to_owned()) { }
             }
 
-            Fight {}
-
+            Fight(url=path.to_owned()) {}
+            
             Footer {}
         }
     }

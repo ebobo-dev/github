@@ -8,9 +8,7 @@ pub fn Footer<G: Html>() -> View<G> {
     let link = format!("mailto:{}", email);
     window().unwrap().document().unwrap().set_title(NAME);
 
-    view! {footer {
-        a(href=link) {
-            (email)
-        }
-    }}
+    view! {
+        footer { a(href=link) { (email) } }
+    }
 }

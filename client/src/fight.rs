@@ -1,8 +1,8 @@
 use sycamore::prelude::*;
 use ebobo_shared::Fighter;
 
-#[component]
-pub async fn Fight<G: Html>() -> View<G> {
+#[component(inline_props)]
+pub async fn Fight<G: Html>(url: String) -> View<G> {
     let fighters = create_signal(vec!["🐱", "🐵", "🐶", "🐷"]);
     let fighter: Signal<Option<&str>> = create_signal(None);
 
@@ -10,7 +10,7 @@ pub async fn Fight<G: Html>() -> View<G> {
         let fighter = fighter.clone();
         move |_| {
             let f = fighter.get().unwrap();
-            let _ = post(f);
+            let _ = post(url.as_str(), f);
         }
     };
 
@@ -36,8 +36,8 @@ pub async fn Fight<G: Html>() -> View<G> {
     }
 }
 
-async fn post(fighter: &str) -> Result<(), reqwasm::Error> {
-    match reqwasm::http::Request::post("https://ebobo.shuttleapp.rs/choose")
+async fn post(url: &str, fighter: &str) -> Result<(), reqwasm::Error> {
+    match reqwasm::http::Request::post(format!("{}/choose", url).as_str())
             .body(
                 serde_json::to_string(&Fighter {
                     fingerprint: "fingerprint".to_string(),
