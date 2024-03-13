@@ -1,5 +1,6 @@
 use crate::AppState;
 use ebobo_shared::*;
+use libsql::de::from_row;
 use libsql::params;
 use rocket::response::status::BadRequest;
 use rocket::serde::json::Json;
@@ -39,13 +40,7 @@ pub async fn authenticate(
                 fighter: None,
             }))
         }
-
-        Ok(Some(d)) => Ok(Json(Fighter {
-            fingerprint: d.get::<String>(0).unwrap().to_string(),
-            fighter: None,
-        })),
-
+        Ok(Some(d)) => Ok(Json(from_row::<Fighter>(&d).unwrap())),
         Err(e) => Err(BadRequest(e.to_string())),
     }
 }
-
