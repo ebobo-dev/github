@@ -1,5 +1,3 @@
-use std::future::IntoFuture;
-
 use sycamore::prelude::*;
 use ebobo_shared::Fighter;
 
@@ -9,12 +7,19 @@ pub async fn Fight<G: Html>(url: String) -> View<G> {
     let fighter: Signal<Option<&str>> = create_signal(None);
 
     let save = {
-        // move || {
-        //     match fighter.get() {
-        //         Some(f) => post(url.as_str(),f),
-        //         None => (),
-        //     }
-        // }
+        let fighter = fighter.clone();
+        let url = url.clone();
+        move || {
+            if let Some(fighter) = fighter.get() {
+                let url = url.clone();
+                let _ = async move {
+                    match post(url.as_str(), fighter).await {
+                        Ok(_) => (),
+                        Err(err) => panic!("error: {:?}", err)
+                    }
+                };
+            }
+        }
     };
 
     view! {
@@ -33,7 +38,7 @@ pub async fn Fight<G: Html>(url: String) -> View<G> {
             p {
                 "you chose: "
                 (fighter.get().unwrap_or("nothing"))
-                button(on:click=save) { "save" }
+                button(on:click=move |_| save()) { "save" }
             }
         }
     }
