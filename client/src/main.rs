@@ -5,21 +5,35 @@ mod footer;
 use auth::Auth;
 use fight::Fight;
 use footer::Footer;
+use serde::Deserialize;
 use sycamore::{prelude::*, suspense::Suspense};
+use wasm_fingerprint::make_fingerprint;
+
+pub fn url() -> String {
+    option_env!("EBOBO_API_URL").unwrap_or("https://ebobo.shuttleapp.rs").to_owned()
+}
+
+pub fn fingerprint() -> String {
+    let fingerprint: Fingerprint = serde_json::from_str(&make_fingerprint().unwrap()).unwrap();
+    fingerprint.print
+}
+
+#[derive(Deserialize)]
+pub struct Fingerprint {
+    print: String,
+}
 
 #[component]
 fn App<G: Html>() -> View<G> {
-    let path = option_env!("EBOBO_API_URL").unwrap_or("https://ebobo.shuttleapp.rs");
-
     view! {
         div {
             Suspense(fallback=view! { "Loading..." }) {
-                Auth(url=path.to_owned()) { }
+                Auth { }
             }
 
-            Fight(url=path.to_owned()) {}
+            Fight { }
             
-            Footer {}
+            Footer { }
         }
     }
 }

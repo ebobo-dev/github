@@ -11,7 +11,7 @@ pub async fn choose(
     request: Json<Fighter>,
     state: &State<Arc<AppState>>,
 ) -> Result<(), BadRequest<String>> {
-    state
+    let c =state
         .db
         .lock()
         .await
@@ -21,6 +21,10 @@ pub async fn choose(
         )
         .await
         .map_err(|e| BadRequest(e.to_string()))?;
-    
+
+        if c == 0 {
+            panic!("no rows updated")
+        }
+
     Ok(())
 }
