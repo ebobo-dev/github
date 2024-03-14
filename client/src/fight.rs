@@ -1,5 +1,5 @@
 use ebobo_shared::Fighter;
-use sycamore::prelude::*;
+use sycamore::{futures::spawn_local, prelude::*};
 
 #[component(inline_props)]
 pub async fn Fight<G: Html>(url: String) -> View<G> {
@@ -10,12 +10,12 @@ pub async fn Fight<G: Html>(url: String) -> View<G> {
         if let Some(fighter) = state.get() {
             let url = url.clone();
             let fighter = fighter.to_string();
-            let _ = async move {
+            spawn_local(async move {
                 match post(&url, &fighter).await {
                     Ok(_) => (),
                     Err(err) => log::error!("error: {:?}", err),
                 }
-            };
+            });
         }
     });
 
