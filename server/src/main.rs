@@ -7,39 +7,27 @@ extern crate rocket;
 
 use fairings::*;
 use handlers::*;
-use libsql::Connection;
+use sea_orm::*;
 use std::sync::Arc;
-use tokio::sync::Mutex;
-
-pub struct AppState {
-    db: Arc<Mutex<Connection>>,
-}
 
 #[shuttle_runtime::main]
 async fn rocket(
-    #[shuttle_turso::Turso(
-        addr = "libsql://ebobo-dotnicht.turso.io",
-        token = "{secrets.DB_TURSO_TOKEN}"
-    )]
-    db: Connection,
+    #[shuttle_shared_db::Postgres] pool: sqlx::PgPool,
 ) -> shuttle_rocket::ShuttleRocket {
-    db.execute_batch(
-        "CREATE TABLE IF NOT EXISTS devices (
-         id integer primary key autoincrement,
-         fingerprint text not null unique,
-         fighter text);",
-    )
-    .await
-    .unwrap();
-
-    let state = Arc::new(AppState {
-        db: Arc::new(Mutex::new(db)),
-    });
+    let conn = Database::connect("postgresql://neondb_owner:L5EhgjFndt6R@ep-royal-math-a2j2dztz-pooler.eu-central-1.aws.neon.tech/neondb?sslmode=require");
 
     let rocket = rocket::build()
         .attach(cors::CORS)
-        .mount("/", routes![auth::authenticate, fight::choose, admin::reset, admin::index])
-        .manage(state);
+        .mount(
+            "/",
+            routes![
+                auth::authenticate,
+                fight::choose,
+                admin::reset,
+                admin::index
+            ],
+        )
+        .manage(Arc::new(conn));
 
     Ok(rocket.into())
 }
