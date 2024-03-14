@@ -1,3 +1,4 @@
+mod entities;
 mod domain;
 mod fairings;
 mod handlers;
