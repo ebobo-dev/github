@@ -1,10 +1,9 @@
 use crate::domain::Device;
-use crate::entities::{devices::*, prelude::*};
+use crate::entities::prelude::*;
 use rocket::response::status::BadRequest;
 use rocket::serde::json::Json;
 use rocket::State;
 use sea_orm::*;
-use sea_query::*;
 use std::sync::Arc;
 
 #[get("/admin")]
@@ -23,11 +22,4 @@ pub async fn index(
         .collect::<Vec<Device>>();
 
     Ok(Json(devices))
-}
-
-#[post("/admin/reset")]
-pub async fn reset(state: &State<Arc<DatabaseConnection>>) -> Result<(), BadRequest<String>> {
-
-
-    Ok(())
 }

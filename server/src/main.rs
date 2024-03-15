@@ -6,7 +6,7 @@ mod handlers;
 #[macro_use]
 extern crate rocket;
 
-use fairings::*;
+use fairings::*; 
 use handlers::*;
 use sea_orm::*;
 use shuttle_secrets::SecretStore;
