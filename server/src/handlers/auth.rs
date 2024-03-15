@@ -15,19 +15,43 @@ pub async fn authenticate(
         .filter(Column::Fingerprint.eq(request.fingerprint.clone()))
         .one(state.as_ref())
         .await
-        .unwrap();
+        .map_err(|e| BadRequest(format!("Failed to find device: {}", e.to_string())))?;
 
-    if device.is_none() {
-        let device = ActiveModel {
-            fingerprint: ActiveValue::set(request.fingerprint.clone()),
-            ..Default::default()
-        };
-
-        Devices::insert(device).exec(state.as_ref()).await.unwrap();
+    match device {
+        Some(device) => {
+            return Ok(Json(Fighter {
+                fingerprint: device.fingerprint,
+                fighter: device.fighter,
+            }));
+        }
+        None => {
+            let device = ActiveModel {
+                fingerprint: ActiveValue::set(request.fingerprint.clone()),
+                ..Default::default()
+            };
+    
+            let result: InsertResult<ActiveModel> = Devices::insert(device)
+                .exec(state.as_ref())
+                .await
+                .map_err(|e| BadRequest(format!("Failed to insert device: {}", e.to_string())))?;
+    
+            let device = Devices::find()
+                .filter(Column::Id.eq(result.last_insert_id))
+                .one(state.as_ref())
+                .await
+                .map_err(|e| BadRequest(format!("Failed to find device: {}", e.to_string())))?;
+    
+            match device {
+                Some(device) => {
+                    Ok(Json(Fighter {
+                        fingerprint: device.fingerprint,
+                        fighter: device.fighter,
+                    }))
+                }
+                None => {
+                    Err(BadRequest("Failed to find device".to_string()))
+                }
+            }
+        }
     }
-
-    Ok(Json(Fighter {
-        fingerprint: request.fingerprint.clone(),
-        fighter: None,
-    }))
 }
