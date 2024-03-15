@@ -1,18 +1,20 @@
 use crate::domain::Device;
-use crate::entities::prelude::*;
+use crate::entities::{devices::*, prelude::*};
 use rocket::response::status::BadRequest;
 use rocket::serde::json::Json;
 use rocket::State;
-use sea_orm::{DatabaseConnection, EntityTrait};
+use sea_orm::*;
+use sea_query::*;
 use std::sync::Arc;
 
 #[get("/admin")]
 pub async fn index(
     state: &State<Arc<DatabaseConnection>>,
 ) -> Result<Json<Vec<Device>>, BadRequest<String>> {
-    let devices = Devices::find().all(state.as_ref()).await.unwrap();
-
-    let devices = devices
+    let devices = Devices::find()
+        .all(state.as_ref())
+        .await
+        .unwrap()
         .into_iter()
         .map(|device| Device {
             fingerprint: device.fingerprint,
@@ -24,6 +26,8 @@ pub async fn index(
 }
 
 #[post("/admin/reset")]
-pub async fn reset(_state: &State<Arc<DatabaseConnection>>) -> Result<(), BadRequest<String>> {
+pub async fn reset(state: &State<Arc<DatabaseConnection>>) -> Result<(), BadRequest<String>> {
+
+
     Ok(())
 }
