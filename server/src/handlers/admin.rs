@@ -24,6 +24,6 @@ pub async fn index(
 }
 
 #[post("/admin/reset")]
-pub async fn reset(state: &State<Arc<DatabaseConnection>>) -> Result<(), BadRequest<String>> {
+pub async fn reset(_state: &State<Arc<DatabaseConnection>>) -> Result<(), BadRequest<String>> {
     Ok(())
 }
