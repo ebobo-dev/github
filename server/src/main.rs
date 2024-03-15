@@ -28,7 +28,6 @@ async fn rocket(
             routes![
                 auth::authenticate,
                 fight::choose,
-                admin::reset,
                 admin::index
             ],
         );
