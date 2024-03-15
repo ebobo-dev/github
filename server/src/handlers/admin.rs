@@ -25,6 +25,5 @@ pub async fn index(
 
 #[post("/admin/reset")]
 pub async fn reset(state: &State<Arc<DatabaseConnection>>) -> Result<(), BadRequest<String>> {
-    panic!("Not implemented");
     Ok(())
 }
