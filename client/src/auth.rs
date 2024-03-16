@@ -31,6 +31,7 @@ pub async fn Auth<G: Html>() -> View<G> {
 
 async fn post(url: &str, fingerprint: &str, host: &str) -> Result<Fighter, reqwasm::Error> {
     Ok(Request::post(format!("{}/authenticate", url).as_str())
+        .header("EBOBO_FINGERPRINT", fingerprint)
         .body(
             serde_json::to_string(&Auth {
                 fingerprint: fingerprint.to_string(),

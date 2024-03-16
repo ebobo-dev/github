@@ -1,6 +1,6 @@
-mod domain;
 mod entities;
 mod fairings;
+mod guards;
 mod handlers;
 
 #[macro_use]
@@ -22,14 +22,13 @@ async fn rocket(
 
     let rocket = rocket::build()
         .manage(Arc::new(conn))
+        .manage(Arc::new(secret_store))
         .attach(cors::CORS)
-        //.attach(fairings::auth::Auth)
         .mount(
             "/",
             routes![
                 auth::authenticate,
                 fight::choose,
-                admin::index
             ],
         );
 
