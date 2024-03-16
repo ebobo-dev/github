@@ -10,7 +10,7 @@ use sycamore::{prelude::*, suspense::Suspense};
 use wasm_fingerprint::make_fingerprint;
 
 pub fn url() -> String {
-    option_env!("EBOBO_API_URL").unwrap_or("https://ebobo.shuttleapp.rs").to_owned()
+    option_env!("EBOBO_API_URL").unwrap_or("http://localhost:8000").to_owned()
 }
 
 pub fn fingerprint() -> String {
