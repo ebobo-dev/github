@@ -21,7 +21,7 @@ impl<'r> FromRequest<'r> for Device {
     type Error = FingerprintError;
 
     async fn from_request(req: &'r Request<'_>) -> request::Outcome<Self, Self::Error> {
-        match req.headers().get_one("EBOBO-FINGERPRINT") {
+        match req.headers().get_one(ebobo_shared::AUTH_HEADER) {
             Some(device) => request::Outcome::Success(Device {
                 fingerprint: device.to_string(),
                 addr: req.client_ip(),

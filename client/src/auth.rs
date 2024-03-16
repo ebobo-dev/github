@@ -1,4 +1,4 @@
-use crate::{fingerprint, url};
+use crate::*;
 use ebobo_shared::Fighter;
 use reqwasm::http::Request;
 use sycamore::prelude::*;
@@ -21,7 +21,7 @@ pub async fn Auth<G: Html>() -> View<G> {
 
 async fn post(url: &str, fingerprint: &str) -> Result<Fighter, reqwasm::Error> {
     Ok(Request::post(format!("{}/authenticate", url).as_str())
-        .header("EBOBO_FINGERPRINT", fingerprint)
+        .header(ebobo_shared::AUTH_HEADER, fingerprint)
         .send()
         .await?
         .json()

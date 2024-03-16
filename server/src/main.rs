@@ -16,9 +16,9 @@ use std::sync::Arc;
 async fn rocket(
     #[shuttle_secrets::Secrets] secret_store: SecretStore,
 ) -> shuttle_rocket::ShuttleRocket {
-    let conn = Database::connect(secret_store.get("DB_CONNECTION_STRING").unwrap())
+    let conn = Database::connect(secret_store.get("DB_CONNECTION_STRING").expect("Connection string not found"))
         .await
-        .unwrap();
+        .expect("Failed to connect to the database");
 
     let rocket = rocket::build()
         .manage(Arc::new(conn))
