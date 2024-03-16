@@ -1,7 +1,7 @@
 pub use chrono::{DateTime, Utc, Duration};
 pub use serde::{Deserialize, Serialize};
 
-pub const AUTH_HEADER: &str = "ebobo_fingerprint";
+pub const AUTH_HEADER: &str = "EBOBO-AUTH";
 
 #[derive(Serialize, Deserialize)]
 pub struct Fighter {

@@ -22,7 +22,6 @@ pub async fn Auth<G: Html>() -> View<G> {
 async fn post(url: &str, fingerprint: &str) -> Result<Fighter, reqwasm::Error> {
     Ok(Request::post(format!("{}/authenticate", url).as_str())
         .header(ebobo_shared::AUTH_HEADER, fingerprint)
-        .body("test")
         .send()
         .await?
         .json()
