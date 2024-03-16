@@ -23,7 +23,7 @@ impl MigrationTrait for Migration {
                             .integer()
                             .not_null(),
                     )
-                    .index(
+                    .primary_key(
                         Index::create()
                             .name("idx_device_location_device")
                             .col(DevicesLocations::DeviceId)
