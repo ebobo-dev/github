@@ -5,7 +5,9 @@ use sea_orm::entity::prelude::*;
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
 #[sea_orm(table_name = "devices_locations")]
 pub struct Model {
+    #[sea_orm(primary_key, auto_increment = false)]
     pub location_id: i32,
+    #[sea_orm(primary_key, auto_increment = false)]
     pub device_id: i32,
 }
 

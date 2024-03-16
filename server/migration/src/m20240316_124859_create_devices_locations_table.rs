@@ -27,8 +27,7 @@ impl MigrationTrait for Migration {
                         Index::create()
                             .name("idx_device_location_device")
                             .col(DevicesLocations::DeviceId)
-                            .col(DevicesLocations::LocationId)
-                            .unique(),
+                            .col(DevicesLocations::LocationId),
                     )
                     .foreign_key(
                         ForeignKey::create()

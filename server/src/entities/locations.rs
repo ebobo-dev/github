@@ -22,4 +22,13 @@ impl Related<super::devices_locations::Entity> for Entity {
     }
 }
 
+impl Related<super::devices::Entity> for Entity {
+    fn to() -> RelationDef {
+        super::devices_locations::Relation::Devices.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::devices_locations::Relation::Locations.def().rev())
+    }
+}
+
 impl ActiveModelBehavior for ActiveModel {}
