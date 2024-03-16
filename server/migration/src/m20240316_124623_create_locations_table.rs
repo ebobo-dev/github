@@ -9,17 +9,16 @@ impl MigrationTrait for Migration {
         manager
             .create_table(
                 Table::create()
-                    .table(Devices::Table)
+                    .table(Locations::Table)
                     .if_not_exists()
                     .col(
-                        ColumnDef::new(Devices::Id)
+                        ColumnDef::new(Locations::Id)
                             .integer()
                             .not_null()
                             .auto_increment()
                             .primary_key(),
                     )
-                    .col(ColumnDef::new(Devices::Fingerprint).string().not_null())
-                    .col(ColumnDef::new(Devices::Fighter).string().null())
+                    .col(ColumnDef::new(Locations::Address).string().not_null())
                     .to_owned(),
             )
             .await
@@ -27,15 +26,14 @@ impl MigrationTrait for Migration {
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
-            .drop_table(Table::drop().table(Devices::Table).to_owned())
+            .drop_table(Table::drop().table(Locations::Table).to_owned())
             .await
     }
 }
 
 #[derive(DeriveIden)]
-pub enum Devices {
+pub enum Locations {
     Table,
     Id,
-    Fingerprint,
-    Fighter,
+    Address,
 }

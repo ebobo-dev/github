@@ -23,6 +23,7 @@ async fn rocket(
     let rocket = rocket::build()
         .manage(Arc::new(conn))
         .attach(cors::CORS)
+        //.attach(fairings::auth::Auth)
         .mount(
             "/",
             routes![
