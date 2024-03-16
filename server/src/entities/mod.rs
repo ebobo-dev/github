@@ -3,3 +3,5 @@
 pub mod prelude;
 
 pub mod devices;
+pub mod devices_locations;
+pub mod locations;

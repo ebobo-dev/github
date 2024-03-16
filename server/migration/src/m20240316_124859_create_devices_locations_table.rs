@@ -23,6 +23,13 @@ impl MigrationTrait for Migration {
                             .integer()
                             .not_null(),
                     )
+                    .index(
+                        Index::create()
+                            .name("idx_device_location_device")
+                            .col(DevicesLocations::DeviceId)
+                            .col(DevicesLocations::LocationId)
+                            .unique(),
+                    )
                     .foreign_key(
                         ForeignKey::create()
                             .name("fk_device_location_device")
