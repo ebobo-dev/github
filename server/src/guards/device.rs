@@ -5,8 +5,7 @@ use rocket::{
     request::{self, FromRequest, Request},
 };
 
-pub struct Device
-{
+pub struct Device {
     pub fingerprint: String,
     pub addr: Option<IpAddr>,
 }
@@ -25,7 +24,7 @@ impl<'r> FromRequest<'r> for Device {
             Some(device) => request::Outcome::Success(Device {
                 fingerprint: device.to_string(),
                 addr: req.client_ip(),
-        }),
+            }),
             None => request::Outcome::Error((Status::Unauthorized, FingerprintError::Unauthorized)),
         }
     }
