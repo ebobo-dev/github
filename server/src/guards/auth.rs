@@ -5,7 +5,7 @@ use rocket::{
     request::{self, FromRequest, Request},
 };
 
-pub struct Device {
+pub struct Auth {
     pub fingerprint: String,
     pub addr: Option<IpAddr>,
 }
@@ -16,12 +16,12 @@ pub enum FingerprintError {
 }
 
 #[rocket::async_trait]
-impl<'r> FromRequest<'r> for Device {
+impl<'r> FromRequest<'r> for Auth {
     type Error = FingerprintError;
 
     async fn from_request(req: &'r Request<'_>) -> request::Outcome<Self, Self::Error> {
         match req.headers().get_one(ebobo_shared::AUTH_HEADER) {
-            Some(device) => request::Outcome::Success(Device {
+            Some(device) => request::Outcome::Success(Auth {
                 fingerprint: device.to_string(),
                 addr: req.client_ip(),
             }),
