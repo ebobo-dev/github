@@ -50,7 +50,7 @@ pub async fn authenticate(
         .one(state.as_ref())
         .await
         .map_err(|e| BadRequest(format!("Failed to find device: {}", e.to_string())))?
-        .ok_or(BadRequest("Failed to find device".to_string()))?;
+        .ok_or(BadRequest("Failed to find device by id".to_string()))?;
 
     Ok(Json(Fighter {
         fingerprint: device.fingerprint,
@@ -117,5 +117,3 @@ async fn get_location_id(auth: &Auth, state: &State<Arc<DatabaseConnection>>) ->
     }
     None
 }
-
-

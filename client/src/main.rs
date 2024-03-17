@@ -1,12 +1,11 @@
 mod auth;
 mod fight;
-mod footer;
 mod fingerprint;
+mod footer;
 
 use auth::Auth;
 use fight::Fight;
 use footer::Footer;
-use serde::Deserialize;
 use sycamore::{prelude::*, suspense::Suspense};
 
 pub fn url() -> String {
