@@ -1,28 +1,18 @@
 mod auth;
 mod fight;
 mod footer;
+mod fingerprint;
 
 use auth::Auth;
 use fight::Fight;
 use footer::Footer;
 use serde::Deserialize;
 use sycamore::{prelude::*, suspense::Suspense};
-use wasm_fingerprint::make_fingerprint;
 
 pub fn url() -> String {
     option_env!("EBOBO_API_URL")
         .unwrap_or("https://ebobo.shuttleapp.rs")
         .to_owned()
-}
-
-pub fn fingerprint() -> String {
-    let fingerprint: Fingerprint = serde_json::from_str(&make_fingerprint().unwrap()).unwrap();
-    fingerprint.print
-}
-
-#[derive(Deserialize)]
-pub struct Fingerprint {
-    print: String,
 }
 
 #[component]

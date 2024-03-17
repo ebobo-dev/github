@@ -1,7 +1,7 @@
 use ebobo_shared::Fighter;
 use sycamore::{futures::spawn_local, prelude::*};
 
-use crate::{fingerprint, url};
+use crate::{fingerprint::fingerprint, url};
 
 #[component(inline_props)]
 pub async fn Fight<G: Html>() -> View<G> {

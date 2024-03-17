@@ -1,11 +1,12 @@
 use crate::*;
+use crate::fingerprint::fingerprint;
 use ebobo_shared::Fighter;
 use reqwasm::http::Request;
 use sycamore::prelude::*;
 
 #[component(inline_props)]
 pub async fn Auth<G: Html>() -> View<G> {
-    let fighter = post(&url(), &fingerprint()).await.unwrap();
+    let fighter = post(&url(), &fingerprint()).await.expect("Authentication failed");
 
     let greet = match fighter.fighter {
         Some(f) => format!("Welcome back, {}!", f),
