@@ -1,3 +1,0 @@
-[env]
-EBOBO_API_URL = { value = "http://localhost:8000", force = true }
-DATABASE_URL = { value = "postgresql://postgres:KillFuckMetal1488@localhost:5432", force = true }
