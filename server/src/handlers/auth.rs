@@ -28,7 +28,7 @@ pub async fn authenticate(
                 BadRequest(format!("Failed to find device location: {}", e.to_string()))
             })?;
 
-        if let None = device_location {
+        if device_location == None {
             let device_location = crate::entities::devices_locations::ActiveModel {
                 device_id: ActiveValue::set(device_id),
                 location_id: ActiveValue::set(id),
