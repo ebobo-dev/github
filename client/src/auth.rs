@@ -2,7 +2,6 @@ use crate::*;
 use ebobo_shared::Fighter;
 use reqwasm::http::Request;
 use sycamore::prelude::*;
-use web_sys::RequestMode;
 
 #[component(inline_props)]
 pub async fn Auth<G: Html>() -> View<G> {
@@ -22,7 +21,6 @@ pub async fn Auth<G: Html>() -> View<G> {
 
 async fn post(url: &str, fingerprint: &str) -> Result<Fighter, reqwasm::Error> {
     Ok(Request::post(format!("{}/authenticate", url).as_str())
-        .mode(RequestMode::Cors)
         .header(ebobo_shared::AUTH_HEADER, fingerprint)
         .send()
         .await?

@@ -8,9 +8,7 @@ use sea_orm::*;
 use std::sync::Arc;
 
 #[options("/authenticate")]
-pub async fn options() {
-    
-}
+pub async fn options() {}
 
 #[post("/authenticate")]
 pub async fn authenticate(
