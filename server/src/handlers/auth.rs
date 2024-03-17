@@ -15,13 +15,12 @@ pub async fn authenticate(
     auth: Auth,
     state: &State<Arc<DatabaseConnection>>,
 ) -> Result<Json<Fighter>, BadRequest<String>> {
-    let location_id = get_location_id(&auth, state).await;
     let device_id = get_device_id(&auth, state).await?;
 
-    if let Some(id) = location_id {
+    if let Some(location_id) = get_location_id(&auth, state).await {
         let device_location = DevicesLocations::find()
             .filter(crate::entities::devices_locations::Column::DeviceId.eq(device_id))
-            .filter(crate::entities::devices_locations::Column::LocationId.eq(id))
+            .filter(crate::entities::devices_locations::Column::LocationId.eq(location_id))
             .one(state.as_ref())
             .await
             .map_err(|e| {
@@ -31,8 +30,7 @@ pub async fn authenticate(
         if device_location == None {
             let device_location = crate::entities::devices_locations::ActiveModel {
                 device_id: ActiveValue::set(device_id),
-                location_id: ActiveValue::set(id),
-                ..Default::default()
+                location_id: ActiveValue::set(location_id),
             };
 
             DevicesLocations::insert(device_location)
@@ -60,39 +58,6 @@ pub async fn authenticate(
     }))
 }
 
-async fn get_location_id(auth: &Auth, state: &State<Arc<DatabaseConnection>>) -> Option<i32> {
-    if let Some(addr) = auth.addr {
-        let location = Locations::find()
-            .filter(crate::entities::locations::Column::Address.eq(addr.to_string()))
-            .one(state.as_ref())
-            .await
-            .map_err(|e| BadRequest(format!("Failed to find location: {}", e.to_string())))
-            .ok()?;
-
-        match location {
-            Some(l) => Some(l.id),
-            None => {
-                let location = crate::entities::locations::ActiveModel {
-                    address: ActiveValue::set(addr.to_string()),
-                    ..Default::default()
-                };
-
-                let result: InsertResult<crate::entities::locations::ActiveModel> =
-                    Locations::insert(location)
-                        .exec(state.as_ref())
-                        .await
-                        .map_err(|e| {
-                            BadRequest(format!("Failed to insert location: {}", e.to_string()))
-                        })
-                        .ok()?;
-
-                Some(result.last_insert_id)
-            }
-        };
-    }
-    None
-}
-
 async fn get_device_id(
     auth: &Auth,
     state: &State<Arc<DatabaseConnection>>,
@@ -111,15 +76,46 @@ async fn get_device_id(
                 ..Default::default()
             };
 
-            let result: InsertResult<crate::entities::devices::ActiveModel> =
-                Devices::insert(device)
-                    .exec(state.as_ref())
-                    .await
-                    .map_err(|e| {
-                        BadRequest(format!("Failed to insert device: {}", e.to_string()))
-                    })?;
+            let result = Devices::insert(device)
+                .exec(state.as_ref())
+                .await
+                .map_err(|e| BadRequest(format!("Failed to insert device: {}", e.to_string())))?;
 
             Ok(result.last_insert_id)
         }
     }
 }
+
+async fn get_location_id(auth: &Auth, state: &State<Arc<DatabaseConnection>>) -> Option<i32> {
+    if let Some(addr) = auth.addr {
+        let location = Locations::find()
+            .filter(crate::entities::locations::Column::Address.eq(addr.to_string()))
+            .one(state.as_ref())
+            .await
+            .map_err(|e| BadRequest(format!("Failed to find location: {}", e.to_string())))
+            .ok()?;
+
+        match location {
+            Some(l) => Some(l.id),
+            None => {
+                let location = crate::entities::locations::ActiveModel {
+                    address: ActiveValue::set(addr.to_string()),
+                    ..Default::default()
+                };
+
+                let result = Locations::insert(location)
+                    .exec(state.as_ref())
+                    .await
+                    .map_err(|e| {
+                        BadRequest(format!("Failed to insert location: {}", e.to_string()))
+                    })
+                    .ok()?;
+
+                Some(result.last_insert_id)
+            }
+        };
+    }
+    None
+}
+
+

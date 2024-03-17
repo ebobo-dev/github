@@ -18,7 +18,7 @@ impl MigrationTrait for Migration {
                             .auto_increment()
                             .primary_key(),
                     )
-                    .col(ColumnDef::new(Devices::Fingerprint).string().not_null())
+                    .col(ColumnDef::new(Devices::Fingerprint).string().not_null().unique_key())
                     .col(ColumnDef::new(Devices::Fighter).string().null())
                     .to_owned(),
             )
