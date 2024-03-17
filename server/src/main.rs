@@ -25,7 +25,10 @@ async fn rocket(#[shuttle_secrets::Secrets] secrets: SecretStore) -> shuttle_roc
     let rocket = rocket::build()
         .manage(Arc::new(conn))
         .attach(cors::CORS)
-        .mount("/", routes![auth::authenticate, fight::choose,]);
+        .mount(
+            "/",
+            routes![auth::options, auth::authenticate, fight::choose],
+        );
 
     Ok(rocket.into())
 }
