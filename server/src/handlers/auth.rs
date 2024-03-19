@@ -18,7 +18,7 @@ pub async fn authenticate(
     let device_id = get_device_id(&auth, state).await?;
 
     if let Some(location_id) = get_location_id(&auth, state).await {
-        let device_location = DevicesLocations::find()
+        let dl = DevicesLocations::find()
             .filter(crate::entities::devices_locations::Column::DeviceId.eq(device_id))
             .filter(crate::entities::devices_locations::Column::LocationId.eq(location_id))
             .one(state.as_ref())
@@ -27,7 +27,7 @@ pub async fn authenticate(
                 BadRequest(format!("Failed to find device location: {}", e.to_string()))
             })?;
 
-        if device_location == None {
+        if dl == None {
             let device_location = crate::entities::devices_locations::ActiveModel {
                 device_id: ActiveValue::set(device_id),
                 location_id: ActiveValue::set(location_id),
