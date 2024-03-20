@@ -17,7 +17,7 @@ pub async fn authenticate(
 ) -> Result<Json<Fighter>, BadRequest<String>> {
     let device_id = get_device_id(&auth, state).await?;
 
-    if let Some(location_id) = get_location_id(&auth, state).await {
+    if let Ok(Some(location_id)) = get_location_id(&auth, state).await {
         let dl = DevicesLocations::find()
             .filter(crate::entities::devices_locations::Column::DeviceId.eq(device_id))
             .filter(crate::entities::devices_locations::Column::LocationId.eq(location_id))
@@ -86,14 +86,13 @@ async fn get_device_id(
     }
 }
 
-async fn get_location_id(auth: &Auth, state: &State<Arc<DatabaseConnection>>) -> Option<i32> {
+async fn get_location_id(auth: &Auth, state: &State<Arc<DatabaseConnection>>) -> Result<Option<i32>, BadRequest<String>> {
     if let Some(addr) = auth.addr {
         let location = Locations::find()
             .filter(crate::entities::locations::Column::Address.eq(addr.to_string()))
             .one(state.as_ref())
             .await
-            .map_err(|e| BadRequest(format!("Failed to find location: {}", e.to_string())))
-            .ok()?;
+            .map_err(|e| BadRequest(format!("Failed to find location: {}", e.to_string())))?;
 
         match location {
             Some(l) => Some(l.id),
@@ -108,12 +107,11 @@ async fn get_location_id(auth: &Auth, state: &State<Arc<DatabaseConnection>>) ->
                     .await
                     .map_err(|e| {
                         BadRequest(format!("Failed to insert location: {}", e.to_string()))
-                    })
-                    .ok()?;
+                    })?;
 
                 Some(result.last_insert_id)
             }
         };
     }
-    None
+    Ok(None)
 }

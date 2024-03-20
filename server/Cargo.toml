@@ -6,6 +6,7 @@ edition = "2021"
 [dependencies]
 ebobo-shared = { path = "../shared" }
 anyhow = "1.0.81"
+log = "0.4.21"
 serde = { version = "1.0.197", features = ["derive"] }
 tokio = "1.26.0"
 rocket = { version = "0.5.0", features = ["json"] }
