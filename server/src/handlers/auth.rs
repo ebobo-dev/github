@@ -86,7 +86,10 @@ async fn get_device_id(
     }
 }
 
-async fn get_location_id(auth: &Auth, state: &State<Arc<DatabaseConnection>>) -> Result<Option<i32>, BadRequest<String>> {
+async fn get_location_id(
+    auth: &Auth,
+    state: &State<Arc<DatabaseConnection>>,
+) -> Result<Option<i32>, BadRequest<String>> {
     if let Some(addr) = auth.addr {
         let location = Locations::find()
             .filter(crate::entities::locations::Column::Address.eq(addr.to_string()))
@@ -95,7 +98,7 @@ async fn get_location_id(auth: &Auth, state: &State<Arc<DatabaseConnection>>) ->
             .map_err(|e| BadRequest(format!("Failed to find location: {}", e.to_string())))?;
 
         match location {
-            Some(l) => Some(l.id),
+            Some(l) => Ok(Some(l.id)),
             None => {
                 let location = crate::entities::locations::ActiveModel {
                     address: ActiveValue::set(addr.to_string()),
@@ -109,9 +112,10 @@ async fn get_location_id(auth: &Auth, state: &State<Arc<DatabaseConnection>>) ->
                         BadRequest(format!("Failed to insert location: {}", e.to_string()))
                     })?;
 
-                Some(result.last_insert_id)
+                Ok(Some(result.last_insert_id))
             }
-        };
+        }
+    } else {
+        Ok(None)
     }
-    Ok(None)
 }
