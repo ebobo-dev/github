@@ -9,11 +9,10 @@ extern crate rocket;
 use fairings::*;
 use handlers::*;
 use sea_orm::*;
-use shuttle_secrets::SecretStore;
 use std::sync::Arc;
 
 #[shuttle_runtime::main]
-async fn rocket(#[shuttle_secrets::Secrets] secrets: SecretStore) -> shuttle_rocket::ShuttleRocket {
+async fn rocket(#[shuttle_runtime::Secrets] secrets: shuttle_runtime::SecretStore) -> shuttle_rocket::ShuttleRocket {
     let conn = Database::connect(
         secrets
             .get("DB_CONNECTION_STRING")
