@@ -2,7 +2,7 @@ name: GitHub Pages Deploy
 
 on:
   push:
-    branches: ["main"]
+    branches: ["ebobo"]
     paths:
       - "client/**"
       - "shared/**"
