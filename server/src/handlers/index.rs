@@ -11,8 +11,8 @@ use serde::de;
 use crate::entities::prelude::*;
 use crate::guards::auth::Auth;
 
-#[options("/")]
-pub async fn options() {}
+// #[options("/")]
+// pub async fn options() {}
 
 #[get("/")]
 pub async fn get(
