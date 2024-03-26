@@ -1,8 +1,10 @@
-use crate::*;
-use crate::fingerprint::fingerprint;
-use ebobo_shared::Fighter;
 use reqwasm::http::Request;
 use sycamore::prelude::*;
+
+use ebobo_shared::Fighter;
+
+use crate::*;
+use crate::fingerprint::fingerprint;
 
 #[component(inline_props)]
 pub async fn Auth<G: Html>() -> View<G> {

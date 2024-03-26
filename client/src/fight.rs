@@ -1,5 +1,6 @@
-use ebobo_shared::Fighter;
 use sycamore::{futures::spawn_local, prelude::*};
+
+use ebobo_shared::Fighter;
 
 use crate::{fingerprint::fingerprint, url};
 
