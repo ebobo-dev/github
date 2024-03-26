@@ -5,3 +5,4 @@ Secrets*.toml
 .shuttle-storage
 .vscode
 *.db
+server/Secrects.toml
