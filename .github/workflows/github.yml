@@ -6,6 +6,7 @@ on:
     paths:
       - "client/**"
       - "shared/**"
+      - ".github/workflows/**"
 
   workflow_dispatch:
 
