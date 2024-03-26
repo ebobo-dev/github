@@ -1,11 +1,14 @@
-use crate::entities::prelude::*;
-use crate::guards::auth::Auth;
-use ebobo_shared::*;
+use std::sync::Arc;
+
 use rocket::response::status::BadRequest;
 use rocket::serde::json::Json;
 use rocket::State;
 use sea_orm::*;
-use std::sync::Arc;
+
+use ebobo_shared::*;
+
+use crate::entities::prelude::*;
+use crate::guards::auth::Auth;
 
 #[options("/authenticate")]
 pub async fn options() {}

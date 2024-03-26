@@ -1,11 +1,14 @@
-use crate::entities::{devices::*, prelude::*};
-use ebobo_shared::*;
+use std::sync::Arc;
+
 use rocket::response::status::BadRequest;
 use rocket::serde::json::Json;
 use rocket::State;
 use sea_orm::prelude::*;
 use sea_orm::*;
-use std::sync::Arc;
+
+use ebobo_shared::*;
+
+use crate::entities::{devices::*, prelude::*};
 
 #[post("/choose", data = "<request>")]
 pub async fn choose(
