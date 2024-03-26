@@ -30,7 +30,7 @@ async fn rocket(
         .attach(cors::CORS)
         .mount(
             "/",
-            routes![auth::options, auth::authenticate, fight::choose],
+            routes![index::get, auth::options, auth::authenticate, fight::choose],
         );
 
     Ok(rocket.into())
