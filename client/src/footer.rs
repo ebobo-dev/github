@@ -11,7 +11,7 @@ pub fn Footer<G: Html>() -> View<G> {
     view! {
         footer { a(href=link) { (email) } }
         a(href="https://github.com/dotnicht/ebobo") { 
-            img(src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png", alt="GitHub") 
+            img(src="GitHub-Mark.png", alt="GitHub") 
         }
     }
 }
