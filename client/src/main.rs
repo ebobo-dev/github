@@ -1,12 +1,9 @@
-mod auth;
-mod fight;
-mod fingerprint;
-mod footer;
-
-use auth::Auth;
-use fight::Fight;
-use footer::Footer;
 use sycamore::{prelude::*, suspense::Suspense};
+
+use crate::components::{auth::Auth, fight::Fight, footer::Footer};
+
+mod components;
+mod fingerprint;
 
 pub fn url() -> String {
     option_env!("EBOBO_API_URL")

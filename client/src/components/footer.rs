@@ -9,9 +9,14 @@ pub fn Footer<G: Html>() -> View<G> {
     window().unwrap().document().unwrap().set_title(NAME);
 
     view! {
-        footer { a(href=link) { (email) } }
-        a(href="https://github.com/dotnicht/ebobo") { 
-            img(src="./img/github-mark.png", alt="GitHub") 
+        footer {
+            a(href=link) {
+                (email)
+            }
+
+            a(href="https://github.com/dotnicht/ebobo") {
+                img(src="./img/github-mark.png", alt="GitHub", width="32", height="32")
+            }
         }
     }
 }
