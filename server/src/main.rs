@@ -1,18 +1,22 @@
+#[macro_use]
+extern crate rocket;
+
+use std::sync::Arc;
+
+use sea_orm::*;
+
+use fairings::*;
+use handlers::*;
+
 mod entities;
 mod fairings;
 mod guards;
 mod handlers;
 
-#[macro_use]
-extern crate rocket;
-
-use fairings::*;
-use handlers::*;
-use sea_orm::*;
-use std::sync::Arc;
-
 #[shuttle_runtime::main]
-async fn rocket(#[shuttle_runtime::Secrets] secrets: shuttle_runtime::SecretStore) -> shuttle_rocket::ShuttleRocket {
+async fn rocket(
+    #[shuttle_runtime::Secrets] secrets: shuttle_runtime::SecretStore,
+) -> shuttle_rocket::ShuttleRocket {
     let conn = Database::connect(
         secrets
             .get("DB_CONNECTION_STRING")
