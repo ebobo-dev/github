@@ -6,7 +6,7 @@ use rocket::State;
 use sea_orm::*;
 
 use ebobo_shared::*;
-use serde::de;
+//use serde::de;
 
 use crate::entities::prelude::*;
 use crate::guards::auth::Auth;
@@ -16,7 +16,7 @@ use crate::guards::auth::Auth;
 
 #[get("/")]
 pub async fn get(
-    auth: Auth,
+    _auth: Auth,
     state: &State<Arc<DatabaseConnection>>,
 ) -> Result<Json<Vec<Fighter>>, BadRequest<String>> {
     let devices = Devices::find()
