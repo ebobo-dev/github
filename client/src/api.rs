@@ -23,7 +23,7 @@ fn url() -> String {
 }
 
 pub async fn get() -> Result<Vec<Fighter>, reqwasm::Error> {
-    Ok(Request::post(&url())
+    Ok(Request::get(&url())
         .header(ebobo_shared::AUTH_HEADER, &fingerprint())
         .send()
         .await?
