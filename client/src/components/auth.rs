@@ -8,7 +8,7 @@ use crate::fingerprint::fingerprint;
 
 #[component(inline_props)]
 pub async fn Auth<G: Html>() -> View<G> {
-    let fighter = post(&url(), &fingerprint()).await.expect("Authentication failed");
+    let fighter = post(&fingerprint()).await.expect("Authentication failed");
 
     let greet = match fighter.fighter {
         Some(f) => format!("Welcome back, {}!", f),
@@ -22,8 +22,8 @@ pub async fn Auth<G: Html>() -> View<G> {
     }
 }
 
-async fn post(url: &str, fingerprint: &str) -> Result<Fighter, reqwasm::Error> {
-    Ok(Request::post(format!("{}/authenticate", url).as_str())
+async fn post(fingerprint: &str) -> Result<Fighter, reqwasm::Error> {
+    Ok(Request::post(format!("{}/authenticate", &url()).as_str())
         .header(ebobo_shared::AUTH_HEADER, fingerprint)
         .send()
         .await?

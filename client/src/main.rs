@@ -1,6 +1,6 @@
 use sycamore::{prelude::*, suspense::Suspense};
 
-use crate::components::{auth::Auth, fight::Fight, footer::Footer};
+use crate::components::{index::Index, fight::Fight, footer::Footer};
 
 mod components;
 mod fingerprint;
@@ -16,7 +16,7 @@ fn App<G: Html>() -> View<G> {
     view! {
         div {
             Suspense(fallback=view! { "Loading..." }) {
-                Auth { }
+                Index { }
             }
 
             Fight { }
