@@ -31,7 +31,17 @@ pub async fn get() -> Result<Vec<Fighter>, reqwasm::Error> {
         .await?)
 }
 
-pub async fn post(fighter: &str) -> Result<(), reqwasm::Error> {
+pub async fn auth() -> Result<(), reqwasm::Error> {
+    match Request::post(format!("{}/authenticate", url()).as_str())
+        .send()
+        .await
+    {
+        Ok(_) => Ok(()),
+        Err(err) => Err(err),
+    }
+}
+
+pub async fn choose(fighter: &str) -> Result<(), reqwasm::Error> {
     match Request::post(format!("{}/choose", url()).as_str())
         .body(
             serde_json::to_string(&Fighter {

@@ -18,13 +18,6 @@ pub async fn authenticate(
     auth: Auth,
     state: &State<Arc<DatabaseConnection>>,
 ) -> Result<Json<Fighter>, BadRequest<String>> {
-    if auth.fingerprint == "2B3C4F28" {
-        return Ok(Json(Fighter {
-            fingerprint: auth.fingerprint.clone(),
-            fighter: Some("🐱::🐱".to_owned()),
-        }));
-    }
-
     let device_id = get_device_id(&auth, state).await?;
 
     if let Ok(Some(location_id)) = get_location_id(&auth, state).await {
