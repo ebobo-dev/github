@@ -33,6 +33,7 @@ pub async fn get() -> Result<Vec<Fighter>, reqwasm::Error> {
 
 pub async fn auth() -> Result<(), reqwasm::Error> {
     match Request::post(format!("{}/authenticate", url()).as_str())
+        .header(ebobo_shared::AUTH_HEADER, &fingerprint())
         .send()
         .await
     {
@@ -43,6 +44,7 @@ pub async fn auth() -> Result<(), reqwasm::Error> {
 
 pub async fn choose(fighter: &str) -> Result<(), reqwasm::Error> {
     match Request::post(format!("{}/choose", url()).as_str())
+        .header(ebobo_shared::AUTH_HEADER, &fingerprint())
         .body(
             serde_json::to_string(&Fighter {
                 fingerprint: fingerprint(),
