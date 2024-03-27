@@ -10,6 +10,9 @@ use ebobo_shared::*;
 
 use crate::entities::{devices::*, prelude::*};
 
+#[options("/choose")]
+pub async fn options() {}
+
 #[post("/choose", data = "<request>")]
 pub async fn choose(
     request: Json<Fighter>,
