@@ -9,6 +9,7 @@ use fairings::*;
 use handlers::*;
 
 mod entities;
+mod config;
 mod fairings;
 mod guards;
 mod handlers;
