@@ -7,7 +7,7 @@ on:
     paths:
       - "server/**"
       - "shared/**"
-      - ".github/workflows/**"
+      - ".github/workflows/shuttle.yml"
 
 jobs:
   deploy:
