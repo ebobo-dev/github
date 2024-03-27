@@ -1,8 +1,7 @@
 Cargo.lock
 target
 dist
-Secrets*.toml
+**Secrets*.toml
 .shuttle-storage
 .vscode
 *.db
-server/Secrects.toml
