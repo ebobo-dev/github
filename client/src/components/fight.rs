@@ -1,8 +1,6 @@
 use sycamore::{futures::spawn_local, prelude::*};
 
-use ebobo_shared::Fighter;
-
-use crate::{fingerprint::fingerprint, url};
+use crate::api::post;
 
 #[component(inline_props)]
 pub async fn Fight<G: Html>() -> View<G> {
@@ -11,10 +9,9 @@ pub async fn Fight<G: Html>() -> View<G> {
 
     create_effect(move || {
         if let Some(fighter) = state.get() {
-            let url = url();
             let fighter = fighter.to_string();
             spawn_local(async move {
-                match post(&url, &fighter).await {
+                match post(&fighter).await {
                     Ok(_) => (),
                     Err(err) => log::error!("error: {:?}", err),
                 }
@@ -36,22 +33,5 @@ pub async fn Fight<G: Html>() -> View<G> {
                 )
             }
         }
-    }
-}
-
-async fn post(url: &str, fighter: &str) -> Result<(), reqwasm::Error> {
-    match reqwasm::http::Request::post(format!("{}/choose", url).as_str())
-        .body(
-            serde_json::to_string(&Fighter {
-                fingerprint: fingerprint(),
-                fighter: Some(fighter.to_string()),
-            })
-            .unwrap(),
-        )
-        .send()
-        .await
-    {
-        Ok(_) => Ok(()),
-        Err(err) => Err(err),
     }
 }

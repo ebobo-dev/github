@@ -1,14 +1,10 @@
-use reqwasm::http::Request;
 use sycamore::prelude::*;
 
-use ebobo_shared::Fighter;
-
-use crate::fingerprint::fingerprint;
-use crate::*;
+use crate::api::get;
 
 #[component(inline_props)]
 pub async fn Index<G: Html>() -> View<G> {
-    let fighters = create_signal(get(&fingerprint()).await.expect("Authentication failed"));
+    let fighters = create_signal(get().await.expect("Index call failed"));
 
     view! {
         p {
@@ -24,13 +20,4 @@ pub async fn Index<G: Html>() -> View<G> {
             }
         }
     }
-}
-
-async fn get(fingerprint: &str) -> Result<Vec<Fighter>, reqwasm::Error> {
-    Ok(Request::post(&url())
-        .header(ebobo_shared::AUTH_HEADER, fingerprint)
-        .send()
-        .await?
-        .json()
-        .await?)
 }

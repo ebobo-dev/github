@@ -1,15 +1,9 @@
 use sycamore::{prelude::*, suspense::Suspense};
 
-use crate::components::{index::Index, fight::Fight, footer::Footer};
+use crate::components::{fight::Fight, footer::Footer, index::Index};
 
+mod api;
 mod components;
-mod fingerprint;
-
-pub fn url() -> String {
-    option_env!("EBOBO_API_URL")
-        .unwrap_or("https://ebobo.shuttleapp.rs")
-        .to_owned()
-}
 
 #[component]
 fn App<G: Html>() -> View<G> {
@@ -18,9 +12,7 @@ fn App<G: Html>() -> View<G> {
             Suspense(fallback=view! { "Loading..." }) {
                 Index { }
             }
-
             Fight { }
-
             Footer { }
         }
     }
