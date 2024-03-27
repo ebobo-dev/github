@@ -13,9 +13,7 @@ pub fn Footer<G: Html>() -> View<G> {
             a(href=link) {
                 (email)
             }
-
             a(href="https://github.com/dotnicht/ebobo") {
-                ("&nbsp;")
                 img(src="./img/github-mark.png", alt="GitHub", width="16", height="15")
             }
         }
