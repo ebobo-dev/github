@@ -5,3 +5,4 @@ dist
 .shuttle-storage
 .vscode
 *.db
+.env
