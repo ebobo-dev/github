@@ -14,6 +14,11 @@ mod fairings;
 mod guards;
 mod handlers;
 
+pub struct AppState {
+    pub db: Arc<DatabaseConnection>,
+    pub secrets: shuttle_runtime::SecretStore,
+}
+
 #[shuttle_runtime::main]
 async fn rocket(
     #[shuttle_runtime::Secrets] secrets: shuttle_runtime::SecretStore,
@@ -27,7 +32,10 @@ async fn rocket(
     .expect("Failed to connect to the database");
 
     let rocket = rocket::build()
-        .manage(Arc::new(conn))
+        .manage(AppState {
+            db: Arc::new(conn),
+            secrets,
+        })
         .attach(cors::CORS)
         .mount(
             "/",

@@ -1,14 +1,12 @@
-use std::sync::Arc;
-
-use rocket::response::status::BadRequest;
-use rocket::serde::json::Json;
-use rocket::State;
-use sea_orm::prelude::*;
+use rocket::{response::status::BadRequest, serde::json::Json, State};
 use sea_orm::*;
 
 use ebobo_shared::*;
 
-use crate::entities::{devices::*, prelude::*};
+use crate::{
+    entities::{devices::*, prelude::*},
+    AppState,
+};
 
 #[options("/choose")]
 pub async fn options() {}
@@ -16,11 +14,11 @@ pub async fn options() {}
 #[post("/choose", data = "<request>")]
 pub async fn choose(
     request: Json<Fighter>,
-    state: &State<Arc<DatabaseConnection>>,
+    state: &State<AppState>,
 ) -> Result<(), BadRequest<String>> {
     let device = Devices::find()
         .filter(Column::Fingerprint.eq(request.fingerprint.clone()))
-        .one(state.as_ref())
+        .one(state.db.as_ref())
         .await
         .map_err(|e| BadRequest(format!("Failed to find device: {}", e.to_string())))?;
 
@@ -33,7 +31,7 @@ pub async fn choose(
             };
 
             Devices::update(device)
-                .exec(state.as_ref())
+                .exec(state.db.as_ref())
                 .await
                 .map_err(|e| BadRequest(format!("Failed to update device: {}", e.to_string())))?;
 

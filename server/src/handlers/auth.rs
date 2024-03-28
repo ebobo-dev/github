@@ -1,14 +1,9 @@
-use std::sync::Arc;
-
-use rocket::response::status::BadRequest;
-use rocket::serde::json::Json;
-use rocket::State;
+use rocket::{response::status::BadRequest, serde::json::Json, State};
 use sea_orm::*;
 
 use ebobo_shared::*;
 
-use crate::entities::prelude::*;
-use crate::guards::auth::Auth;
+use crate::{entities::prelude::*, guards::auth::Auth, AppState};
 
 #[options("/authenticate")]
 pub async fn options() {}
@@ -16,7 +11,7 @@ pub async fn options() {}
 #[post("/authenticate")]
 pub async fn authenticate(
     auth: Auth,
-    state: &State<Arc<DatabaseConnection>>,
+    state: &State<AppState>,
 ) -> Result<Json<Fighter>, BadRequest<String>> {
     let device_id = get_device_id(&auth, state).await?;
 
@@ -24,7 +19,7 @@ pub async fn authenticate(
         let dl = DevicesLocations::find()
             .filter(crate::entities::devices_locations::Column::DeviceId.eq(device_id))
             .filter(crate::entities::devices_locations::Column::LocationId.eq(location_id))
-            .one(state.as_ref())
+            .one(state.db.as_ref())
             .await
             .map_err(|e| {
                 BadRequest(format!("Failed to find device location: {}", e.to_string()))
@@ -37,7 +32,7 @@ pub async fn authenticate(
             };
 
             DevicesLocations::insert(device_location)
-                .exec(state.as_ref())
+                .exec(state.db.as_ref())
                 .await
                 .map_err(|e| {
                     BadRequest(format!(
@@ -50,7 +45,7 @@ pub async fn authenticate(
 
     let device = Devices::find()
         .filter(crate::entities::devices::Column::Id.eq(device_id))
-        .one(state.as_ref())
+        .one(state.db.as_ref())
         .await
         .map_err(|e| BadRequest(format!("Failed to find device: {}", e.to_string())))?
         .ok_or(BadRequest("Failed to find device by id".to_string()))?;
@@ -61,13 +56,10 @@ pub async fn authenticate(
     }))
 }
 
-async fn get_device_id(
-    auth: &Auth,
-    state: &State<Arc<DatabaseConnection>>,
-) -> Result<i32, BadRequest<String>> {
+async fn get_device_id(auth: &Auth, state: &State<AppState>) -> Result<i32, BadRequest<String>> {
     let device = Devices::find()
         .filter(crate::entities::devices::Column::Fingerprint.eq(auth.fingerprint.clone()))
-        .one(state.as_ref())
+        .one(state.db.as_ref())
         .await
         .map_err(|e| BadRequest(format!("Failed to find device: {}", e.to_string())))?;
 
@@ -80,7 +72,7 @@ async fn get_device_id(
             };
 
             let result = Devices::insert(device)
-                .exec(state.as_ref())
+                .exec(state.db.as_ref())
                 .await
                 .map_err(|e| BadRequest(format!("Failed to insert device: {}", e.to_string())))?;
 
@@ -91,12 +83,12 @@ async fn get_device_id(
 
 async fn get_location_id(
     auth: &Auth,
-    state: &State<Arc<DatabaseConnection>>,
+    state: &State<AppState>,
 ) -> Result<Option<i32>, BadRequest<String>> {
     if let Some(addr) = auth.addr {
         let location = Locations::find()
             .filter(crate::entities::locations::Column::Address.eq(addr.to_string()))
-            .one(state.as_ref())
+            .one(state.db.as_ref())
             .await
             .map_err(|e| BadRequest(format!("Failed to find location: {}", e.to_string())))?;
 
@@ -109,7 +101,7 @@ async fn get_location_id(
                 };
 
                 let result = Locations::insert(location)
-                    .exec(state.as_ref())
+                    .exec(state.db.as_ref())
                     .await
                     .map_err(|e| {
                         BadRequest(format!("Failed to insert location: {}", e.to_string()))

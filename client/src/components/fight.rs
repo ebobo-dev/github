@@ -5,10 +5,10 @@ use crate::api::choose;
 #[component(inline_props)]
 pub async fn Fight<G: Html>() -> View<G> {
     let fighters = create_signal(vec!["🐱", "🐵", "🐶", "🐷"]);
-    let state: Signal<Option<&str>> = create_signal(None);
+    let selected: Signal<Option<&str>> = create_signal(None);
 
     create_effect(move || {
-        if let Some(fighter) = state.get() {
+        if let Some(fighter) = selected.get() {
             let fighter = fighter.to_string();
             spawn_local(async move {
                 match choose(&fighter).await {
@@ -27,7 +27,7 @@ pub async fn Fight<G: Html>() -> View<G> {
                     iterable = *fighters,
                     view = move |f| view! {
                         li {
-                            button(on:click = move |_| state.set(Some(f))) { (f) }
+                            button(on:click = move |_| selected.set(Some(f))) { (f) }
                         }
                     }
                 )
