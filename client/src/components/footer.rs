@@ -21,7 +21,7 @@ pub fn Footer<G: Html>() -> View<G> {
             }
             br {}
             a(href="https://github.com/dotnicht/ebobo") {
-                img(src="./img/github-mark.png", alt="GitHub", width="16", height="16")
+                img(src="./img/github-mark.png", alt="GitHub", width="20", height="20")
             }
         }
     }
