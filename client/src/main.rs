@@ -10,7 +10,7 @@ fn App<G: Html>() -> View<G> {
     view! {
         div {
             Suspense(fallback=view! { "Loading..." }) {
-                // Auth { }
+                Auth { }
                 Index { }
             }
             Fight { }
