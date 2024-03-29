@@ -19,7 +19,7 @@ pub async fn get(
         .map_err(|e| BadRequest(format!("Failed to find device location: {}", e.to_string())))?
         .into_iter()
         .map(|device| Fighter {
-            fingerprint: device.fingerprint,
+            fingerprint: device.device,
             fighter: device.fighter,
         })
         .collect::<Vec<Fighter>>();

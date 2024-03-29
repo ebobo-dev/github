@@ -5,6 +5,7 @@ use ebobo_shared::*;
 
 use crate::{
     entities::{fighters::*, prelude::*},
+    guards::auth::Auth,
     AppState,
 };
 
@@ -13,11 +14,12 @@ pub async fn options() {}
 
 #[post("/choose", data = "<request>")]
 pub async fn choose(
+    auth: Auth,
     request: Json<Fighter>,
     state: &State<AppState>,
 ) -> Result<(), BadRequest<String>> {
     let device = Fighters::find()
-        .filter(Column::Fingerprint.eq(request.fingerprint.clone()))
+        .filter(Column::Device.eq(auth.fingerprint))
         .one(state.db.as_ref())
         .await
         .map_err(|e| BadRequest(format!("Failed to find device: {}", e.to_string())))?;
@@ -26,7 +28,10 @@ pub async fn choose(
         Some(device) => {
             let device = ActiveModel {
                 id: ActiveValue::unchanged(device.id),
-                fingerprint: ActiveValue::unchanged(request.fingerprint.clone()),
+                device: ActiveValue::unchanged(device.device),
+                rank: ActiveValue::unchanged(device.rank),
+                root: ActiveValue::unchanged(device.root),
+                created: ActiveValue::unchanged(device.created),
                 fighter: ActiveValue::set(request.fighter.clone()),
             };
 
@@ -37,6 +42,22 @@ pub async fn choose(
 
             Ok(())
         }
-        None => Err(BadRequest("Failed to find device".to_string())),
+        None => {
+            let device = ActiveModel {
+                id: Default::default(),
+                device: ActiveValue::set(request.fingerprint.clone()),
+                rank: Default::default(),
+                root: Default::default(),
+                created: ActiveValue::set(Utc::now().naive_utc()),
+                fighter: ActiveValue::set(request.fighter.clone()),
+            };
+
+            Fighters::insert(device)
+                .exec(state.db.as_ref())
+                .await
+                .map_err(|e| BadRequest(format!("Failed to insert device: {}", e.to_string())))?;
+
+            Ok(())
+        }
     }
 }
