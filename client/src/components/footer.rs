@@ -5,24 +5,19 @@ use web_sys::window;
 pub fn Footer<G: Html>() -> View<G> {
     const NAME: &str = "ebobo.dev";
 
+    if let Some(w) = window() {
+        if let Some(d) = w.document() {
+            d.set_title(NAME);
+        }
+    }
+
     let email = format!("generated@{}", NAME);
     let link = format!("mailto:{}", email);
 
-    window()
-        .expect("Window not accessible")
-        .document()
-        .expect("Document not accessible")
-        .set_title(NAME);
-
     view! {
         footer {
-            a(href=link) {
-                (email)
-            }
-            br {}
-            a(href="https://github.com/dotnicht/ebobo") {
-                img(src="./img/github-mark.png", alt="GitHub", width="20", height="20")
-            }
+            a(href=link) { (email) }
+            a(href="https://github.com/dotnicht/ebobo") { img(src="./img/github-mark.png", alt="GitHub", width="24", height="24") }
         }
     }
 }
