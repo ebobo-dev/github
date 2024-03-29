@@ -20,7 +20,8 @@ impl<'r> FromRequest<'r> for Auth {
     type Error = FingerprintError;
 
     async fn from_request(req: &'r Request<'_>) -> request::Outcome<Self, Self::Error> {
-        match req.headers().get_one(ebobo_shared::AUTH_HEADER) {
+        let fingerprint = req.headers().get_one(ebobo_shared::AUTH_HEADER);
+        match fingerprint {
             Some(device) => request::Outcome::Success(Auth {
                 fingerprint: device.to_string(),
                 addr: req.client_ip(),
