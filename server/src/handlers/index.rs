@@ -16,7 +16,7 @@ pub async fn get(
     let fighters = Fighters::find()
         .all(state.db.as_ref())
         .await
-        .map_err(|e| BadRequest(format!("Failed to find device location: {}", e.to_string())))?
+        .map_err(|e| BadRequest(format!("Failed to fetch users: {}", e)))?
         .into_iter()
         .map(|device| Fighter {
             fighter: device.fighter,

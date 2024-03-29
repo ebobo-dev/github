@@ -22,7 +22,7 @@ pub async fn choose(
         .filter(Column::Device.eq(auth.fingerprint.clone()))
         .one(state.db.as_ref())
         .await
-        .map_err(|e| BadRequest(format!("Failed to find device: {}", e.to_string())))?;
+        .map_err(|e| BadRequest(format!("Failed to find user: {}", e)))?;
 
     match device {
         Some(device) => {
@@ -38,16 +38,22 @@ pub async fn choose(
             Fighters::update(device)
                 .exec(state.db.as_ref())
                 .await
-                .map_err(|e| BadRequest(format!("Failed to update device: {}", e.to_string())))?;
+                .map_err(|e| BadRequest(format!("Failed to update user: {}", e)))?;
 
             Ok(())
         }
         None => {
+            let count = Fighters::find().all(state.db.as_ref())
+                .await
+                .map_err(|e| BadRequest(format!("Failed to fetch users count: {}", e)))?
+                .into_iter()
+                .count();
+
             let device = ActiveModel {
                 id: Default::default(),
                 device: ActiveValue::set(auth.fingerprint.clone()),
                 rank: Default::default(),
-                root: Default::default(),
+                root: ActiveValue::set(count == 0),
                 created: ActiveValue::set(Utc::now().naive_utc()),
                 fighter: ActiveValue::set(request.fighter.clone()),
             };
@@ -55,7 +61,7 @@ pub async fn choose(
             Fighters::insert(device)
                 .exec(state.db.as_ref())
                 .await
-                .map_err(|e| BadRequest(format!("Failed to insert device: {}", e.to_string())))?;
+                .map_err(|e| BadRequest(format!("Failed to insert user: {}", e.to_string())))?;
 
             Ok(())
         }
