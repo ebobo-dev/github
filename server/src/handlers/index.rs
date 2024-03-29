@@ -3,7 +3,7 @@ use sea_orm::*;
 
 use ebobo_shared::*;
 
-use crate::{entities::{fighters, prelude::*}, guards::auth::Auth, AppState};
+use crate::{entities::prelude::*, guards::auth::Auth, AppState};
 
 #[options("/")]
 pub async fn options() {}
@@ -19,7 +19,6 @@ pub async fn get(
         .map_err(|e| BadRequest(format!("Failed to find device location: {}", e.to_string())))?
         .into_iter()
         .map(|device| Fighter {
-            fingerprint: device.device,
             fighter: device.fighter,
         })
         .collect::<Vec<Fighter>>();

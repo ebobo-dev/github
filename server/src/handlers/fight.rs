@@ -19,7 +19,7 @@ pub async fn choose(
     state: &State<AppState>,
 ) -> Result<(), BadRequest<String>> {
     let device = Fighters::find()
-        .filter(Column::Device.eq(auth.fingerprint))
+        .filter(Column::Device.eq(auth.fingerprint.clone()))
         .one(state.db.as_ref())
         .await
         .map_err(|e| BadRequest(format!("Failed to find device: {}", e.to_string())))?;
@@ -45,7 +45,7 @@ pub async fn choose(
         None => {
             let device = ActiveModel {
                 id: Default::default(),
-                device: ActiveValue::set(request.fingerprint.clone()),
+                device: ActiveValue::set(auth.fingerprint.clone()),
                 rank: Default::default(),
                 root: Default::default(),
                 created: ActiveValue::set(Utc::now().naive_utc()),
