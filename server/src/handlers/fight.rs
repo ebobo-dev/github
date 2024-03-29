@@ -1,4 +1,4 @@
-use rocket::{response::status::BadRequest, serde::json::Json, State};
+use rocket::{response::status::BadRequest, State};
 use sea_orm::*;
 
 use ebobo_shared::*;
@@ -15,7 +15,7 @@ pub async fn options() {}
 #[post("/choose", data = "<request>")]
 pub async fn choose(
     auth: Auth,
-    request: Json<Fighter>,
+    request: String,
     state: &State<AppState>,
 ) -> Result<(), BadRequest<String>> {
     let device = Fighters::find()
@@ -32,7 +32,7 @@ pub async fn choose(
                 rank: ActiveValue::unchanged(device.rank),
                 root: ActiveValue::unchanged(device.root),
                 created: ActiveValue::unchanged(device.created),
-                fighter: ActiveValue::set(request.fighter.clone()),
+                fighter: ActiveValue::set(Some(request)),
             };
 
             Fighters::update(device)
@@ -43,7 +43,8 @@ pub async fn choose(
             Ok(())
         }
         None => {
-            let count = Fighters::find().all(state.db.as_ref())
+            let count = Fighters::find()
+                .all(state.db.as_ref())
                 .await
                 .map_err(|e| BadRequest(format!("Failed to fetch users count: {}", e)))?
                 .into_iter()
@@ -55,7 +56,7 @@ pub async fn choose(
                 rank: Default::default(),
                 root: ActiveValue::set(count == 0),
                 created: ActiveValue::set(Utc::now().naive_utc()),
-                fighter: ActiveValue::set(request.fighter.clone()),
+                fighter: ActiveValue::set(Some(request)),
             };
 
             Fighters::insert(device)

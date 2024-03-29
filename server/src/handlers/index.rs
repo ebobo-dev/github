@@ -19,6 +19,7 @@ pub async fn get(
         .map_err(|e| BadRequest(format!("Failed to fetch users: {}", e)))?
         .into_iter()
         .map(|device| Fighter {
+            fingerprint: device.device,
             fighter: device.fighter,
         })
         .collect::<Vec<Fighter>>();
