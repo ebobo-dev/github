@@ -14,7 +14,7 @@ pub async fn Index<G: Html>() -> View<G> {
                     iterable = *fighters,
                     view = move |f| view! {
                         li {
-                            (format!("{}: {}", f.fingerprint, f.fighter.as_deref().unwrap_or("Anonymous")))
+//                            (format!("{}: {}", f.fingerprint, f.fighter.as_deref().unwrap_or("Anonymous")))
                         }
                     }
                 )
