@@ -42,8 +42,6 @@ async fn rocket(
             routes![
                 index::options,
                 index::get,
-                auth::options,
-                auth::authenticate,
                 fight::options,
                 fight::choose
             ],

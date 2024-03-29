@@ -13,7 +13,7 @@ pub async fn get(
     _auth: Auth,
     state: &State<AppState>,
 ) -> Result<Json<Vec<Fighter>>, BadRequest<String>> {
-    let devices = Devices::find()
+    let devices = Fighters::find()
         .all(state.db.as_ref())
         .await
         .map_err(|e| BadRequest(format!("Failed to find device location: {}", e.to_string())))?

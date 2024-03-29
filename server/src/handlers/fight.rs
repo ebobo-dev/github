@@ -4,7 +4,7 @@ use sea_orm::*;
 use ebobo_shared::*;
 
 use crate::{
-    entities::{devices::*, prelude::*},
+    entities::{fighters::*, prelude::*},
     AppState,
 };
 
@@ -16,7 +16,7 @@ pub async fn choose(
     request: Json<Fighter>,
     state: &State<AppState>,
 ) -> Result<(), BadRequest<String>> {
-    let device = Devices::find()
+    let device = Fighters::find()
         .filter(Column::Fingerprint.eq(request.fingerprint.clone()))
         .one(state.db.as_ref())
         .await
@@ -30,7 +30,7 @@ pub async fn choose(
                 fighter: ActiveValue::set(request.fighter.clone()),
             };
 
-            Devices::update(device)
+            Fighters::update(device)
                 .exec(state.db.as_ref())
                 .await
                 .map_err(|e| BadRequest(format!("Failed to update device: {}", e.to_string())))?;

@@ -2,6 +2,5 @@
 
 pub mod prelude;
 
-pub mod devices;
-pub mod devices_locations;
-pub mod locations;
+pub mod fighters;
+pub mod requests;
