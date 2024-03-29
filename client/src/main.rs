@@ -9,11 +9,19 @@ mod components;
 fn App<G: Html>() -> View<G> {
     view! {
         div {
-            Suspense(fallback=view! { "Loading..." }) {
-                Auth { }
-                Index { }
+            header {
+                h1 { "ebobo.dev" }
             }
-            Fight { }
+            
+            article { 
+                Suspense(fallback=view! { "Loading..." }) {
+                    Auth { }
+                    Index { }
+                }
+                
+                Fight { }
+            }
+
             Footer { }
         }
     }
