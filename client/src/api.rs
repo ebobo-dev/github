@@ -36,7 +36,6 @@ pub async fn choose(fighter: &str) -> Result<(), reqwasm::Error> {
         .header(ebobo_shared::AUTH_HEADER, &fingerprint())
         .body(
             serde_json::to_string(&Fighter {
-                fingerprint: fingerprint(),
                 fighter: Some(fighter.to_string()),
             })
             .unwrap(),
