@@ -17,9 +17,11 @@ impl MigrationTrait for Migration {
                             .not_null()
                             .primary_key(),
                     )
+                    .col(ColumnDef::new(Requests::Fingerprint).string().not_null())
                     .col(ColumnDef::new(Requests::Address).string().null())
                     .col(ColumnDef::new(Requests::Created).date_time().not_null())
-                    .col(ColumnDef::new(Requests::Fingerprint).string().not_null())
+                    .col(ColumnDef::new(Requests::Updated).date_time().null())
+                    .col(ColumnDef::new(Requests::Hits).integer().not_null())
                     .to_owned(),
             )
             .await
@@ -36,7 +38,9 @@ impl MigrationTrait for Migration {
 enum Requests {
     Table,
     Id,
+    Fingerprint,
     Address,
     Created,
-    Fingerprint,
+    Updated,
+    Hits,
 }
