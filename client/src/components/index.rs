@@ -8,6 +8,7 @@ pub async fn Index<G: Html>() -> View<G> {
 
     view! {
         p {
+            "Fighters:"
             ul {
                 Indexed(
                     iterable = *fighters,

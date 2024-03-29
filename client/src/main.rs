@@ -1,6 +1,6 @@
 use sycamore::{prelude::*, suspense::Suspense};
 
-use crate::components::{auth::Auth, fight::Fight, footer::Footer, index::Index};
+use crate::components::{fight::Fight, footer::Footer, index::Index};
 
 mod api;
 mod components;
@@ -12,13 +12,12 @@ fn App<G: Html>() -> View<G> {
             header {
                 h1 { "ebobo.dev" }
             }
-            
-            article { 
+
+            article {
                 Suspense(fallback=view! { "Loading..." }) {
-                    Auth { }
                     Index { }
                 }
-                
+
                 Fight { }
             }
 
