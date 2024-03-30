@@ -25,10 +25,25 @@ impl MigrationTrait for Migration {
                     .table(Users::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(Users::Id).uuid().not_null().primary_key())
-                    .col(ColumnDef::new(Users::Fingerprint).string().not_null())
-                    .col(ColumnDef::new(Users::Fighter).string().not_null())
-                    .col(ColumnDef::new(Users::Root).boolean().not_null())
-                    .col(ColumnDef::new(Users::Rank).integer().not_null())
+                    .col(
+                        ColumnDef::new(Users::Fingerprint)
+                            .string()
+                            .not_null()
+                            .unique_key(),
+                    )
+                    .col(
+                        ColumnDef::new(Users::Fighter)
+                            .string()
+                            .not_null()
+                            .unique_key(),
+                    )
+                    .col(
+                        ColumnDef::new(Users::Root)
+                            .boolean()
+                            .not_null()
+                            .default(false),
+                    )
+                    .col(ColumnDef::new(Users::Rank).integer().not_null().default(0))
                     .to_owned(),
             )
             .await?;
@@ -44,7 +59,7 @@ impl MigrationTrait for Migration {
         manager
             .drop_table(Table::drop().table(Users::Table).to_owned())
             .await?;
-        
+
         Ok(())
     }
 }
