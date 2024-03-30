@@ -8,7 +8,7 @@ pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,
     pub fingerprint: String,
-    pub fighter: Option<String>,
+    pub fighter: String,
     pub root: bool,
     pub rank: i32,
 }

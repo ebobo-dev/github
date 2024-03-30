@@ -26,7 +26,7 @@ impl MigrationTrait for Migration {
                     .if_not_exists()
                     .col(ColumnDef::new(Users::Id).uuid().not_null().primary_key())
                     .col(ColumnDef::new(Users::Fingerprint).string().not_null())
-                    .col(ColumnDef::new(Users::Fighter).string().null())
+                    .col(ColumnDef::new(Users::Fighter).string().not_null())
                     .col(ColumnDef::new(Users::Root).boolean().not_null())
                     .col(ColumnDef::new(Users::Rank).integer().not_null())
                     .to_owned(),

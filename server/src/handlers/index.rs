@@ -3,26 +3,31 @@ use sea_orm::*;
 
 use ebobo_shared::*;
 
-use crate::{entities::prelude::*, guards::auth::Auth, AppState};
+use crate::{
+    entities::{prelude::*, users},
+    guards::auth::Auth,
+    AppState,
+};
 
 #[options("/")]
 pub async fn options() {}
 
 #[get("/")]
-pub async fn get(
-    _auth: Auth,
-    state: &State<AppState>,
-) -> Result<Json<Vec<Fighter>>, BadRequest<String>> {
-    let fighters = Users::find()
-        .all(state.db.as_ref())
+pub async fn get(auth: Auth, state: &State<AppState>) -> Result<String, BadRequest<String>> {
+    let user = Users::find()
+        .filter(users::Column::Fingerprint.eq(&auth.fingerprint))
+        .one(state.db.as_ref())
         .await
-        .map_err(|e| BadRequest(format!("Failed to fetch users: {}", e)))?
-        .into_iter()
-        .map(|device| Fighter {
-            fingerprint: device.fingerprint,
-            fighter: device.fighter,
-        })
-        .collect::<Vec<Fighter>>();
+        .map_err(|e| BadRequest(e.to_string()))?;
 
-    Ok(Json(fighters))
+    let greet = match user {
+        Some(user) => {
+            format!("Hi, {}!", user.fingerprint)
+        },
+        None => {
+            format!("Hello, {}!", auth.fingerprint)
+        }
+    };
+
+    Ok(greet)
 }
