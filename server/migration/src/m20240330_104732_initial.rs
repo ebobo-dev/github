@@ -6,42 +6,64 @@ pub struct Migration;
 #[async_trait::async_trait]
 impl MigrationTrait for Migration {
     async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
-        // Replace the sample below with your own migration scripts
-        todo!();
+        manager
+            .create_table(
+                Table::create()
+                    .table(Requests::Table)
+                    .if_not_exists()
+                    .col(ColumnDef::new(Requests::Id).uuid().not_null().primary_key())
+                    .col(ColumnDef::new(Requests::Fingerprint).string().not_null())
+                    .col(ColumnDef::new(Requests::Address).string().null())
+                    .col(ColumnDef::new(Requests::Timestamp).timestamp().not_null())
+                    .to_owned(),
+            )
+            .await?;
 
         manager
             .create_table(
                 Table::create()
-                    .table(Post::Table)
+                    .table(Users::Table)
                     .if_not_exists()
-                    .col(
-                        ColumnDef::new(Post::Id)
-                            .integer()
-                            .not_null()
-                            .auto_increment()
-                            .primary_key(),
-                    )
-                    .col(ColumnDef::new(Post::Title).string().not_null())
-                    .col(ColumnDef::new(Post::Text).string().not_null())
+                    .col(ColumnDef::new(Users::Id).uuid().not_null().primary_key())
+                    .col(ColumnDef::new(Users::Fingerprint).string().not_null())
+                    .col(ColumnDef::new(Users::Fighter).string().null())
+                    .col(ColumnDef::new(Users::Root).boolean().not_null())
+                    .col(ColumnDef::new(Users::Rank).integer().not_null())
                     .to_owned(),
             )
-            .await
+            .await?;
+
+        Ok(())
     }
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
-        // Replace the sample below with your own migration scripts
-        todo!();
+        manager
+            .drop_table(Table::drop().table(Requests::Table).to_owned())
+            .await?;
 
         manager
-            .drop_table(Table::drop().table(Post::Table).to_owned())
-            .await
+            .drop_table(Table::drop().table(Users::Table).to_owned())
+            .await?;
+        
+        Ok(())
     }
 }
 
 #[derive(DeriveIden)]
-enum Post {
+enum Requests {
     Table,
     Id,
-    Title,
-    Text,
+    Fingerprint,
+    Address,
+    Timestamp,
+}
+
+#[derive(DeriveIden)]
+enum Users {
+    Table,
+    Id,
+    Fingerprint,
+    Fighter,
+    Root,
+    Rank,
 }
