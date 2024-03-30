@@ -2,5 +2,5 @@
 
 pub mod prelude;
 
-pub mod fighters;
 pub mod requests;
+pub mod users;

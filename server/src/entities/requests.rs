@@ -9,9 +9,7 @@ pub struct Model {
     pub id: Uuid,
     pub fingerprint: String,
     pub address: Option<String>,
-    pub created: DateTime,
-    pub updated: Option<DateTime>,
-    pub hits: i32,
+    pub timestamp: DateTime,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
