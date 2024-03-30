@@ -1,5 +1,3 @@
-use std::net::IpAddr;
-
 use rocket::{
     http::Status,
     request::{self, FromRequest, Request},
@@ -11,8 +9,7 @@ use ebobo_shared::*;
 use crate::{entities::prelude::*, entities::requests::*, AppState};
 
 pub struct Auth {
-    pub fingerprint: String,
-    pub addr: Option<IpAddr>,
+    pub fingerprint: String
 }
 
 #[derive(Debug)]
@@ -44,7 +41,6 @@ impl<'r> FromRequest<'r> for Auth {
 
                     request::Outcome::Success(Auth {
                         fingerprint: device.to_string(),
-                        addr: req.client_ip(),
                     })
                 }
                 None => request::Outcome::Error((
