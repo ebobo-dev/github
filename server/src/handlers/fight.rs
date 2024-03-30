@@ -2,7 +2,7 @@ use rocket::{response::status::BadRequest, State};
 use sea_orm::*;
 
 use crate::{
-    entities::{users::*, prelude::*},
+    entities::{prelude::*, users::*},
     guards::auth::Auth,
     AppState,
 };
@@ -16,51 +16,25 @@ pub async fn choose(
     request: String,
     state: &State<AppState>,
 ) -> Result<(), BadRequest<String>> {
-    let device = Users::find()
-        .filter(Column::Fingerprint.eq(auth.fingerprint.clone()))
-        .one(state.db.as_ref())
+    let count = Users::find()
+        .all(state.db.as_ref())
         .await
-        .map_err(|e| BadRequest(format!("Failed to find user: {}", e)))?;
+        .map_err(|e| BadRequest(format!("Failed to fetch users count: {}", e)))?
+        .into_iter()
+        .count();
 
-    match device {
-        Some(device) => {
-            let device = ActiveModel {
-                id: ActiveValue::unchanged(device.id),
-                fingerprint: ActiveValue::unchanged(device.fingerprint),
-                rank: ActiveValue::unchanged(device.rank),
-                root: ActiveValue::unchanged(device.root),
-                fighter: ActiveValue::set(Some(request)),
-            };
+    let user = ActiveModel {
+        id: Default::default(),
+        fingerprint: ActiveValue::set(auth.fingerprint.clone()),
+        rank: Default::default(),
+        root: ActiveValue::set(count == 0),
+        fighter: ActiveValue::set(request),
+    };
 
-            Users::update(device)
-                .exec(state.db.as_ref())
-                .await
-                .map_err(|e| BadRequest(format!("Failed to update user: {}", e)))?;
+    Users::insert(user)
+        .exec(state.db.as_ref())
+        .await
+        .map_err(|e| BadRequest(format!("Failed to insert user: {}", e.to_string())))?;
 
-            Ok(())
-        }
-        None => {
-            let count = Users::find()
-                .all(state.db.as_ref())
-                .await
-                .map_err(|e| BadRequest(format!("Failed to fetch users count: {}", e)))?
-                .into_iter()
-                .count();
-
-            let device = ActiveModel {
-                id: Default::default(),
-                fingerprint: ActiveValue::set(auth.fingerprint.clone()),
-                rank: Default::default(),
-                root: ActiveValue::set(count == 0),
-                fighter: ActiveValue::set(Some(request)),
-            };
-
-            Users::insert(device)
-                .exec(state.db.as_ref())
-                .await
-                .map_err(|e| BadRequest(format!("Failed to insert user: {}", e.to_string())))?;
-
-            Ok(())
-        }
-    }
+    Ok(())
 }

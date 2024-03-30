@@ -1,7 +1,5 @@
-use rocket::{response::status::BadRequest, serde::json::Json, State};
+use rocket::{response::status::BadRequest, State};
 use sea_orm::*;
-
-use ebobo_shared::*;
 
 use crate::{
     entities::{prelude::*, users},
@@ -22,7 +20,7 @@ pub async fn get(auth: Auth, state: &State<AppState>) -> Result<String, BadReque
 
     let greet = match user {
         Some(user) => {
-            format!("Hi, {}!", user.fingerprint)
+            format!("Hi, {}!", user.fighter)
         },
         None => {
             format!("Hello, {}!", auth.fingerprint)
