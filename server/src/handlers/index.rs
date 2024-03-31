@@ -3,7 +3,9 @@ use rocket::{response::status::BadRequest, serde::json::Json, State};
 use sea_orm::*;
 
 use crate::{
-    entities::{prelude::*, users}, guards::auth::Auth, AppState, APP_CONFIG, CONFIG
+    entities::{prelude::*, users},
+    guards::auth::Auth,
+    AppState, APP_CONFIG,
 };
 
 #[options("/")]
@@ -20,7 +22,7 @@ pub async fn get(auth: Auth, state: &State<AppState>) -> Result<Json<Index>, Bad
     let greet = match user {
         Some(user) => {
             format!("Hi, {}!", user.fighter)
-        },
+        }
         None => {
             format!("Hello, {}!", auth.fingerprint)
         }

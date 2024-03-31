@@ -28,7 +28,7 @@ pub struct AppConfig {
 
 lazy_static::lazy_static! {
     #[derive(Debug, Deserialize)]
-    pub static ref CONFIG: Config = Config::builder()
+    static ref CONFIG: Config = Config::builder()
         .add_source(config::File::with_name("Settings"))
         .build()
         .expect("Failed to load configuration");

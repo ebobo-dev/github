@@ -2,6 +2,8 @@ use reqwasm::http::Request;
 use serde::Deserialize;
 use wasm_fingerprint::make_fingerprint;
 
+use ebobo_shared::Index;
+
 #[derive(Deserialize)]
 struct Fingerprint {
     print: String,
@@ -20,12 +22,12 @@ fn url() -> String {
         .to_owned()
 }
 
-pub async fn get() -> Result<String, reqwasm::Error> {
+pub async fn get() -> Result<Index, reqwasm::Error> {
     Ok(Request::get(&url())
         .header(ebobo_shared::AUTH_HEADER, &fingerprint())
         .send()
         .await?
-        .text()
+        .json()
         .await?)
 }
 
