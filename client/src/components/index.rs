@@ -4,9 +4,9 @@ use crate::api::get;
 
 #[component(inline_props)]
 pub async fn Index<G: Html>() -> View<G> {
-    let fighters = get().await;
-    let greet = match fighters {
-        Ok(fighters) => fighters.len().to_string(),
+    let greet = get().await;
+    let greet = match greet {
+        Ok(fighters) => fighters,
         Err(e) => e.to_string(),
     };
 

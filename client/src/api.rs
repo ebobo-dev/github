@@ -22,12 +22,12 @@ fn url() -> String {
         .to_owned()
 }
 
-pub async fn get() -> Result<Vec<Fighter>, reqwasm::Error> {
+pub async fn get() -> Result<String, reqwasm::Error> {
     Ok(Request::get(&url())
         .header(ebobo_shared::AUTH_HEADER, &fingerprint())
         .send()
         .await?
-        .json()
+        .text()
         .await?)
 }
 
