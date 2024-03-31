@@ -1,17 +1,16 @@
-use rocket::{response::status::BadRequest, State};
+use ebobo_shared::Index;
+use rocket::{response::status::BadRequest, serde::json::Json, State};
 use sea_orm::*;
 
 use crate::{
-    entities::{prelude::*, users},
-    guards::auth::Auth,
-    AppState,
+    entities::{prelude::*, users}, guards::auth::Auth, AppState, APP_CONFIG, CONFIG
 };
 
 #[options("/")]
 pub async fn options() {}
 
 #[get("/")]
-pub async fn get(auth: Auth, state: &State<AppState>) -> Result<String, BadRequest<String>> {
+pub async fn get(auth: Auth, state: &State<AppState>) -> Result<Json<Index>, BadRequest<String>> {
     let user = Users::find()
         .filter(users::Column::Fingerprint.eq(&auth.fingerprint))
         .one(state.db.as_ref())
@@ -27,5 +26,8 @@ pub async fn get(auth: Auth, state: &State<AppState>) -> Result<String, BadReque
         }
     };
 
-    Ok(greet)
+    Ok(Json(Index {
+        greet,
+        fighters: APP_CONFIG.fighters.clone(),
+    }))
 }

@@ -13,7 +13,7 @@ pub async fn Fight<G: Html>() -> View<G> {
             spawn_local(async move {
                 match choose(&fighter).await {
                     Ok(_) => (),
-                    Err(err) => log::error!("error: {:?}", err),
+                    Err(err) => log::error!("error: {:?}", err), // TODO: handle error
                 }
             });
         }
