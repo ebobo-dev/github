@@ -6,7 +6,7 @@ use crate::api::get;
 pub async fn Index<G: Html>() -> View<G> {
     let greet = get().await;
     let greet = match greet {
-        Ok(fighters) => fighters,
+        Ok(g) => g,
         Err(e) => e.to_string(),
     };
 

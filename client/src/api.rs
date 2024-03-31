@@ -2,8 +2,6 @@ use reqwasm::http::Request;
 use serde::Deserialize;
 use wasm_fingerprint::make_fingerprint;
 
-use ebobo_shared::Fighter;
-
 #[derive(Deserialize)]
 struct Fingerprint {
     print: String,
