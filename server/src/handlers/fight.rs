@@ -1,5 +1,5 @@
 use rocket::{response::status::BadRequest, State};
-use sea_orm::*;
+use sea_orm::{prelude::*, *};
 
 use crate::{
     entities::{prelude::*, users::*},
@@ -24,7 +24,7 @@ pub async fn choose(
         .count();
 
     let user = ActiveModel {
-        id: Default::default(),
+        id: ActiveValue::set(Uuid::new_v4()),
         fingerprint: ActiveValue::set(auth.fingerprint.clone()),
         rank: Default::default(),
         root: ActiveValue::set(count == 0),

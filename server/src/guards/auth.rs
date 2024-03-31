@@ -27,7 +27,7 @@ impl<'r> FromRequest<'r> for Auth {
             Some(device) => match req.rocket().state::<AppState>() {
                 Some(state) => {
                     let res = Requests::insert(ActiveModel {
-                        id: Default::default(),
+                        id: ActiveValue::set(Uuid::new_v4()),
                         fingerprint: ActiveValue::set(device.to_string()),
                         address: ActiveValue::set(match req.client_ip() {
                             Some(addr) => Some(addr.to_string()),
