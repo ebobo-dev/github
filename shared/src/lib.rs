@@ -8,3 +8,6 @@ pub struct Index {
     pub greet: String,
     pub fighters: Vec<String>,
 }
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Choice(String);

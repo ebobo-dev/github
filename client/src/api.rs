@@ -2,7 +2,7 @@ use reqwasm::http::Request;
 use serde::Deserialize;
 use wasm_fingerprint::make_fingerprint;
 
-use ebobo_shared::Index;
+use ebobo_shared::*;
 
 #[derive(Deserialize)]
 struct Fingerprint {
@@ -31,14 +31,14 @@ pub async fn get() -> Result<Index, reqwasm::Error> {
         .await?)
 }
 
-pub async fn choose(fighter: &str) -> Result<(), reqwasm::Error> {
-    match Request::post(format!("{}/choose", url()).as_str())
+pub async fn choose(fighter: &str) -> Result<Choice, reqwasm::Error> {
+    Ok(Request::post(format!("{}/choose", url()).as_str())
         .header(ebobo_shared::AUTH_HEADER, &fingerprint())
         .body(fighter.to_owned())
         .send()
         .await
-    {
-        Ok(_) => Ok(()),
-        Err(err) => Err(err),
-    }
+        .map_err(|e| reqwasm::Error::from(e))?
+        .json()
+        .await
+        .map_err(|e| reqwasm::Error::from(e))?)
 }
