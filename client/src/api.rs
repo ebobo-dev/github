@@ -31,10 +31,11 @@ pub async fn get() -> Result<Index, reqwasm::Error> {
         .await?)
 }
 
-pub async fn choose(fighter: &str) -> Result<Choice, reqwasm::Error> {
+pub async fn choose(fighter: String) -> Result<Choice, reqwasm::Error> {
     Ok(Request::post(format!("{}/choose", url()).as_str())
         .header(ebobo_shared::AUTH_HEADER, &fingerprint())
-        .body(fighter.to_owned())
+        .body(serde_json::to_string(&Choice(fighter))
+        .unwrap())
         .send()
         .await
         .map_err(|e| reqwasm::Error::from(e))?

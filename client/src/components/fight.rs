@@ -9,9 +9,8 @@ pub async fn Fight<G: Html>() -> View<G> {
 
     create_effect(move || {
         if let Some(fighter) = selected.get() {
-            let fighter = fighter.to_string();
             spawn_local(async move {
-                match choose(&fighter).await {
+                match choose(fighter.to_string()).await {
                     Ok(_) => (),
                     Err(err) => log::error!("error: {:?}", err), // TODO: handle error
                 }

@@ -10,4 +10,4 @@ pub struct Index {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct Choice(String);
+pub struct Choice(pub String);
