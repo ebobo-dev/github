@@ -25,6 +25,8 @@ pub struct AppConfig {
     pub fighters: Vec<String>,
 }
 
+pub struct AvailableFighters(pub Vec<String>);
+
 #[shuttle_runtime::main]
 async fn rocket(
     #[shuttle_runtime::Secrets] secrets: shuttle_runtime::SecretStore,

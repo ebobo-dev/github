@@ -20,16 +20,15 @@ pub async fn get(auth: Auth, state: &State<AppState>) -> Result<Json<Index>, Bad
         .map_err(|e| BadRequest(e.to_string()))?;
 
     let greet = match user {
-        Some(user) => {
-            format!("Hi, {}!", user.fighter)
-        }
-        None => {
-            format!("Hello, {}!", auth.fingerprint)
-        }
+        Some(user) => format!("Hi, {}!", user.fighter),
+        None => format!("Hello, {}!", auth.fingerprint),
     };
 
     Ok(Json(Index {
         greet,
-        fighters: vec!["🐱", "🐵", "🐶", "🐷"].iter().map(|&x| x.into()).collect(),
+        fighters: vec!["🐱", "🐵", "🐶", "🐷"]
+            .iter()
+            .map(|&x| x.into())
+            .collect(),
     }))
 }
