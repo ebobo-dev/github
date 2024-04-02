@@ -21,20 +21,8 @@ pub struct AppState {
 }
 
 #[derive(Debug, Deserialize)]
-#[allow(unused)]
 pub struct AppConfig {
     pub fighters: Vec<String>,
-}
-
-lazy_static::lazy_static! {
-    #[derive(Debug, Deserialize)]
-    static ref CONFIG: Config = Config::builder()
-        .add_source(config::File::with_name("Settings"))
-        .build()
-        .expect("Failed to load configuration");
-
-    #[derive(Debug, Deserialize)]
-    pub static ref APP_CONFIG: AppConfig = CONFIG.clone().try_deserialize().expect("Failed to deserialize configuration");
 }
 
 #[shuttle_runtime::main]

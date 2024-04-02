@@ -5,7 +5,7 @@ use sea_orm::*;
 use crate::{
     entities::{prelude::*, users},
     guards::auth::Auth,
-    AppState, APP_CONFIG,
+    AppState,
 };
 
 #[options("/")]
@@ -30,6 +30,6 @@ pub async fn get(auth: Auth, state: &State<AppState>) -> Result<Json<Index>, Bad
 
     Ok(Json(Index {
         greet,
-        fighters: APP_CONFIG.fighters.clone(),
+        fighters: vec!["🐱", "🐵", "🐶", "🐷"].iter().map(|&x| x.into()).collect(),
     }))
 }
