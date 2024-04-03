@@ -5,6 +5,9 @@ use crate::components::{fight::Fight, index::Index};
 mod api;
 mod components;
 
+#[derive(Clone, PartialEq, Eq)]
+pub struct AvailableFighters(pub Vec<String>);
+
 #[component]
 fn App<G: Html>() -> View<G> {
     view! {

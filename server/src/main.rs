@@ -3,7 +3,6 @@ extern crate rocket;
 
 use std::sync::Arc;
 
-use config::Config;
 use sea_orm::*;
 use serde::Deserialize;
 
@@ -24,8 +23,6 @@ pub struct AppState {
 pub struct AppConfig {
     pub fighters: Vec<String>,
 }
-
-pub struct AvailableFighters(pub Vec<String>);
 
 #[shuttle_runtime::main]
 async fn rocket(
