@@ -1,12 +1,9 @@
 use sycamore::{prelude::*, suspense::Suspense};
 
-use crate::components::{fight::Fight, index::Index};
+use crate::components::{index::Index};
 
 mod api;
 mod components;
-
-#[derive(Clone, PartialEq, Eq)]
-pub struct AvailableFighters(pub Vec<String>);
 
 #[component]
 fn App<G: Html>() -> View<G> {
@@ -16,8 +13,6 @@ fn App<G: Html>() -> View<G> {
                 Suspense(fallback=view! { "Loading..." }) {
                     Index { }
                 }
-
-                Fight { }
             }
         }
     }

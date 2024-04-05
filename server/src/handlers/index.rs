@@ -1,6 +1,7 @@
-use ebobo_shared::Index;
 use rocket::{response::status::BadRequest, serde::json::Json, State};
 use sea_orm::*;
+
+use ebobo_shared::Index;
 
 use crate::{
     entities::{prelude::*, users},
@@ -27,8 +28,8 @@ pub async fn get(auth: Auth, state: &State<AppState>) -> Result<Json<Index>, Bad
     Ok(Json(Index {
         greet,
         fighters: vec!["🐱", "🐵", "🐶", "🐷"]
-            .iter()
-            .map(|&x| x.into())
+            .into_iter()
+            .map(|f| f.to_owned())
             .collect(),
     }))
 }

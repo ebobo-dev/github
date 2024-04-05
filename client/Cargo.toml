@@ -18,3 +18,4 @@ reqwasm = "0.5.0"
 serde = { version = "1.0.163", features = ["derive"] }
 serde_json = "1.0.96"
 futures = "0.3.30"
+ndarray = "0.15.6"
