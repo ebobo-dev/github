@@ -1,22 +1,33 @@
 use std::vec;
 
-use sycamore::prelude::*;
 use sycamore::futures::spawn_local;
+use sycamore::prelude::*;
 
 use crate::api::*;
 
 #[component(inline_props)]
 pub async fn Index<G: Html>() -> View<G> {
-    let available = create_signal(vec![]);
+    let available: Signal<Vec<String>> = create_signal(vec![]);
 
     let greet = match get().await {
         Ok(g) => {
-            available.set(g.fighters.clone());
+            available.set(g.fighters);
             g.greet
-        },
+        }
         Err(e) => e.to_string(),
     };
 
+    view! {
+        p {
+            (greet)
+        }
+
+        Fight(fighters = available) { }
+    }
+}
+
+#[component(inline_props)]
+pub async fn Fight<G: Html>(fighters: Signal<Vec<String>>) -> View<G> {
     let selected: Signal<Option<&str>> = create_signal(None);
 
     create_effect(move || {
@@ -30,22 +41,17 @@ pub async fn Index<G: Html>() -> View<G> {
         }
     });
 
-    view! {
-        p {
-            (greet)
-        }
-        div {
-            p { "choose your fighter:" }
-            ul {
-                Indexed(
-                    iterable = *available,
-                    view = move |f| view! {
-                        li {
-                            button(on:click = move |_| selected.set(None)) { (f) }
-                        }
+    view!( div {
+        p { "choose your fighter:" }
+        ul {
+            Indexed(
+                iterable = *fighters,
+                view = move |f| view! {
+                    li {
+                        button(on:click = move |_| selected.set(None)) { (f) }
                     }
-                )
-            }
+                }
+            )
         }
-    }
+    })
 }
