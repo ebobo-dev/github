@@ -48,7 +48,7 @@ pub async fn Fight<G: Html>(fighters: Signal<Vec<String>>) -> View<G> {
                 iterable = *fighters,
                 view = move |f| view! {
                     li {
-                        button(on:click = move |_| selected.set(None)) { (f) }
+                        button(on:click = move |_| selected.set(Some(&*f))) { (f) }
                     }
                 }
             )
