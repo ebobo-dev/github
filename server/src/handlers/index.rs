@@ -20,12 +20,13 @@ pub async fn get(auth: Auth, state: &State<AppState>) -> Result<Json<Index>, Bad
         .await
         .map_err(|e| BadRequest(e.to_string()))?;
 
-    let greet = match user {
+    let greet = match user.clone() {
         Some(user) => format!("Hi, {}!", user.fighter),
         None => format!("Hello, {}!", auth.fingerprint),
     };
 
     Ok(Json(Index {
+        fighter: user.is_some(),
         greet,
         fighters: vec!["🐱", "🐵", "🐶", "🐷"]
             .into_iter()

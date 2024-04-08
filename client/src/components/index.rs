@@ -1,7 +1,7 @@
 use sycamore::futures::spawn_local;
 use sycamore::prelude::*;
 
-use ebobo_shared::{Fighter, Index};
+use ebobo_shared::Fighter;
 
 use crate::api::*;
 
@@ -10,11 +10,11 @@ pub async fn Index<G: Html>() -> View<G> {
     let index = get().await.unwrap();
 
     view! {
-        p {
-            (index.greet)
-        }
+            p {
+                (index.greet)
+            }
 
-        Fight(fighters = index.fighters) { }
+            Fight(fighters = index.fighters)
     }
 }
 
