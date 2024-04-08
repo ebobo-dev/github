@@ -29,7 +29,7 @@ pub async fn get(auth: Auth, state: &State<AppState>) -> Result<Json<Index>, Bad
         greet,
         fighters: vec!["🐱", "🐵", "🐶", "🐷"]
             .into_iter()
-            .map(|f| Fighter(f.to_owned()))
+            .map(|f| Fighter::new(f))
             .collect(),
     }))
 }

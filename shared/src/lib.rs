@@ -10,7 +10,17 @@ pub struct Index {
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct Fighter(pub String);
+pub struct Fighter(String);
+
+impl Fighter {
+    pub fn new(name: &str) -> Self {
+        Self(name.to_owned())
+    }
+
+    pub fn name(&self) -> String {
+        self.0.clone()
+    }
+}
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Choice(pub String);
