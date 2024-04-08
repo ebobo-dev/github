@@ -15,17 +15,9 @@ pub async fn Index<G: Html>() -> View<G> {
                 (index.greet)
             }
 
-            (if select {
-                view! {
-                    p { "You are not a fighter!" }
-                }
-            } else {
-                view! {
-                    p { "You are a fighter!" }
-                }
-            })
-
-            Fight(fighters = index.fighters)
+            div(display = if select { "block" } else { "none" }) {
+                Fight(fighters = index.fighters)
+            }
     }
 }
 

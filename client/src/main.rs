@@ -1,7 +1,7 @@
 use sycamore::{prelude::*, suspense::Suspense};
 use web_sys::window;
 
-use crate::components::{index::Index};
+use crate::components::index::Index;
 
 mod api;
 mod components;
