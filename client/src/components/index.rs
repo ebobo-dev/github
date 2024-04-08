@@ -7,9 +7,6 @@ use crate::api::*;
 
 #[component(inline_props)]
 pub async fn Index<G: Html>() -> View<G> {
-
-
-
     let index = get().await.unwrap();
     let select = !index.fighter;
 

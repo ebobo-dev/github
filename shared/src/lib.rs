@@ -24,4 +24,14 @@ impl Fighter {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct Choice(pub String);
+pub struct Choice(String);
+
+impl Choice {
+    pub fn new(name: &str) -> Self {
+        Self(name.to_owned())
+    }
+
+    pub fn fighter(&self) -> String {
+        self.0.clone()
+    }
+}

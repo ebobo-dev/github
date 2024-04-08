@@ -28,7 +28,7 @@ pub async fn get(auth: Auth, state: &State<AppState>) -> Result<Json<Index>, Bad
     Ok(Json(Index {
         fighter: user.is_some(),
         greet,
-        fighters: vec!["🐱", "🐵", "🐶", "🐷"]
+        fighters: vec!["🐱", "🐵", "🐶", "🐷", "🐰", "🐮"]
             .into_iter()
             .map(|f| Fighter::new(f))
             .collect(),
