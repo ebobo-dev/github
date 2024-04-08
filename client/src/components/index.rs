@@ -37,6 +37,7 @@ pub async fn Fight<G: Html>(fighters: Vec<Fighter>) -> View<G> {
 
 #[component(inline_props)]
 pub async fn SelectFighter<G: Html>(fighter: Fighter) -> View<G> {
+    let name = fighter.clone().name();
     let selected: Signal<Option<Fighter>> = create_signal(None);
 
     create_effect(move || {
@@ -52,7 +53,7 @@ pub async fn SelectFighter<G: Html>(fighter: Fighter) -> View<G> {
 
     view! {
         li {
-            button(on:click = move |_| selected.set(None)) { (fighter.name()) }
+            button(on:click = move |_| selected.set(Some(fighter.clone()))) { (name) }
         }
     }
 }
