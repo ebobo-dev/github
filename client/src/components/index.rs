@@ -7,12 +7,26 @@ use crate::api::*;
 
 #[component(inline_props)]
 pub async fn Index<G: Html>() -> View<G> {
+
+
+
     let index = get().await.unwrap();
+    let select = !index.fighter;
 
     view! {
             p {
                 (index.greet)
             }
+
+            (if select {
+                view! {
+                    p { "You are not a fighter!" }
+                }
+            } else {
+                view! {
+                    p { "You are a fighter!" }
+                }
+            })
 
             Fight(fighters = index.fighters)
     }
