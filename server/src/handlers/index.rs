@@ -1,7 +1,7 @@
 use rocket::{response::status::BadRequest, serde::json::Json, State};
 use sea_orm::*;
 
-use ebobo_shared::Index;
+use ebobo_shared::{Fighter, Index};
 
 use crate::{
     entities::{prelude::*, users},
@@ -29,7 +29,7 @@ pub async fn get(auth: Auth, state: &State<AppState>) -> Result<Json<Index>, Bad
         greet,
         fighters: vec!["🐱", "🐵", "🐶", "🐷"]
             .into_iter()
-            .map(|f| f.to_owned())
+            .map(|f| Fighter(f.to_owned()))
             .collect(),
     }))
 }
