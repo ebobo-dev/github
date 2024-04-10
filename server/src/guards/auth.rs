@@ -13,14 +13,14 @@ pub struct Auth {
 }
 
 #[derive(Debug)]
-pub enum FingerprintError {
+pub enum AuthError {
     MissingFingerprint,
     InternalServerError(String),
 }
 
 #[rocket::async_trait]
 impl<'r> FromRequest<'r> for Auth {
-    type Error = FingerprintError;
+    type Error = AuthError;
 
     async fn from_request(req: &'r Request<'_>) -> request::Outcome<Self, Self::Error> {
         match req.headers().get_one(ebobo_shared::AUTH_HEADER) {
@@ -44,18 +44,18 @@ impl<'r> FromRequest<'r> for Auth {
                         }),
                         Err(e) => request::Outcome::Error((
                             Status::InternalServerError,
-                            FingerprintError::InternalServerError(e.to_string()),
+                            AuthError::InternalServerError(e.to_string()),
                         )),
                     }
                 }
                 None => request::Outcome::Error((
                     Status::InternalServerError,
-                    FingerprintError::InternalServerError("Missing application state".to_string()),
+                    AuthError::InternalServerError("Missing application state".to_string()),
                 )),
             },
             None => request::Outcome::Error((
                 Status::Unauthorized,
-                FingerprintError::MissingFingerprint,
+                AuthError::MissingFingerprint,
             )),
         }
     }
