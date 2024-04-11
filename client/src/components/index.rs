@@ -5,7 +5,7 @@ use crate::components::fighters::Fighters;
 
 #[component(inline_props)]
 pub async fn Index<G: Html>() -> View<G> {
-    let index = get().await.unwrap();
+    let index = get().await.expect("Failed to get page index");
     let select = !index.fighter;
 
     match select {
