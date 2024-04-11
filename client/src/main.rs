@@ -7,7 +7,7 @@ mod api;
 mod components;
 
 #[component]
-fn App<G: Html>() -> View<G> {
+pub fn App<G: Html>() -> View<G> {
     window().unwrap().document().unwrap().set_title("ebobo.dev");
 
     view! {
