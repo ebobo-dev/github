@@ -1,10 +1,10 @@
 use sycamore::futures::spawn_local;
 use sycamore::prelude::*;
+use web_sys::window;
 
 use ebobo_shared::Fighter;
 
 use crate::api::*;
-use crate::App;
 
 #[component(inline_props)]
 pub async fn Fighters<G: Html>(fighters: Vec<Fighter>) -> View<G> {
@@ -32,10 +32,7 @@ pub async fn SelectFighter<G: Html>(fighter: Fighter) -> View<G> {
         if let Some(fighter) = selected.get_clone() {
             spawn_local(async move {
                 match choose(fighter.name()).await {
-                    Ok(_) => {
-                        sycamore::render(App);
-                        ()
-                    },
+                    Ok(_) => window().unwrap().location().set_href("/").unwrap(),
                     Err(err) => log::error!("error: {:?}", err),
                 }
             });
