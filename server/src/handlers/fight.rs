@@ -1,6 +1,7 @@
-use ebobo_shared::Choice;
 use rocket::{response::status::BadRequest, State, serde::json::Json};
 use sea_orm::{prelude::*, *};
+
+use ebobo_shared::Choice;
 
 use crate::{
     entities::{prelude::*, users::*},
@@ -21,7 +22,7 @@ pub async fn choose(
         .all(state.db.as_ref())
         .await
         .map_err(|e| BadRequest(format!("Failed to fetch users count: {}", e)))?
-        .into_iter()
+        .iter()
         .count();
 
     let user = ActiveModel {
