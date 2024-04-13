@@ -11,12 +11,8 @@ pub fn App<G: Html>() -> View<G> {
     window().unwrap().document().unwrap().set_title("ebobo.dev");
 
     view! {
-        div {
-            article {
-                Suspense(fallback=view! { "Loading..." }) {
-                    Index { }
-                }
-            }
+        Suspense(fallback=view! { "Loading..." }) {
+            Index { }
         }
     }
 }
