@@ -32,7 +32,7 @@ pub async fn SelectFighter<G: Html>(fighter: Fighter) -> View<G> {
         if let Some(fighter) = selected.get_clone() {
             spawn_local(async move {
                 match choose(fighter.name()).await {
-                    Ok(_) => window().unwrap().location().set_href("https://www.ebobo.dev").unwrap(),
+                    Ok(_) => window().unwrap().location().assign("https://www.ebobo.dev").unwrap(),
                     Err(err) => log::error!("error: {:?}", err),
                 }
             });
