@@ -27,6 +27,7 @@ pub async fn get(auth: Auth, state: &State<AppState>) -> Result<Json<Index>, Bad
 
     Ok(Json(Index {
         fighter: user.is_some(),
+        root: user.is_some() && user.unwrap().root,
         greet,
         fighters: vec!["🐱", "🐵", "🐶", "🐷", "🐰", "🐮"]
             .into_iter()
