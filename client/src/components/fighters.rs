@@ -1,6 +1,5 @@
 use sycamore::futures::spawn_local;
 use sycamore::prelude::*;
-use web_sys::window;
 
 use ebobo_shared::Fighter;
 
@@ -32,7 +31,7 @@ pub async fn SelectFighter<G: Html>(fighter: Fighter) -> View<G> {
         if let Some(fighter) = selected.get_clone() {
             spawn_local(async move {
                 match choose(fighter.name()).await {
-                    Ok(_) => window().unwrap().location().assign("https://www.ebobo.dev").unwrap(),
+                    Ok(_) => (),
                     Err(err) => log::error!("error: {:?}", err),
                 }
             });

@@ -13,7 +13,7 @@ use crate::{
 pub async fn options() {}
 
 #[post("/choose", data = "<request>")]
-pub async fn choose(
+pub async fn post(
     auth: Auth,
     request: Json<Choice>,
     state: &State<AppState>,
