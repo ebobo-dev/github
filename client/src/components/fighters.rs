@@ -7,19 +7,24 @@ use crate::api::*;
 
 #[component(inline_props)]
 pub async fn Fighters<G: Html>(fighters: Vec<Fighter>) -> View<G> {
+    let size = fighters.len();
     let available = create_signal(fighters);
 
-    view!( div {
-        p { "choose your fighter:" }
-        ul {
-            Indexed(
-                iterable = *available,
-                view = move |f| view! {
-                    SelectFighter(fighter = f.clone())
-                }
-            )
-        }
-    })
+    if size == 0 {
+        view!(p { "no fighters available" })
+    } else {
+        view!( div {
+            p { "choose your fighter:" }
+            ul {
+                Indexed(
+                    iterable = *available,
+                    view = move |f| view! {
+                        SelectFighter(fighter = f.clone())
+                    }
+                )
+            }
+        })
+    }
 }
 
 #[component(inline_props)]
