@@ -29,7 +29,7 @@ impl<'r> FromRequest<'r> for Auth {
                     let res = Requests::insert(ActiveModel {
                         id: ActiveValue::set(Uuid::new_v4()),
                         fingerprint: ActiveValue::set(device.to_string()),
-                        address: ActiveValue::set(match req.client_ip() {
+                        address: ActiveValue::set(match req.real_ip() {
                             Some(addr) => Some(addr.to_string()),
                             None => None,
                         }),
@@ -53,7 +53,10 @@ impl<'r> FromRequest<'r> for Auth {
                     AuthError::InternalServerError("Missing application state".to_string()),
                 )),
             },
-            None => request::Outcome::Error((Status::Unauthorized, AuthError::MissingFingerprint)),
+            None => request::Outcome::Error((
+                Status::Unauthorized,
+                AuthError::MissingFingerprint,
+            )),
         }
     }
 }
