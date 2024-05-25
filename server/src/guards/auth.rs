@@ -53,10 +53,7 @@ impl<'r> FromRequest<'r> for Auth {
                     AuthError::InternalServerError("Missing application state".to_string()),
                 )),
             },
-            None => request::Outcome::Error((
-                Status::Unauthorized,
-                AuthError::MissingFingerprint,
-            )),
+            None => request::Outcome::Error((Status::Unauthorized, AuthError::MissingFingerprint)),
         }
     }
 }
