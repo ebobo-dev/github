@@ -29,7 +29,7 @@ impl<'r> FromRequest<'r> for Auth {
                     match Requests::insert(ActiveModel {
                         id: ActiveValue::set(Uuid::new_v4()),
                         fingerprint: ActiveValue::set(device.to_string()),
-                        address: ActiveValue::set(match req.real_ip() {
+                        address: ActiveValue::set(match req.client_ip() {
                             Some(addr) => Some(addr.to_string()),
                             None => None,
                         }),
