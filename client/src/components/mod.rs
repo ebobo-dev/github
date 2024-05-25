@@ -1,2 +1,2 @@
 pub mod index;
-pub mod fighters;
+pub mod choose;

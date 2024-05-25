@@ -1,10 +1,21 @@
 use sycamore::{prelude::*, suspense::Suspense};
+use sycamore_router::{Route, Router, RouterProps};
 use web_sys::window;
 
 use crate::components::index::Index;
 
 mod api;
 mod components;
+
+#[derive(Route)]
+enum AppRoutes {
+    #[to("/")]
+    Index,
+    #[to("/choose")]
+    Choose,
+    #[not_found]
+    NotFound,
+}
 
 #[component]
 pub fn App<G: Html>() -> View<G> {

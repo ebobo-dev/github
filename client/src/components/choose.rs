@@ -29,7 +29,7 @@ pub async fn Fighters<G: Html>(fighters: Vec<Fighter>) -> View<G> {
 
 #[component(inline_props)]
 pub async fn SelectFighter<G: Html>(fighter: Fighter) -> View<G> {
-    let name = fighter.clone().name();
+    let name = fighter.name();
     let selected: Signal<Option<Fighter>> = create_signal(None);
 
     create_effect(move || {

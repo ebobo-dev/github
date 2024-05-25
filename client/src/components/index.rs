@@ -1,7 +1,7 @@
 use sycamore::prelude::*;
 
 use crate::api::*;
-use crate::components::fighters::Fighters;
+use crate::components::choose::Fighters;
 
 #[component(inline_props)]
 pub async fn Index<G: Html>() -> View<G> {
