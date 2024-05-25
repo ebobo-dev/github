@@ -21,17 +21,31 @@ pub async fn get(auth: Auth, state: &State<AppState>) -> Result<Json<Index>, Bad
         .map_err(|e| BadRequest(e.to_string()))?;
 
     let greet = match user.clone() {
-        Some(user) => format!("Hi, {}!", user.fighter),
-        None => format!("Hello, {}!", auth.fingerprint),
+        Some(user) => format!("hi, {}! your rank is {}.", user.fighter, user.rank),
+        None => format!("hello, {}!", auth.fingerprint),
     };
+
+    let fighters = vec!['🐱', '🐵', '🐶', '🐷', '🐰', '🐮'];
+
+    let taken = Users::find()
+        .column(users::Column::Fingerprint)
+        .all(state.db.as_ref())
+        .await
+        .map_err(|e| BadRequest(e.to_string()))?
+        .into_iter()
+        .map(|f| f.fighter)
+        .collect::<Vec<String>>();
+
+    let available = fighters
+        .into_iter()
+        .filter(|f| !taken.contains(&f.to_string()))
+        .map(|f| Fighter::new(f.to_string().as_str()))
+        .collect();
 
     Ok(Json(Index {
         fighter: user.is_some(),
         root: user.is_some() && user.unwrap().root,
         greet,
-        fighters: vec!["🐱", "🐵", "🐶", "🐷", "🐰", "🐮"]
-            .into_iter()
-            .map(|f| Fighter::new(f))
-            .collect(),
+        fighters: available,
     }))
 }
