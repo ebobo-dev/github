@@ -26,7 +26,7 @@ impl<'r> FromRequest<'r> for Auth {
         match req.headers().get_one(ebobo_shared::AUTH_HEADER) {
             Some(device) => match req.rocket().state::<AppState>() {
                 Some(state) => {
-                    let res = Requests::insert(ActiveModel {
+                    match Requests::insert(ActiveModel {
                         id: ActiveValue::set(Uuid::new_v4()),
                         fingerprint: ActiveValue::set(device.to_string()),
                         address: ActiveValue::set(match req.real_ip() {
@@ -36,9 +36,8 @@ impl<'r> FromRequest<'r> for Auth {
                         timestamp: ActiveValue::set(Utc::now().naive_utc()),
                     })
                     .exec(state.db.as_ref())
-                    .await;
-
-                    match res {
+                    .await
+                    {
                         Ok(_) => request::Outcome::Success(Auth {
                             fingerprint: device.to_string(),
                         }),
@@ -53,10 +52,7 @@ impl<'r> FromRequest<'r> for Auth {
                     AuthError::InternalServerError("Missing application state".to_string()),
                 )),
             },
-            None => request::Outcome::Error((
-                Status::Unauthorized,
-                AuthError::MissingFingerprint,
-            )),
+            None => request::Outcome::Error((Status::Unauthorized, AuthError::MissingFingerprint)),
         }
     }
 }
