@@ -13,17 +13,18 @@ pub fn App<G: Html>() -> View<G> {
     window().unwrap().document().unwrap().set_title("ebobo.dev");
 
     view! {
-        Router(
-            integration=HistoryIntegration::new(),
-            view=|route: ReadSignal<AppRoutes>| view! {
-                div(class="app") {
-                  //  components::index::Index()
-                    div(class="container") {
-                        Switch(route=route)
-                    }
-                }
-            }
-        )
+        crate::components::index::Index()
+        // Router(
+        //     integration=HistoryIntegration::new(),
+        //     view=|route: ReadSignal<AppRoutes>| view! {
+        //         div(class="app") {
+        //           //  components::index::Index()
+        //             div(class="container") {
+        //                 Switch(route=route)
+        //             }
+        //         }
+        //     }
+        // )
     }
 }
 
