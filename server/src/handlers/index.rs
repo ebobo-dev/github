@@ -19,15 +19,17 @@ pub async fn get(auth: Auth, state: &State<AppState>) -> Result<Json<Index>, Bad
         .one(state.db.as_ref())
         .await
         .map_err(|e| BadRequest(e.to_string()))?;
-
-    let greet = match user.clone() {
-        Some(user) => format!("hi, {}! your rank is {}.", user.fighter, user.rank),
-        None => format!("hello, {}!", auth.fingerprint),
-    };
-
-    Ok(Json(Index {
-        fighter: user.is_some(),
-        root: user.is_some() && user.unwrap().root,
-        greet,
-    }))
+    
+    match user {
+        Some(user) => Ok(Json(Index {
+            greet: format!("hi, {}! your rank is {}.", user.fighter, user.rank),
+            fighter: Some(user.fighter),
+            rank: Some(user.rank),
+        })),
+        None => Ok(Json(Index {
+            greet: format!("hello, {}!", auth.fingerprint),
+            fighter: None,
+            rank: None,
+        })),
+    }
 }
