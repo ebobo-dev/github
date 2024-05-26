@@ -17,7 +17,7 @@ pub fn App<G: Html>() -> View<G> {
             integration=HistoryIntegration::new(),
             view=|route: ReadSignal<AppRoutes>| view! {
                 div(class="app") {
-                    components::index::Index()
+                  //  components::index::Index()
                     div(class="container") {
                         Switch(route=route)
                     }
