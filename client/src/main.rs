@@ -1,8 +1,7 @@
-use sycamore::{prelude::*, reactive::ReadSignal, suspense::Suspense};
-use sycamore_router::{HistoryIntegration, Route, Router};
+use sycamore::{prelude::*, reactive::ReadSignal};
+use sycamore_router::{HistoryIntegration, Router};
 use web_sys::window;
 
-use components::{choose::Fighters, index::Index};
 use routing::*;
 
 mod api;

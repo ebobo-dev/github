@@ -49,7 +49,7 @@ pub async fn SelectFighter<G: Html>(fighter: Fighter) -> View<G> {
         li {
             button(on:click = move |_| { 
                 selected.set(Some(fighter.clone()));
-                navigate("index")
+                navigate("/")
              }) { (name) }
         }
     }
