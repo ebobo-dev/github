@@ -7,8 +7,7 @@ pub const AUTH_HEADER: &str = "EBOBO-FINGERPRINT";
 pub struct Index {
     pub fighter: bool,
     pub root: bool,
-    pub greet: String,
-    pub fighters: Vec<Fighter>,
+    pub greet: String
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]

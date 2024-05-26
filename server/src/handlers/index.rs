@@ -1,7 +1,7 @@
 use rocket::{response::status::BadRequest, serde::json::Json, State};
 use sea_orm::*;
 
-use ebobo_shared::{Fighter, Index};
+use ebobo_shared::Index;
 
 use crate::{
     entities::{prelude::*, users},
@@ -25,27 +25,9 @@ pub async fn get(auth: Auth, state: &State<AppState>) -> Result<Json<Index>, Bad
         None => format!("hello, {}!", auth.fingerprint),
     };
 
-    let fighters = vec!['🐱', '🐵', '🐶', '🐷', '🐰', '🐮'];
-
-    let taken = Users::find()
-        .column(users::Column::Fingerprint)
-        .all(state.db.as_ref())
-        .await
-        .map_err(|e| BadRequest(e.to_string()))?
-        .into_iter()
-        .map(|f| f.fighter)
-        .collect::<Vec<String>>();
-
-    let available = fighters
-        .into_iter()
-        .filter(|f| !taken.contains(&f.to_string()))
-        .map(|f| Fighter::new(f.to_string().as_str()))
-        .collect();
-
     Ok(Json(Index {
         fighter: user.is_some(),
         root: user.is_some() && user.unwrap().root,
         greet,
-        fighters: available,
     }))
 }
