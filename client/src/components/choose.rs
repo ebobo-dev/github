@@ -2,6 +2,7 @@ use sycamore::futures::spawn_local;
 use sycamore::prelude::*;
 
 use ebobo_shared::Fighter;
+use sycamore_router::navigate;
 
 use crate::api::*;
 
@@ -46,7 +47,10 @@ pub async fn SelectFighter<G: Html>(fighter: Fighter) -> View<G> {
 
     view! {
         li {
-            button(on:click = move |_| selected.set(Some(fighter.clone()))) { (name) }
+            button(on:click = move |_| { 
+                selected.set(Some(fighter.clone()));
+                navigate("index")
+             }) { (name) }
         }
     }
 }
