@@ -7,8 +7,8 @@ use crate::components;
 pub enum AppRoutes {
     #[to("/")]
     Index,
-    #[to("/choose")]
-    Choose,
+    // #[to("/choose")]
+    // Choose,
     #[not_found]
     NotFound,
 }
@@ -17,7 +17,7 @@ pub enum AppRoutes {
 pub async fn Switch<G: Html>(route: ReadSignal<AppRoutes>) -> View<G> {
     view! {(match route.get() {
             AppRoutes::Index => view! { components::index::Index() },
-            AppRoutes::Choose => view! { components::choose::Fighters() },
+            //AppRoutes::Choose => view! { components::choose::Fighters() },
             AppRoutes::NotFound => view! { "404 Page Not Found"}
         })
     }
