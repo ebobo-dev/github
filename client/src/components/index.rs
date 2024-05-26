@@ -10,6 +10,7 @@ pub async fn Index<G: Html>() -> View<G> {
     match index.fighter {
         Some(_) => {
             view! {
+                p { (index.greet) }
                 Dashboard() 
             }
         },
