@@ -9,10 +9,10 @@ use crate::{
     AppState,
 };
 
-#[options("/choose")]
+#[options("/available")]
 pub async fn options() {}
 
-#[get("/")]
+#[get("/available")]
 pub async fn get(
     _auth: Auth,
     state: &State<AppState>,
