@@ -11,8 +11,8 @@ struct Fingerprint {
 
 fn fingerprint() -> String {
     let fingerprint: Fingerprint =
-        serde_json::from_str(&make_fingerprint().expect("Fingerprint not available"))
-            .expect("Failed to deserialize fingerprint");
+        serde_json::from_str(&make_fingerprint().expect("fingerprint not available"))
+            .expect("failed to deserialize fingerprint");
     fingerprint.print
 }
 
@@ -43,7 +43,7 @@ pub async fn available() -> Result<Vec<Fighter>, reqwasm::Error> {
 pub async fn choose(fighter: String) -> Result<Choice, reqwasm::Error> {
     Ok(Request::post(format!("{}/choose", url()).as_str())
         .header(ebobo_shared::AUTH_HEADER, &fingerprint())
-        .body(serde_json::to_string(&Choice::new(&fighter)).expect("Failed to serialize choice"))
+        .body(serde_json::to_string(&Choice::new(&fighter)).expect("failed to serialize choice"))
         .send()
         .await
         .map_err(|e| reqwasm::Error::from(e))?

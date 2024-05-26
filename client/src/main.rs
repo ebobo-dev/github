@@ -29,12 +29,12 @@ pub fn App<G: Html>() -> View<G> {
                     div(class="app") {
                         (match route.get() {
                             AppRoutes::Index => view! {
-                                Suspense(fallback=view! { "Loading..." }) {
+                                Suspense(fallback=view! { "loading..." }) {
                                     Index { }
                                 }
                             },
                             AppRoutes::Choose => view! {
-                                Suspense(fallback=view! { "Loading..." }) {
+                                Suspense(fallback=view! { "loading available fighters..." }) {
                                     Fighters { }
                                 }
                             },

@@ -3,7 +3,7 @@ use sycamore_router::navigate;
 
 use crate::api::*;
 
-#[component(inline_props)]
+#[component]
 pub async fn Index<G: Html>() -> View<G> {
     let index = get().await.expect("failed to get greeting");
 
