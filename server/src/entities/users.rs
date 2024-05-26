@@ -11,7 +11,6 @@ pub struct Model {
     pub fingerprint: String,
     #[sea_orm(unique)]
     pub fighter: String,
-    pub root: bool,
     pub rank: i32,
 }
 

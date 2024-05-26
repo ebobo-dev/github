@@ -18,18 +18,10 @@ pub async fn post(
     request: Json<Choice>,
     state: &State<AppState>,
 ) -> Result<(), BadRequest<String>> {
-    let count = Users::find()
-        .all(state.db.as_ref())
-        .await
-        .map_err(|e| BadRequest(format!("Failed to fetch users count: {}", e)))?
-        .iter()
-        .count();
-
     let user = ActiveModel {
         id: ActiveValue::set(Uuid::new_v4()),
         fingerprint: ActiveValue::set(auth.fingerprint.clone()),
         rank: Default::default(),
-        root: ActiveValue::set(count == 0),
         fighter: ActiveValue::set(request.fighter()),
     };
 

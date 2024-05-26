@@ -2,5 +2,4 @@
 
 pub mod prelude;
 
-pub mod requests;
 pub mod users;
