@@ -6,7 +6,8 @@ use ebobo_shared::Fighter;
 use crate::api::*;
 
 #[component(inline_props)]
-pub async fn Fighters<G: Html>(fighters: Vec<Fighter>) -> View<G> {
+pub async fn Fighters<G: Html>() -> View<G> {
+    let fighters = available().await.expect("failed to get available fighters");
     let size = fighters.len();
     let available = create_signal(fighters);
 

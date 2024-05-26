@@ -5,10 +5,10 @@ edition = "2021"
 
 [dependencies]
 ebobo-shared = { path = "../shared" }
-sycamore = { git = "https://github.com/sycamore-rs/sycamore", rev = "11613939a534312a293c216f856af567b7d67152", features = [
+sycamore = { version = "0.9.0-beta.2", features = [
     "suspense",
 ] }
-sycamore-router = "0.8.0"
+sycamore-router = "0.9.0-beta.2"
 wasm-fingerprint = { git = "https://github.com/dotnicht/wasm-fingerprint.git" }
 wasm-rs-async-executor = "0.9.0"
 web-sys = "0.3.68"

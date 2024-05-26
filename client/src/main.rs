@@ -1,13 +1,13 @@
-use sycamore::{prelude::*, suspense::Suspense};
-use sycamore_router::{Route, Router, RouterProps};
+use sycamore::{prelude::*, reactive::ReadSignal, suspense::Suspense};
+use sycamore_router::{HistoryIntegration, Route, Router};
 use web_sys::window;
 
-use crate::components::index::Index;
+use crate::components::{index::Index, choose::Fighters};
 
 mod api;
 mod components;
 
-#[derive(Route)]
+#[derive(Route, Clone, Copy)]
 enum AppRoutes {
     #[to("/")]
     Index,
@@ -22,9 +22,30 @@ pub fn App<G: Html>() -> View<G> {
     window().unwrap().document().unwrap().set_title("ebobo.dev");
 
     view! {
-        Suspense(fallback=view! { "Loading..." }) {
-            Index { }
-        }
+        Router(
+            integration=HistoryIntegration::new(),
+            view=|route: ReadSignal<AppRoutes>| {
+                view! {
+                    div(class="app") {
+                        (match route.get() {
+                            AppRoutes::Index => view! {
+                                Suspense(fallback=view! { "Loading..." }) {
+                                    Index { }
+                                }
+                            },
+                            AppRoutes::Choose => view! {
+                                Suspense(fallback=view! { "Loading..." }) {
+                                    Fighters { }
+                                }
+                            },
+                            AppRoutes::NotFound => view! {
+                                "404 Not Found"
+                            },
+                        })
+                    }
+                }
+            }
+        )
     }
 }
 

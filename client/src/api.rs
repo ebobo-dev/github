@@ -31,6 +31,15 @@ pub async fn get() -> Result<Index, reqwasm::Error> {
         .await?)
 }
 
+pub async fn available() -> Result<Vec<Fighter>, reqwasm::Error> {
+    Ok(Request::get(format!("{}/available", url()).as_str())
+        .header(ebobo_shared::AUTH_HEADER, &fingerprint())
+        .send()
+        .await?
+        .json()
+        .await?)
+}
+
 pub async fn choose(fighter: String) -> Result<Choice, reqwasm::Error> {
     Ok(Request::post(format!("{}/choose", url()).as_str())
         .header(ebobo_shared::AUTH_HEADER, &fingerprint())
