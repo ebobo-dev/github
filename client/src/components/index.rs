@@ -7,7 +7,7 @@ use crate::api::*;
 pub async fn Index<G: Html>() -> View<G> {
     let index = get().await.expect("failed to get greeting");
 
-    if !index.fighter { navigate("/choose") }
+    //if !index.fighter { navigate("/choose") }
 
     view! {
         p {
