@@ -7,7 +7,6 @@ use routing::*;
 
 mod api;
 mod components;
-mod pages;
 mod routing;
 
 #[component]
@@ -26,32 +25,6 @@ pub fn App<G: Html>() -> View<G> {
                 }
             }
         )
-
-        // Router(
-        //     integration=HistoryIntegration::new(),
-        //     view=|route: ReadSignal<AppRoutes>| {
-        //         view! {
-        //             div(class="app") {
-        //                 (match route.get() {
-        //                     AppRoutes::Index => view! {
-        //                         Suspense(fallback=view! { "loading..." }) {
-        //                             Index { }
-        //                         }
-        //                     },
-        //                     AppRoutes::Choose => view! {
-        //                         Suspense(fallback=view! { "loading available fighters..." }) {
-        //                             Fighters { }
-        //                         }
-        //                     },
-        //                     AppRoutes::NotFound => view! {
-        //                         "404 Not Found"
-        //                     },
-        //                 })
-        //             }
-        //         }
-        //     }
-        // )
-
     }
 }
 

@@ -1,7 +1,7 @@
 use sycamore::prelude::*;
-use sycamore_router::{HistoryIntegration, Route, Router};
+use sycamore_router::Route;
 
-use crate::pages;
+use crate::components;
 
 #[derive(Route, Clone, Copy, Debug)]
 pub enum AppRoutes {
@@ -16,8 +16,8 @@ pub enum AppRoutes {
 #[component(inline_props)]
 pub async fn Switch<G: Html>(route: ReadSignal<AppRoutes>) -> View<G> {
     view! {(match route.get() {
-            AppRoutes::Index => view! { pages::index::Index() },
-            AppRoutes::Choose => view! { pages::choose::Choose() },
+            AppRoutes::Index => view! { components::index::Index() },
+            AppRoutes::Choose => view! { components::choose::Fighters() },
             AppRoutes::NotFound => view! { "404 Page Not Found"}
         })
     }
