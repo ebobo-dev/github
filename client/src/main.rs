@@ -35,6 +35,7 @@ pub fn App<G: Html>() -> View<G> {
                             },
                             AppRoutes::Choose => view! {
                                 Suspense(fallback=view! { "Loading..." }) {
+                                    Index { }
                                     Fighters { }
                                 }
                             },
