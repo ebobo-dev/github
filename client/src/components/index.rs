@@ -1,5 +1,5 @@
 use sycamore::prelude::*;
-use sycamore_router::navigate;
+use crate::components::choose::Fighters;
 
 use crate::api::*;
 
@@ -9,8 +9,9 @@ pub async fn Index<G: Html>() -> View<G> {
     match index.fighter {
         Some(f) => view! { (f) },
         None => {
-            navigate("choose");
-            view! { }
+            view! { 
+                Fighters()
+            }
         }
     }
 }
