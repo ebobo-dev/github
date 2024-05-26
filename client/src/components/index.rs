@@ -1,6 +1,6 @@
 use sycamore::prelude::*;
-use sycamore_router::navigate;
-use crate::components::choose::Fighters;
+
+use crate::components::{choose::Fighters, arena::Dashboard};
 
 use crate::api::*;
 
@@ -9,8 +9,9 @@ pub async fn Index<G: Html>() -> View<G> {
     let index = get().await.expect("failed to get greeting");
     match index.fighter {
         Some(_) => {
-            navigate("arena");
-            view! { p { (index.greet) } }
+            view! {
+                Dashboard() 
+            }
         },
         None => {
             view! { 
