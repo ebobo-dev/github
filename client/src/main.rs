@@ -12,18 +12,20 @@ mod routing;
 pub fn App<G: Html>() -> View<G> {
     window().unwrap().document().unwrap().set_title("ebobo.dev");
 
-    view! {
-        Router(
-            integration=HistoryIntegration::new(),
-            view=|route: ReadSignal<AppRoutes>| view! {
-                div(class="app") {
-                    div(class="container") {
-                        Switch(route=route)
-                    }
-                }
-            }
-        )
-    }
+    view! { components::index::Index() }
+
+    // view! {
+    //     Router(
+    //         integration=HistoryIntegration::new(),
+    //         view=|route: ReadSignal<AppRoutes>| view! {
+    //             div(class="app") {
+    //                 div(class="container") {
+    //                     Switch(route=route)
+    //                 }
+    //             }
+    //         }
+    //     )
+    // }
 }
 
 fn main() {
