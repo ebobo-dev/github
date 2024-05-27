@@ -14,17 +14,16 @@ pub fn App<G: Html>() -> View<G> {
 
     view! {
         crate::components::index::Index()
-        // Router(
-        //     integration=HistoryIntegration::new(),
-        //     view=|route: ReadSignal<AppRoutes>| view! {
-        //         div(class="app") {
-        //           //  components::index::Index()
-        //             div(class="container") {
-        //                 Switch(route=route)
-        //             }
-        //         }
-        //     }
-        // )
+        Router(
+            integration=HistoryIntegration::new(),
+            view=|route: ReadSignal<AppRoutes>| view! {
+                div(class="app") {
+                    div(class="container") {
+                        Switch(route=route)
+                    }
+                }
+            }
+        )
     }
 }
 
