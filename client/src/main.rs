@@ -31,3 +31,7 @@ fn main() {
     console_log::init_with_level(log::Level::Debug).unwrap();
     sycamore::render(App);
 }
+
+pub fn render() {
+    sycamore::render(App);
+}
