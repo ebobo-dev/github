@@ -12,28 +12,22 @@ mod routing;
 pub fn App<G: Html>() -> View<G> {
     window().unwrap().document().unwrap().set_title("ebobo.dev");
 
-    view! { components::index::Index() }
-
-    // view! {
-    //     Router(
-    //         integration=HistoryIntegration::new(),
-    //         view=|route: ReadSignal<AppRoutes>| view! {
-    //             div(class="app") {
-    //                 div(class="container") {
-    //                     Switch(route=route)
-    //                 }
-    //             }
-    //         }
-    //     )
-    // }
+    view! {
+        Router(
+            integration=HistoryIntegration::new(),
+            view=|route: ReadSignal<AppRoutes>| view! {
+                div(class="app") {
+                    div(class="container") {
+                        Switch(route=route)
+                    }
+                }
+            }
+        )
+    }
 }
 
 fn main() {
     console_error_panic_hook::set_once();
     console_log::init_with_level(log::Level::Debug).unwrap();
-    sycamore::render(App);
-}
-
-pub fn render() {
     sycamore::render(App);
 }

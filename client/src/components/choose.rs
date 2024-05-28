@@ -3,7 +3,7 @@ use sycamore::prelude::*;
 
 use ebobo_shared::Fighter;
 
-use crate::{api::*, render};
+use crate::api::*;
 
 #[component]
 pub async fn Fighters<G: Html>() -> View<G> {
@@ -46,9 +46,8 @@ pub async fn SelectFighter<G: Html>(fighter: Fighter) -> View<G> {
 
     view! {
         li {
-            button(on:click = move |_| { 
+            button(on:click = move |_| {
                 selected.set(Some(fighter.clone()));
-                render()
             }) { (name) }
         }
     }
