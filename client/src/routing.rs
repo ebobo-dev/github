@@ -5,7 +5,7 @@ use crate::components;
 
 #[derive(Route, Clone, Copy, Debug)]
 pub enum AppRoutes {
-    #[to("/")]
+    #[to("#")]
     Index,
     #[to("#arena")]
     Arena,
