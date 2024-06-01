@@ -3,6 +3,7 @@ use sycamore::prelude::*;
 
 use ebobo_shared::Fighter;
 use sycamore_router::navigate;
+use web_sys::wasm_bindgen::UnwrapThrowExt;
 
 use crate::api::*;
 
@@ -37,10 +38,7 @@ pub async fn SelectFighter<G: Html>(fighter: Fighter) -> View<G> {
     create_effect(move || {
         if let Some(fighter) = selected.get_clone() {
             spawn_local(async move {
-                match choose(fighter.name()).await {
-                    Ok(_) => (),
-                    Err(err) => log::error!("error: {:?}", err),
-                }
+                choose(fighter.name()).await.unwrap_throw();
             });
         }
     });
