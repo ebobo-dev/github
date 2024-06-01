@@ -28,11 +28,11 @@ pub async fn get(
         .map(|f| f.fighter)
         .collect::<Vec<String>>();
 
-    let available = fighters
-        .into_iter()
-        .filter(|f| !taken.contains(&f.to_string()))
-        .map(|f| Fighter(f.to_string()))
-        .collect();
-
-    Ok(Json(available))
+    Ok(Json(
+        fighters
+            .into_iter()
+            .filter(|f| !taken.contains(&f.to_string()))
+            .map(|f| Fighter(f.to_string()))
+            .collect(),
+    ))
 }
