@@ -1,5 +1,5 @@
 use sycamore::prelude::*;
-use sycamore_router::Route;
+use sycamore_router::{HistoryIntegration, Router, Route};
 
 use crate::components;
 
@@ -20,5 +20,21 @@ pub async fn Switch<G: Html>(route: ReadSignal<AppRoutes>) -> View<G> {
             AppRoutes::Arena => view! { components::arena::Dashboard() },
             AppRoutes::NotFound => view! { "lost?"}
         })
+    }
+}
+
+#[component(inline_props)]
+pub async fn Root<G: Html>() -> View<G> {
+    view! {
+        Router(
+            integration=HistoryIntegration::new(),
+            view=|route: ReadSignal<AppRoutes>| view! {
+                div(class="app") {
+                    div(class="container") {
+                        Switch(route=route)
+                    }
+                }
+            }
+        )
     }
 }

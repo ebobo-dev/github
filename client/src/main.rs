@@ -1,5 +1,4 @@
-use sycamore::{prelude::*, reactive::ReadSignal};
-use sycamore_router::{HistoryIntegration, Router};
+use sycamore::prelude::*;
 use web_sys::{wasm_bindgen::prelude::*, window};
 
 use routing::*;
@@ -17,16 +16,7 @@ pub fn App<G: Html>() -> View<G> {
         .set_title("ebobo.dev");
 
     view! {
-        Router(
-            integration=HistoryIntegration::new(),
-            view=|route: ReadSignal<AppRoutes>| view! {
-                div(class="app") {
-                    div(class="container") {
-                        Switch(route=route)
-                    }
-                }
-            }
-        )
+        Root()
     }
 }
 
