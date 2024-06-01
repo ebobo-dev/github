@@ -7,10 +7,10 @@ use crate::{
     AppState,
 };
 
-#[options("/")]
+#[options("/fight")]
 pub async fn options() {}
 
-#[get("/")]
+#[post("/fight")]
 pub async fn post(auth: Auth, state: &State<AppState>) -> Result<(), BadRequest<String>> {
     Ok(())
 }
