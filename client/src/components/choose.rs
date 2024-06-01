@@ -1,9 +1,9 @@
 use sycamore::futures::spawn_local;
 use sycamore::prelude::*;
-
-use ebobo_shared::Fighter;
 use sycamore_router::navigate;
 use web_sys::wasm_bindgen::UnwrapThrowExt;
+
+use ebobo_shared::Fighter;
 
 use crate::api::*;
 
