@@ -1,5 +1,5 @@
 use sycamore::prelude::*;
-use sycamore_router::{HistoryIntegration, Router, Route};
+use sycamore_router::{HistoryIntegration, Route, Router};
 
 use crate::components;
 
@@ -29,11 +29,7 @@ pub async fn Root<G: Html>() -> View<G> {
         Router(
             integration=HistoryIntegration::new(),
             view=|route: ReadSignal<AppRoutes>| view! {
-                div(class="app") {
-                    div(class="container") {
-                        Switch(route=route)
-                    }
-                }
+                Switch(route=route)
             }
         )
     }
