@@ -7,7 +7,7 @@ use crate::components;
 pub enum AppRoutes {
     #[to("/")]
     Index,
-    #[to("/arena")]
+    #[to("#arena")]
     Arena,
     #[not_found]
     NotFound,
