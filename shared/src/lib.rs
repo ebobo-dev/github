@@ -10,6 +10,12 @@ pub struct Index {
     pub greet: String,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Arena {
+    pub total: u8,
+    pub ready: u8,
+}
+
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Fighter(String);
 

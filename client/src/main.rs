@@ -1,6 +1,6 @@
 use sycamore::{prelude::*, reactive::ReadSignal};
 use sycamore_router::{HistoryIntegration, Router};
-use web_sys::window;
+use web_sys::{wasm_bindgen::prelude::*, window};
 
 use routing::*;
 
@@ -10,7 +10,11 @@ mod routing;
 
 #[component]
 pub fn App<G: Html>() -> View<G> {
-    window().unwrap().document().unwrap().set_title("ebobo.dev");
+    window()
+        .unwrap_throw()
+        .document()
+        .unwrap_throw()
+        .set_title("ebobo.dev");
 
     view! {
         Router(
