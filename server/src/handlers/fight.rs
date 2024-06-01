@@ -20,9 +20,9 @@ pub async fn post(
 ) -> Result<(), BadRequest<String>> {
     let user = ActiveModel {
         id: ActiveValue::set(Uuid::new_v4()),
-        fingerprint: ActiveValue::set(auth.fingerprint.clone()),
+        fingerprint: ActiveValue::set(auth.fingerprint),
         rank: Default::default(),
-        fighter: ActiveValue::set(request.fighter()),
+        fighter: ActiveValue::set(request.0.0),
     };
 
     Users::insert(user)

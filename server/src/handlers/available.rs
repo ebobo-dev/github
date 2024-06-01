@@ -31,7 +31,7 @@ pub async fn get(
     let available = fighters
         .into_iter()
         .filter(|f| !taken.contains(&f.to_string()))
-        .map(|f| Fighter::new(f.to_string().as_str()))
+        .map(|f| Fighter(f.to_string()))
         .collect();
 
     Ok(Json(available))

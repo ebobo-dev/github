@@ -32,13 +32,13 @@ pub async fn Fighters<G: Html>() -> View<G> {
 
 #[component(inline_props)]
 pub async fn SelectFighter<G: Html>(fighter: Fighter) -> View<G> {
-    let name = fighter.name();
+    let name = fighter.0.clone();
     let selected: Signal<Option<Fighter>> = create_signal(None);
 
     create_effect(move || {
         if let Some(fighter) = selected.get_clone() {
             spawn_local(async move {
-                choose(fighter.name()).await.unwrap_throw();
+                choose(fighter.0).await.unwrap_throw();
             });
         }
     });

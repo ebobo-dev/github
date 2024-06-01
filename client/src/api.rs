@@ -43,7 +43,7 @@ pub async fn available() -> Result<Vec<Fighter>, reqwasm::Error> {
 pub async fn choose(fighter: String) -> Result<Choice, reqwasm::Error> {
     Ok(Request::post(format!("{}/choose", url()).as_str())
         .header(ebobo_shared::AUTH_HEADER, &fingerprint())
-        .body(serde_json::to_string(&Choice::new(&fighter)).expect("failed to serialize choice"))
+        .body(serde_json::to_string(&Choice(fighter)).expect("failed to serialize choice"))
         .send()
         .await
         .map_err(|e| reqwasm::Error::from(e))?
