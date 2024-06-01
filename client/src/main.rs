@@ -1,8 +1,6 @@
 use sycamore::prelude::*;
 use web_sys::{wasm_bindgen::prelude::*, window};
 
-use routing::*;
-
 mod api;
 mod components;
 mod routing;
@@ -16,7 +14,7 @@ pub fn App<G: Html>() -> View<G> {
         .set_title("ebobo.dev");
 
     view! {
-        Root()
+        routing::Root()
     }
 }
 
