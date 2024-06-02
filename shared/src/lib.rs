@@ -13,7 +13,9 @@ pub struct Index {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Arena {
     pub total: u8,
-    pub ready: u8,
+    pub queue: u8,
+    pub rank: i32,
+    pub you: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
