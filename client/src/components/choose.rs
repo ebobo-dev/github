@@ -5,11 +5,9 @@ use web_sys::wasm_bindgen::UnwrapThrowExt;
 
 use ebobo_shared::Fighter;
 
-use crate::api::*;
-
 #[component]
 pub async fn Fighters<G: Html>() -> View<G> {
-    let fighters = available().await.expect("failed to get available fighters");
+    let fighters = crate::api::available().await.unwrap_throw();
     let size = fighters.len();
     let available = create_signal(fighters);
 
@@ -38,7 +36,7 @@ pub async fn SelectFighter<G: Html>(fighter: Fighter) -> View<G> {
     create_effect(move || {
         if let Some(fighter) = selected.get_clone() {
             spawn_local(async move {
-                choose(fighter.0).await.unwrap_throw();
+                crate::api::choose(fighter.0).await.unwrap_throw();
             });
         }
     });
