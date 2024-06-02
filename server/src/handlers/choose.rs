@@ -8,10 +8,10 @@ use crate::{
     AppState,
 };
 
-#[options("/fight")]
+#[options("/choose")]
 pub async fn options() {}
 
-#[post("/fight", data = "<request>")]
+#[post("/choose", data = "<request>")]
 pub async fn post(
     auth: Auth,
     state: &State<AppState>,

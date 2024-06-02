@@ -37,8 +37,8 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Matches::Id).uuid().not_null().primary_key())
                     .col(ColumnDef::new(Matches::Left).string().not_null())
                     .col(ColumnDef::new(Matches::Right).string().not_null())
-                    .col(ColumnDef::new(Matches::Result).string().null())
-                    .col(ColumnDef::new(Matches::Date).date_time().null())
+                    .col(ColumnDef::new(Matches::Result).string().not_null())
+                    .col(ColumnDef::new(Matches::Date).date_time().not_null())
                     .foreign_key(
                         ForeignKey::create()
                             .from_tbl(Matches::Table)
@@ -57,6 +57,25 @@ impl MigrationTrait for Migration {
             )
             .await?;
 
+        manager
+            .create_table(
+                Table::create()
+                    .table(Queue::Table)
+                    .if_not_exists()
+                    .col(ColumnDef::new(Queue::Id).uuid().not_null().primary_key())
+                    .col(ColumnDef::new(Queue::Fighter).string().not_null())
+                    .col(ColumnDef::new(Queue::Date).date_time().not_null())
+                    .foreign_key(
+                        ForeignKey::create()
+                            .from_tbl(Queue::Table)
+                            .to_tbl(Users::Table)
+                            .from_col(Queue::Fighter)
+                            .to_col(Users::Fingerprint),
+                    )
+                    .to_owned(),
+            )
+            .await?;
+
         Ok(())
     }
 
@@ -67,6 +86,10 @@ impl MigrationTrait for Migration {
 
         manager
             .drop_table(Table::drop().table(Matches::Table).to_owned())
+            .await?;
+
+        manager
+            .drop_table(Table::drop().table(Queue::Table).to_owned())
             .await?;
 
         Ok(())
@@ -89,5 +112,13 @@ enum Matches {
     Left,
     Right,
     Result,
+    Date,
+}
+
+#[derive(DeriveIden)]
+enum Queue {
+    Table,
+    Id,
+    Fighter,
     Date,
 }
