@@ -6,7 +6,7 @@ use ebobo_shared::Arena;
 use crate::{
     entities::{prelude::*, users},
     guards::fighter::Fighter,
-    AppState,
+    EboboState,
 };
 
 #[options("/arena")]
@@ -15,7 +15,7 @@ pub async fn options() {}
 #[get("/arena")]
 pub async fn get(
     fighter: Fighter,
-    state: &State<AppState>,
+    state: &State<EboboState>,
 ) -> Result<Json<Arena>, BadRequest<String>> {
     Ok(Json(Arena {
         total: 0,

@@ -3,8 +3,6 @@ use rocket::{
     request::{self, FromRequest, Request},
 };
 
-use crate:: AppState;
-
 pub struct Auth {
     pub fingerprint: String,
 }
@@ -22,7 +20,7 @@ impl<'r> FromRequest<'r> for Auth {
 
     async fn from_request(req: &'r Request<'_>) -> request::Outcome<Self, Self::Error> {
         match req.headers().get_one(ebobo_shared::AUTH_HEADER) {
-            Some(device) => match req.rocket().state::<AppState>() {
+            Some(device) => match req.rocket().state::<crate::EboboState>() {
                 Some(_) => match req.client_ip() {
                     Some(_) => request::Outcome::Success(Auth {
                         fingerprint: device.to_string(),

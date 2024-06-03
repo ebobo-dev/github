@@ -6,14 +6,14 @@ use ebobo_shared::Index;
 use crate::{
     entities::{prelude::*, users},
     guards::auth::Auth,
-    AppState,
+    EboboState,
 };
 
 #[options("/")]
 pub async fn options() {}
 
 #[get("/")]
-pub async fn get(auth: Auth, state: &State<AppState>) -> Result<Json<Index>, BadRequest<String>> {
+pub async fn get(auth: Auth, state: &State<EboboState>) -> Result<Json<Index>, BadRequest<String>> {
     let user = Users::find()
         .filter(users::Column::Fingerprint.eq(&auth.fingerprint))
         .one(state.db.as_ref())

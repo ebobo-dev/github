@@ -4,13 +4,13 @@ use sea_orm::*;
 use crate::{
     entities::{prelude::*, users},
     guards::auth::Auth,
-    AppState,
+    EboboState,
 };
 
 #[options("/fight")]
 pub async fn options() {}
 
 #[post("/fight")]
-pub async fn post(auth: Auth, state: &State<AppState>) -> Result<(), BadRequest<String>> {
+pub async fn post(auth: Auth, state: &State<EboboState>) -> Result<(), BadRequest<String>> {
     Ok(())
 }

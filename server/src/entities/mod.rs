@@ -3,4 +3,5 @@
 pub mod prelude;
 
 pub mod matches;
+pub mod queue;
 pub mod users;

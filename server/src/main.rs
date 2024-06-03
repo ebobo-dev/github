@@ -14,7 +14,7 @@ mod fairings;
 mod guards;
 mod handlers;
 
-pub struct AppState {
+pub struct EboboState {
     pub db: Arc<DatabaseConnection>,
     pub secrets: shuttle_runtime::SecretStore,
 }
@@ -37,7 +37,7 @@ async fn rocket(
     .expect("Failed to connect to the database");
 
     let rocket = rocket::build()
-        .manage(AppState {
+        .manage(EboboState {
             db: Arc::new(conn),
             secrets,
         })

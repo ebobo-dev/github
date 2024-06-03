@@ -3,14 +3,10 @@ use rocket::{
     request::{self, FromRequest, Request},
 };
 
-use crate:: AppState;
-
 pub struct Fighter {
     pub fingerprint: String,
     pub fighter: String,
     pub rank: i32,
-    pub count: i32,
-    pub kd: f32,
 }
 
 #[derive(Debug)]
@@ -26,4 +22,4 @@ impl<'r> FromRequest<'r> for Fighter {
     async fn from_request(req: &'r Request<'_>) -> request::Outcome<Self, Self::Error> {
         unimplemented!()
     }
-}
+} 
