@@ -1,9 +1,10 @@
-use rocket::{response::status::BadRequest, serde::json::Json, State};
-use sea_orm::*;
+use ebobo_shared::Utc;
+use rocket::{response::status::BadRequest, State};
+use sea_orm::{prelude::*, *};
 
 use crate::{
-    entities::{prelude::*, users},
-    guards::auth::Auth,
+    entities::{prelude::*, queue::ActiveModel},
+    guards::fighter::Fighter,
     EboboState,
 };
 
@@ -11,6 +12,14 @@ use crate::{
 pub async fn options() {}
 
 #[post("/fight")]
-pub async fn post(auth: Auth, state: &State<EboboState>) -> Result<(), BadRequest<String>> {
+pub async fn post(auth: Fighter, state: &State<EboboState>) -> Result<(), BadRequest<String>> {
+    Queue::insert(ActiveModel {
+        id: ActiveValue::set(Uuid::new_v4()),
+        fighter: ActiveValue::set(auth.fingerprint),
+        date: ActiveValue::set(Utc::now().naive_utc()),
+    })
+    .exec(state.db.as_ref())
+    .await
+    .map_err(|e| BadRequest(format!("failed to queue for matchmaking: {}", e.to_string())))?;
     Ok(())
 }
