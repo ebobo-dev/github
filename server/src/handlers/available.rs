@@ -20,7 +20,7 @@ pub async fn get(
     let fighters = ['🐱', '🐵', '🐶', '🐷', '🐰', '🐮'];
 
     let taken = Users::find()
-        .column(users::Column::Fingerprint)
+        .column(users::Column::Fighter)
         .all(state.db.as_ref())
         .await
         .map_err(|e| BadRequest(e.to_string()))?
