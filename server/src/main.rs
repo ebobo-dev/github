@@ -2,26 +2,19 @@
 extern crate rocket;
 
 use std::sync::Arc;
-
 use sea_orm::*;
 use serde::Deserialize;
 
-use fairings::*;
 use handlers::*;
 
 mod entities;
-mod fairings;
-mod guards;
+mod cors;
+mod auth;
 mod handlers;
 
 pub struct EboboState {
     pub db: Arc<DatabaseConnection>,
     pub secrets: shuttle_runtime::SecretStore,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct AppConfig {
-    pub fighters: Vec<String>,
 }
 
 #[shuttle_runtime::main]

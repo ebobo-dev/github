@@ -5,7 +5,6 @@ use ebobo_shared::Index;
 
 use crate::{
     entities::{prelude::*, users},
-    guards::auth::Auth,
     EboboState,
 };
 
@@ -13,17 +12,11 @@ use crate::{
 pub async fn options() {}
 
 #[get("/")]
-pub async fn get(auth: Auth, state: &State<EboboState>) -> Result<Json<Index>, BadRequest<String>> {
-    let user = Users::find()
-        .filter(users::Column::Fingerprint.eq(&auth.fingerprint))
-        .one(state.db.as_ref())
-        .await
-        .map_err(|e| BadRequest(e.to_string()))?;
-    
-    match user {
+pub async fn get(auth: crate::auth::Auth, state: &State<EboboState>) -> Result<Json<Index>, BadRequest<String>> {
+    match auth.fighter {
         Some(user) => Ok(Json(Index {
-            greet: format!("hi, {}! your rank is {}.", user.fighter, user.rank),
-            fighter: Some(user.fighter),
+            greet: format!("hi, {}! your rank is {}.", user.emo, user.rank),
+            fighter: Some(user.emo),
             rank: Some(user.rank),
         })),
         None => Ok(Json(Index {

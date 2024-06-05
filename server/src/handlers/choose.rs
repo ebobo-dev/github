@@ -3,7 +3,6 @@ use sea_orm::{prelude::*, *};
 
 use crate::{
     entities::{prelude::*, users::*},
-    guards::auth::Auth,
     EboboState,
 };
 
@@ -12,7 +11,7 @@ pub async fn options() {}
 
 #[post("/choose", data = "<request>")]
 pub async fn post(
-    auth: Auth,
+    auth: crate::auth::Auth,
     state: &State<EboboState>,
     request: Json<ebobo_shared::Choice>,
 ) -> Result<(), BadRequest<String>> {

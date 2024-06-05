@@ -5,7 +5,6 @@ use ebobo_shared::Fighter;
 
 use crate::{
     entities::{prelude::*, users},
-    guards::auth::Auth,
     EboboState,
 };
 
@@ -14,7 +13,6 @@ pub async fn options() {}
 
 #[get("/available")]
 pub async fn get(
-    _auth: Auth,
     state: &State<EboboState>,
 ) -> Result<Json<Vec<Fighter>>, BadRequest<String>> {
     let fighters = ['🐱', '🐵', '🐶', '🐷', '🐰', '🐮'];

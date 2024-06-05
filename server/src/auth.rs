@@ -5,6 +5,12 @@ use rocket::{
 
 pub struct Auth {
     pub fingerprint: String,
+    pub fighter: Option<Fighter>,
+}
+
+pub struct Fighter {
+    pub emo: String,
+    pub rank: i32,
 }
 
 #[derive(Debug)]
@@ -24,6 +30,7 @@ impl<'r> FromRequest<'r> for Auth {
                 Some(_) => match req.client_ip() {
                     Some(_) => request::Outcome::Success(Auth {
                         fingerprint: device.to_string(),
+                        fighter: None,
                     }),
                     None => {
                         request::Outcome::Error((Status::Unauthorized, AuthError::MissingAddress))
