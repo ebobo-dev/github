@@ -1,18 +1,12 @@
-use rocket::{response::status::BadRequest, serde::json::Json, State};
-use sea_orm::*;
+use rocket::{response::status::BadRequest, serde::json::Json};
 
 use ebobo_shared::Index;
-
-use crate::{
-    entities::{prelude::*, users},
-    EboboState,
-};
 
 #[options("/")]
 pub async fn options() {}
 
 #[get("/")]
-pub async fn get(auth: crate::auth::Auth, state: &State<EboboState>) -> Result<Json<Index>, BadRequest<String>> {
+pub async fn get(auth: crate::auth::Auth) -> Result<Json<Index>, BadRequest<String>> {
     match auth.fighter {
         Some(user) => Ok(Json(Index {
             greet: format!("hi, {}! your rank is {}.", user.emo, user.rank),

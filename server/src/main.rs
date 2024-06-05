@@ -3,7 +3,6 @@ extern crate rocket;
 
 use std::sync::Arc;
 use sea_orm::*;
-use serde::Deserialize;
 
 use handlers::*;
 

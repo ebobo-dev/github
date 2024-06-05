@@ -16,12 +16,12 @@ pub async fn get(
     let total = Users::find().all(state.db.as_ref()).await.unwrap().len();
     let queue = Queue::find().all(state.db.as_ref()).await.unwrap().len();
 
-    unimplemented!();
+    let fighter = fighter.fighter.unwrap();
 
-    // Ok(Json(Arena {
-    //     total,
-    //     queue,
-    //     rank: fighter.rank,
-    //     you: fighter.fighter,
-    // }))
+    Ok(Json(Arena {
+        total,
+        queue,
+        rank: fighter.rank,
+        you: fighter.emo,
+    }))
 }
