@@ -10,7 +10,7 @@ pub struct Auth {
 
 pub struct Fighter {
     pub emo: String,
-    pub rank: usize,
+    pub rank: i32,
 }
 
 #[derive(Debug)]

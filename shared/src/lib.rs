@@ -6,15 +6,15 @@ pub const AUTH_HEADER: &str = "EBOBO-FINGERPRINT";
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Index {
     pub fighter: Option<String>,
-    pub rank: Option<usize>,
+    pub rank: Option<i32>,
     pub greet: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Arena {
-    pub total: usize,
-    pub queue: usize,
-    pub rank: usize,
+    pub total: i32,
+    pub queue: i32,
+    pub rank: i32,
     pub you: String,
 }
 
