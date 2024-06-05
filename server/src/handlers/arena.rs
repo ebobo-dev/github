@@ -3,11 +3,7 @@ use sea_orm::*;
 
 use ebobo_shared::Arena;
 
-use crate::{
-    entities::{prelude::*, users},
-    guards::fighter::Fighter,
-    EboboState,
-};
+use crate::{entities::prelude::*, guards::fighter::Fighter, EboboState};
 
 #[options("/arena")]
 pub async fn options() {}
@@ -17,10 +13,13 @@ pub async fn get(
     fighter: Fighter,
     state: &State<EboboState>,
 ) -> Result<Json<Arena>, BadRequest<String>> {
+    let total = Users::find().all(state.db.as_ref()).await.unwrap().len();
+    let queue = Queue::find().all(state.db.as_ref()).await.unwrap().len();
+
     Ok(Json(Arena {
-        total: 0,
-        queue: 0,
-        rank: 0,
+        total: total,
+        queue: queue,
+        rank: fighter.rank,
         you: fighter.fighter,
     }))
 }
