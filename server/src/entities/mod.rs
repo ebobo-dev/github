@@ -2,6 +2,6 @@
 
 pub mod prelude;
 
+pub mod fighters;
 pub mod matches;
 pub mod queue;
-pub mod users;

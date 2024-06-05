@@ -16,21 +16,21 @@ pub struct Model {
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
     #[sea_orm(
-        belongs_to = "super::users::Entity",
+        belongs_to = "super::fighters::Entity",
         from = "Column::Left",
-        to = "super::users::Column::Fingerprint",
+        to = "super::fighters::Column::Fingerprint",
         on_update = "NoAction",
         on_delete = "NoAction"
     )]
-    Users2,
+    Fighters2,
     #[sea_orm(
-        belongs_to = "super::users::Entity",
+        belongs_to = "super::fighters::Entity",
         from = "Column::Right",
-        to = "super::users::Column::Fingerprint",
+        to = "super::fighters::Column::Fingerprint",
         on_update = "NoAction",
         on_delete = "NoAction"
     )]
-    Users1,
+    Fighters1,
 }
 
 impl ActiveModelBehavior for ActiveModel {}

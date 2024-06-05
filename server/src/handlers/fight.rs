@@ -3,7 +3,7 @@ use rocket::{futures::*, State};
 use sea_orm::{prelude::*, *};
 
 use crate::{
-    entities::{matches, prelude::*, queue, users},
+    entities::{matches, prelude::*, queue, fighters},
     EboboState,
 };
 
@@ -17,8 +17,7 @@ pub async fn post(
     state: &State<EboboState>,
 ) -> rocket_ws::Channel<'static> {
     Queue::insert(queue::ActiveModel {
-        id: ActiveValue::set(Uuid::new_v4()),
-        fighter: ActiveValue::set(auth.fingerprint.clone()),
+        fingerprint: ActiveValue::set(auth.fingerprint.clone()),
         date: ActiveValue::set(Utc::now().naive_utc()),
     })
     .exec(state.db.as_ref())
@@ -31,9 +30,9 @@ pub async fn post(
         Box::pin(async move {
             loop {
                 let queue = Queue::find()
-                    .filter(queue::Column::Fighter.ne(auth.fingerprint.clone()))
+                    .filter(queue::Column::Fingerprint.ne(auth.fingerprint.clone()))
                     .limit(1)
-                    .find_also_related(users::Entity)
+                    .find_also_related(fighters::Entity)
                     .all(db.as_ref())
                     .await;
 
@@ -57,38 +56,47 @@ pub async fn post(
                             "left".to_string()
                         };
 
-                        Users::update(users::ActiveModel {
+                        Fighters::update(fighters::ActiveModel {
                             rank: ActiveValue::set(my_r),
                             ..Default::default()
                         })
-                        .filter(users::Column::Fingerprint.eq(auth.fingerprint.clone()))
+                        .filter(fighters::Column::Fingerprint.eq(auth.fingerprint.clone()))
                         .exec(db.as_ref())
                         .await
                         .unwrap();
 
-                    
-                        Users::update(users::ActiveModel {
+                        Fighters::update(fighters::ActiveModel {
                             rank: ActiveValue::set(enemy_r),
                             ..Default::default()
                         })
-                        .filter(users::Column::Fingerprint.eq(e.fingerprint.clone()))
+                        .filter(fighters::Column::Fingerprint.eq(e.fingerprint.clone()))
                         .exec(db.as_ref())
                         .await
                         .unwrap();
 
                         Matches::insert(matches::ActiveModel {
                             id: ActiveValue::set(Uuid::new_v4()),
-                            left: ActiveValue::set(e.fighter.clone()),
+                            left: ActiveValue::set(e.fingerprint.clone()),
                             right: ActiveValue::set(auth.fingerprint.clone()),
-                            result: ActiveValue::set(result),
+                            result: ActiveValue::set(result.clone()),
                             date: ActiveValue::set(Utc::now().naive_utc()),
                         })
                         .exec(db.as_ref())
                         .await
                         .unwrap();
 
+                        Queue::delete_many()
+                            .filter(
+                                queue::Column::Fingerprint
+                                    .eq(e.fingerprint.clone())
+                                    .or(queue::Column::Fingerprint.eq(auth.fingerprint.clone())),
+                            )
+                            .exec(db.as_ref())
+                            .await
+                            .unwrap();
+
                         let _ = stream
-                            .send(rocket_ws::Message::Text(e.id.to_string()))
+                            .send(rocket_ws::Message::Text(result))
                             .await;
                         break;
                     }

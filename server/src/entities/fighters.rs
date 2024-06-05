@@ -3,28 +3,24 @@
 use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
-#[sea_orm(table_name = "queue")]
+#[sea_orm(table_name = "fighters")]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub fingerprint: String,
-    pub date: DateTime,
+    #[sea_orm(unique)]
+    pub emo: String,
+    pub rank: i32,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(
-        belongs_to = "super::fighters::Entity",
-        from = "Column::Fingerprint",
-        to = "super::fighters::Column::Fingerprint",
-        on_update = "NoAction",
-        on_delete = "NoAction"
-    )]
-    Fighters,
+    #[sea_orm(has_many = "super::queue::Entity")]
+    Queue,
 }
 
-impl Related<super::fighters::Entity> for Entity {
+impl Related<super::queue::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::Fighters.def()
+        Relation::Queue.def()
     }
 }
 

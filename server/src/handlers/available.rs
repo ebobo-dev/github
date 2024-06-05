@@ -4,7 +4,7 @@ use sea_orm::*;
 use ebobo_shared::Fighter;
 
 use crate::{
-    entities::{prelude::*, users},
+    entities::{prelude::*, fighters},
     EboboState,
 };
 
@@ -17,13 +17,13 @@ pub async fn get(
 ) -> Result<Json<Vec<Fighter>>, BadRequest<String>> {
     let fighters = ['🐱', '🐵', '🐶', '🐷', '🐰', '🐮'];
 
-    let taken = Users::find()
-        .column(users::Column::Fighter)
+    let taken = Fighters::find()
+        .column(fighters::Column::Emo)
         .all(state.db.as_ref())
         .await
         .map_err(|e| BadRequest(e.to_string()))?
         .into_iter()
-        .map(|f| f.fighter)
+        .map(|f| f.emo)
         .collect::<Vec<String>>();
 
     Ok(Json(
