@@ -1,9 +1,9 @@
 use sycamore::prelude::*;
-use web_sys::{wasm_bindgen::UnwrapThrowExt, MessageEvent, WebSocket};
+use web_sys::{wasm_bindgen::UnwrapThrowExt, WebSocket};
 
 #[component]
 pub async fn Dashboard<G: Html>() -> View<G> {
-    let ws = WebSocket::new("ws://ebobo.shuttleapp.rs").unwrap_throw();
+    let ws = WebSocket::new("ws://ebobo.shuttleapp.rs/fight").unwrap_throw();
     let message = create_signal(String::new());
 
     view! {
