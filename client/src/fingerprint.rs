@@ -1,11 +1,11 @@
-use wasm_fingerprint::make_fingerprint;
 use serde::Deserialize;
+use wasm_fingerprint::make_fingerprint;
+use web_sys::wasm_bindgen::UnwrapThrowExt;
 
 pub fn fingerprint() -> String {
-    let fingerprint: Fingerprint =
-        serde_json::from_str(&make_fingerprint().expect("fingerprint not available"))
-            .expect("failed to deserialize fingerprint");
-    fingerprint.print
+    serde_json::from_str::<Fingerprint>(&make_fingerprint().unwrap_throw())
+        .unwrap_throw()
+        .print
 }
 
 #[derive(Deserialize)]
