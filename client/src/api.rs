@@ -35,6 +35,17 @@ pub async fn choose(fighter: String) -> Result<Choice, reqwasm::Error> {
         .map_err(|e| reqwasm::Error::from(e))?)
 }
 
+pub async fn matchmake() -> Result<(), reqwasm::Error> {
+    Ok(Request::post(format!("{}/fight", url()).as_str())
+        .header(ebobo_shared::AUTH_HEADER, &fingerprint())
+        .send()
+        .await
+        .map_err(|e| reqwasm::Error::from(e))?
+        .json()
+        .await
+        .map_err(|e| reqwasm::Error::from(e))?)
+}
+
 fn url() -> String {
     option_env!("EBOBO_API_URL")
         .unwrap_or("https://ebobo.shuttleapp.rs")

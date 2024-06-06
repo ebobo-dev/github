@@ -13,7 +13,7 @@ use crate::{
 #[options("/fight")]
 pub async fn options() {}
 
-#[post("/fight")]
+#[get("/fight")]
 pub async fn post(
     auth: crate::auth::Auth,
     ws: rocket_ws::WebSocket,
