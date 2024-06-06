@@ -3,19 +3,19 @@
 use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
-#[sea_orm(table_name = "matches")]
+#[sea_orm(table_name = "plays")]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
-    pub id: Uuid,
-    pub winner: Option<String>,
-    pub date: DateTime,
+    pub fighter: String,
+    #[sea_orm(primary_key, auto_increment = false)]
+    pub r#match: Uuid,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
     #[sea_orm(
         belongs_to = "super::fighters::Entity",
-        from = "Column::Winner",
+        from = "Column::Fighter",
         to = "super::fighters::Column::Fingerprint",
         on_update = "NoAction",
         on_delete = "NoAction"

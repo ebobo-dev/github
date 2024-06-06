@@ -10,17 +10,26 @@ pub struct Model {
     #[sea_orm(unique)]
     pub emo: String,
     pub rank: i32,
+    pub queued: bool,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(has_many = "super::queue::Entity")]
-    Queue,
+    #[sea_orm(has_many = "super::matches::Entity")]
+    Matches,
+    #[sea_orm(has_many = "super::plays::Entity")]
+    Plays,
 }
 
-impl Related<super::queue::Entity> for Entity {
+impl Related<super::matches::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::Queue.def()
+        Relation::Matches.def()
+    }
+}
+
+impl Related<super::plays::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Plays.def()
     }
 }
 

@@ -23,8 +23,18 @@ impl MigrationTrait for Migration {
                             .not_null()
                             .unique_key(),
                     )
-                    .col(ColumnDef::new(Fighters::Rank).integer().not_null().default(0))
-                    .col(ColumnDef::new(Fighters::Queued).boolean().not_null().default(false))
+                    .col(
+                        ColumnDef::new(Fighters::Rank)
+                            .integer()
+                            .not_null()
+                            .default(0),
+                    )
+                    .col(
+                        ColumnDef::new(Fighters::Queued)
+                            .boolean()
+                            .not_null()
+                            .default(false),
+                    )
                     .to_owned(),
             )
             .await?;
@@ -53,8 +63,9 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(Plays::Table)
                     .if_not_exists()
-                    .col(ColumnDef::new(Plays::Fighter).string().not_null().primary_key())
-                    .col(ColumnDef::new(Plays::Match).uuid().not_null().primary_key())
+                    .col(ColumnDef::new(Plays::Fighter).string().not_null())
+                    .col(ColumnDef::new(Plays::Match).uuid().not_null())
+                    .primary_key(Index::create().col(Plays::Match).col(Plays::Fighter))
                     .foreign_key(
                         ForeignKey::create()
                             .from_tbl(Plays::Table)

@@ -2,4 +2,4 @@
 
 pub use super::fighters::Entity as Fighters;
 pub use super::matches::Entity as Matches;
-pub use super::queue::Entity as Queue;
+pub use super::plays::Entity as Plays;
