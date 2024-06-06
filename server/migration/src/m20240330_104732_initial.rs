@@ -24,7 +24,7 @@ impl MigrationTrait for Migration {
                             .unique_key(),
                     )
                     .col(ColumnDef::new(Fighters::Rank).integer().not_null().default(0))
-                    .col(ColumnDef::new(Fighters::Queue).boolean().not_null().default(false))
+                    .col(ColumnDef::new(Fighters::Queued).boolean().not_null().default(false))
                     .to_owned(),
             )
             .await?;
@@ -92,7 +92,7 @@ enum Fighters {
     Fingerprint,
     Emo,
     Rank,
-    Queue,
+    Queued,
 }
 
 #[derive(DeriveIden)]
