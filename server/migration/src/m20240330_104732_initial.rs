@@ -34,22 +34,13 @@ impl MigrationTrait for Migration {
                     .table(Matches::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(Matches::Id).uuid().not_null().primary_key())
-                    .col(ColumnDef::new(Matches::Left).string().not_null())
-                    .col(ColumnDef::new(Matches::Right).string().not_null())
-                    .col(ColumnDef::new(Matches::Result).string().not_null())
+                    .col(ColumnDef::new(Matches::Winner).string().null())
                     .col(ColumnDef::new(Matches::Date).date_time().not_null())
                     .foreign_key(
                         ForeignKey::create()
                             .from_tbl(Matches::Table)
                             .to_tbl(Fighters::Table)
-                            .from_col(Matches::Left)
-                            .to_col(Fighters::Fingerprint),
-                    )
-                    .foreign_key(
-                        ForeignKey::create()
-                            .from_tbl(Matches::Table)
-                            .to_tbl(Fighters::Table)
-                            .from_col(Matches::Right)
+                            .from_col(Matches::Winner)
                             .to_col(Fighters::Fingerprint),
                     )
                     .to_owned(),
@@ -59,15 +50,15 @@ impl MigrationTrait for Migration {
         manager
             .create_table(
                 Table::create()
-                    .table(Queue::Table)
+                    .table(Plays::Table)
                     .if_not_exists()
-                    .col(ColumnDef::new(Queue::Fingerprint).string().not_null().primary_key())
-                    .col(ColumnDef::new(Queue::Date).date_time().not_null())
+                    .col(ColumnDef::new(Plays::Fighter).string().not_null().primary_key())
+                    .col(ColumnDef::new(Plays::Match).uuid().not_null().primary_key())
                     .foreign_key(
                         ForeignKey::create()
-                            .from_tbl(Queue::Table)
+                            .from_tbl(Plays::Table)
                             .to_tbl(Fighters::Table)
-                            .from_col(Queue::Fingerprint)
+                            .from_col(Plays::Fighter)
                             .to_col(Fighters::Fingerprint),
                     )
                     .to_owned(),
@@ -87,7 +78,7 @@ impl MigrationTrait for Migration {
             .await?;
 
         manager
-            .drop_table(Table::drop().table(Queue::Table).to_owned())
+            .drop_table(Table::drop().table(Plays::Table).to_owned())
             .await?;
 
         Ok(())
@@ -100,21 +91,20 @@ enum Fighters {
     Fingerprint,
     Emo,
     Rank,
+    Queue,
 }
 
 #[derive(DeriveIden)]
 enum Matches {
     Table,
     Id,
-    Left,
-    Right,
-    Result,
+    Winner,
     Date,
 }
 
 #[derive(DeriveIden)]
-enum Queue {
+enum Plays {
     Table,
-    Fingerprint,
-    Date,
+    Match,
+    Fighter,
 }
