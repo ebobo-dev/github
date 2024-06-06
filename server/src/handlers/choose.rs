@@ -17,8 +17,9 @@ pub async fn post(
 ) -> Result<(), BadRequest<String>> {
     let user = ActiveModel {
         fingerprint: ActiveValue::set(auth.fingerprint),
+        emo: ActiveValue::set(request.0.0),
         rank: Default::default(),
-        emo: ActiveValue::set(request.0 .0),
+        queued: Default::default(),
     };
 
     Fighters::insert(user)
