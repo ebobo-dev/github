@@ -4,6 +4,7 @@ use web_sys::{wasm_bindgen::prelude::*, window};
 mod api;
 mod components;
 mod routing;
+mod fingerprint;
 
 #[component]
 pub fn App<G: Html>() -> View<G> {

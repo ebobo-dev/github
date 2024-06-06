@@ -1,9 +1,12 @@
-use ebobo_shared::Utc;
+use std::time::Duration;
+
 use rocket::{futures::*, State};
 use sea_orm::{prelude::*, *};
 
+use ebobo_shared::Utc;
+
 use crate::{
-    entities::{matches, prelude::*, queue, fighters},
+    entities::{fighters, matches, prelude::*, queue},
     EboboState,
 };
 
@@ -95,12 +98,13 @@ pub async fn post(
                             .await
                             .unwrap();
 
-                        let _ = stream
-                            .send(rocket_ws::Message::Text(result))
-                            .await;
+                        let _ = stream.send(rocket_ws::Message::Text(result)).await;
+
                         break;
                     }
                 }
+
+                std::thread::sleep(Duration::from_secs(5));
             }
 
             Ok(())
