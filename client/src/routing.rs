@@ -29,7 +29,7 @@ async fn Switch<G: Html>(route: ReadSignal<AppRoutes>) -> View<G> {
 enum AppRoutes {
     #[to("")]
     Index,
-    #[to("#arena")]
+    #[to("/arena")]
     Arena,
     #[not_found]
     NotFound,
