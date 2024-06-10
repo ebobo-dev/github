@@ -4,7 +4,7 @@ use rocket::{
 };
 use sea_orm::{ColumnTrait, EntityTrait, QueryFilter};
 
-use crate::entities::{prelude::*, users};
+use crate::entities::{prelude::*, fighters};
 
 pub struct Fighter {
     pub fingerprint: String,
@@ -27,13 +27,13 @@ impl<'r> FromRequest<'r> for Fighter {
         match req.headers().get_one(ebobo_shared::AUTH_HEADER) {
             Some(device) => match req.rocket().state::<crate::EboboState>() {
                 Some(state) => {
-                    let user = Users::find()
-                        .filter(users::Column::Fingerprint.eq(device))
+                    let user = Fighters::find()
+                        .filter(fighters::Column::Fingerprint.eq(device))
                         .one(state.db.as_ref())
                         .await;
                     match user {
                         Ok(Some(u)) => request::Outcome::Success(Fighter {
-                            fighter: u.fighter,
+                            fighter: u.emo,
                             fingerprint: u.fingerprint,
                             rank: u.rank,
                         }),
