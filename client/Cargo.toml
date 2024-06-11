@@ -8,7 +8,6 @@ ebobo-shared = { path = "../shared" }
 sycamore = { version = "0.9.0-beta.2", features = ["suspense"] }
 sycamore-router = "0.9.0-beta.2"
 wasm-fingerprint = { git = "https://github.com/dotnicht/wasm-fingerprint.git" }
-wasm-rs-async-executor = "0.9.0"
 web-sys = "0.3.68"
 log = "0.4.17"
 console_log = "1.0.0"
