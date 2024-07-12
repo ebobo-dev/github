@@ -10,7 +10,7 @@ pub async fn Dashboard<G: Html>() -> View<G> {
         p { "welcome to the arena" }
 
         button(on:click=move |_| {
-            ws.send_with_str("").unwrap_throw();
+            ws.send_with_str("").unwrap_throw(); // TODO: send message
         }) { "matchmake" }
         
         div { 
