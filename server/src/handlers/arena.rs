@@ -16,7 +16,7 @@ pub async fn get(
     fighter: crate::auth::Auth,
     state: &State<EboboState>,
 ) -> Result<Json<Arena>, BadRequest<String>> {
-    let total = Fighters::find().all(state.db.as_ref()).await.unwrap().len() as i32;
+    let total = Fighters::find().all(state.db.as_ref()).await.unwrap().len() as i32; // TODO: unwrap
     let queue = Fighters::find()
         .filter(fighters::Column::Queued.eq(true))
         .all(state.db.as_ref())
