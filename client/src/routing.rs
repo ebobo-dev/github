@@ -4,7 +4,7 @@ use sycamore_router::{HistoryIntegration, Route, Router};
 use crate::components;
 
 #[component(inline_props)]
-pub async fn Root<G: Html>() -> View<G> {
+pub async fn Root() -> View {
     view! {
         Router(
             integration=HistoryIntegration::new(),
@@ -16,7 +16,7 @@ pub async fn Root<G: Html>() -> View<G> {
 }
 
 #[component(inline_props)]
-async fn Switch<G: Html>(route: ReadSignal<AppRoutes>) -> View<G> {
+async fn Switch(route: ReadSignal<AppRoutes>) -> View {
     view! {(match route.get() {
             AppRoutes::Index => view! { components::index::Index() },
             AppRoutes::Arena => view! { components::arena::Dashboard() },

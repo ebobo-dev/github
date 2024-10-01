@@ -6,7 +6,7 @@ use web_sys::wasm_bindgen::UnwrapThrowExt;
 use ebobo_shared::Fighter;
 
 #[component]
-pub async fn Fighters<G: Html>() -> View<G> {
+pub async fn Fighters() -> View {
     let fighters = crate::api::available().await.unwrap_throw();
     let size = fighters.len();
     let available = create_signal(fighters);
@@ -18,7 +18,7 @@ pub async fn Fighters<G: Html>() -> View<G> {
             p { "choose your fighter:" }
             ul {
                 Indexed(
-                    iterable = *available,
+                    list = *available,
                     view = move |f| view! {
                         SelectFighter(fighter = f.clone())
                     }
@@ -29,7 +29,7 @@ pub async fn Fighters<G: Html>() -> View<G> {
 }
 
 #[component(inline_props)]
-pub async fn SelectFighter<G: Html>(fighter: Fighter) -> View<G> {
+pub async fn SelectFighter(fighter: Fighter) -> View {
     let name = fighter.0.clone();
     let selected: Signal<Option<Fighter>> = create_signal(None);
 

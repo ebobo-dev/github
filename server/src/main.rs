@@ -10,7 +10,7 @@ mod entities;
 mod cors;
 mod auth;
 mod handlers;
-mod fighter;
+//mod fighter;
 
 pub struct EboboState {
     pub db: Arc<DatabaseConnection>,

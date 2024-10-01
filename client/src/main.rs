@@ -7,7 +7,7 @@ mod routing;
 mod fingerprint;
 
 #[component]
-pub fn App<G: Html>() -> View<G> {
+pub fn App() -> View {
     window()
         .unwrap_throw()
         .document()

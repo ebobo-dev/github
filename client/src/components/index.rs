@@ -5,7 +5,7 @@ use web_sys::wasm_bindgen::UnwrapThrowExt;
 use crate::components::choose::Fighters;
 
 #[component]
-pub async fn Index<G: Html>() -> View<G> {
+pub async fn Index() -> View {
     let index = crate::api::index().await.unwrap_throw();
 
     if let Some(_) = index.fighter {
@@ -13,7 +13,7 @@ pub async fn Index<G: Html>() -> View<G> {
     }
 
     view! {
-        p { (index.greet) }
+        p { (index.greet.clone()) }
         Fighters()
     }
 }
